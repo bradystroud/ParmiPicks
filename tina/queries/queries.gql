@@ -19,6 +19,32 @@ query pageQuery {
   }
 }
 
+query reviewPageQuery {
+  ...LayoutQueryFragment
+  reviewConnection {
+    edges {
+      node {
+        id
+        score
+        date
+        restaurant {
+          ... on Restaurant {
+            ...RestaurantParts
+          }
+        }
+        author {
+          ... on Author {
+            ...AuthorParts
+          }
+        }
+        _sys {
+          filename
+        }
+      }
+    }
+  }
+}
+
 query contentQuery($relativePath: String!) {
   ...LayoutQueryFragment
   page(relativePath: $relativePath) {

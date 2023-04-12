@@ -146,6 +146,56 @@ const config = defineConfig({
         ],
       },
       {
+        label: "Reviews",
+        name: "review",
+        path: "content/reviews",
+        format: "mdx",
+        ui: {
+          router: ({ document }) => {
+            return `/reviews/${document._sys.filename}`;
+          },
+        },
+        fields: [
+          {
+            type: "image",
+            name: "parmiImg",
+            label: "Parmi Image",
+          },
+          {
+            type: "number",
+            name: "score",
+            label: "Score",
+          },
+          {
+            type: "reference",
+            label: "Author",
+            name: "author",
+            collections: ["author"],
+          },
+          {
+            type: "reference",
+            label: "Restaurant",
+            name: "restaurant",
+            collections: ["restaurant"],
+          },
+          {
+            type: "datetime",
+            label: "Posted Date",
+            name: "date",
+            ui: {
+              dateFormat: "MMMM DD YYYY",
+              timeFormat: "hh:mm A",
+            },
+          },
+          {
+            type: "rich-text",
+            label: "Body",
+            name: "_body",
+            isBody: true,
+          },
+        ],
+      },
+      {
         label: "Global",
         name: "global",
         path: "content/global",
@@ -319,6 +369,26 @@ const config = defineConfig({
             type: "string",
             label: "Avatar",
             name: "avatar",
+          },
+        ],
+      },
+      {
+        label: "Restaurants",
+        name: "restaurant",
+        path: "content/restaurant",
+        format: "md",
+        fields: [
+          {
+            type: "string",
+            label: "Name",
+            name: "name",
+            isTitle: true,
+            required: true,
+          },
+          {
+            type: "string",
+            label: "Url",
+            name: "url",
           },
         ],
       },

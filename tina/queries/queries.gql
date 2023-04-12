@@ -38,3 +38,22 @@ query blogPostQuery($relativePath: String!) {
     }
   }
 }
+
+query reviewQuery($relativePath: String!) {
+  ...LayoutQueryFragment
+  review(relativePath: $relativePath) {
+    ...ReviewParts
+    restaurant {
+      ... on Restaurant {
+        name
+        url
+      }
+    }
+    author {
+      ... on Author {
+        name
+        avatar
+      }
+    }
+  }
+}

@@ -12,7 +12,7 @@ These instructions will help you set up the project on your local machine for de
 Make sure you have the following installed on your system:
 
 - [Node.js](https://nodejs.org/en/download/) (version 12.x or higher)
-- [npm](https://www.npmjs.com/get-npm) (version 6.x or higher, usually installed with Node.js)
+- [yarn](https://yarnpkg.com/getting-started/install) (version 1.x or higher)
 
 ### 🛠️ Installation
 

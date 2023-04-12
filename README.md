@@ -28,10 +28,10 @@ yarn dev
 ```
 Now you can open your browser and navigate to http://localhost:3000 to see the project running.
 
-📚 Built With
+### 📚 Built With
 - Next.js - The React framework used for building the website
 - TinaCMS - The content management system used for editing content
 - OpenAI API - The API used for integrating ChatGPT/GPT-4
 
-📖 License
+### 📖 License
 This project is licensed under the MIT License - see the LICENSE file for details.

@@ -59,6 +59,18 @@ export const Footer = ({ data, icon, rawData }) => {
               />
             </a>
           </Link>
+          <p className="text-gray-300">
+            Made with ❤️ by{" "}
+            <a
+              className="text-gray-300 hover:text-gray-400 transition ease-out duration-150"
+              href="https://github.com/bradystroud"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Brady Stroud
+            </a>
+          </p>
+
           <div className="flex gap-4">
             {data.social && data.social.facebook && (
               <a
@@ -121,7 +133,6 @@ export const Footer = ({ data, icon, rawData }) => {
               </a>
             )}
           </div>
-          <RawRenderer parentColor={data.color} rawData={rawData} />
         </div>
         <div
           className={`absolute h-1 bg-gradient-to-r from-transparent ${

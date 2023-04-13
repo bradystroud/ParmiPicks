@@ -1,19 +1,15 @@
 {
   "header": {
     "icon": {
-      "name": "Tina",
+      "name": "BiMap",
       "color": "orange",
       "style": "float"
     },
-    "name": "Tina Starter",
+    "name": "Parmi Picks",
     "color": "default",
     "nav": [
       {
         "href": "home",
-        "label": "Home"
-      },
-      {
-        "href": "",
         "label": "Home"
       },
       {
@@ -31,7 +27,8 @@
     "social": {
       "facebook": "/",
       "twitter": "/",
-      "instagram": "/"
+      "instagram": "/",
+      "github": "/bradystroud/parmiPicks"
     }
   },
   "theme": {

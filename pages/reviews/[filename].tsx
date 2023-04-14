@@ -1,7 +1,7 @@
 import { client } from "../../tina/__generated__/client";
 import { useTina } from "tinacms/dist/react";
 import { Layout } from "../../components/layout";
-import Image from "next/image";
+import Image from "next/legacy/image";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import format from "date-fns/format";

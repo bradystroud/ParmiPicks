@@ -1,10 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { BsArrowRight, BsPinMap } from "react-icons/bs";
-import { useTheme } from "../layout";
+import { useTheme } from "../layout"; 
 import format from "date-fns/format";
-import { log } from "console";
+
 
 export const Reviews = ({ data }) => {
   const theme = useTheme();
@@ -18,8 +17,6 @@ export const Reviews = ({ data }) => {
     orange: "group-hover:text-orange-600 dark:group-hover:text-orange-300",
     yellow: "group-hover:text-yellow-500 dark:group-hover:text-yellow-300",
   };
-
-  console.log(data[0]._values);
 
   return (
     <>

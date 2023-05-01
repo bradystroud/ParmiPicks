@@ -15,7 +15,7 @@ blocks:
       - label: Why parmis?
         type: link
         icon: false
-        link: /posts
+        link: /about
     image:
       src: /uploads/rx057_family_meals_under_20_minutes_6_of_6.jpg
       alt: >-
@@ -24,3 +24,4 @@ blocks:
     color: default
     _template: hero
 ---
+

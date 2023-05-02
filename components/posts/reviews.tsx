@@ -19,8 +19,6 @@ export const Reviews = ({ data }) => {
     yellow: "group-hover:text-yellow-500 dark:group-hover:text-yellow-300",
   };
 
-  console.log(data[0]._values);
-
   return (
     <>
       {data.map((reviewData) => {

@@ -21,7 +21,7 @@ query pageQuery {
 
 query reviewPageQuery {
   ...LayoutQueryFragment
-  reviewConnection {
+  reviewConnection(sort: "score") {
     edges {
       node {
         id

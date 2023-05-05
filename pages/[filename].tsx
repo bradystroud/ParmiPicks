@@ -17,18 +17,6 @@ export default function HomePage(
     </Layout>
   );
 }
-
-export const getStaticProps = async ({ params }) => {
-  const tinaProps = await client.queries.contentQuery({
-    relativePath: `${params.filename}.md`,
-  });
-  return {
-    props: {
-      data: tinaProps.data,
-      query: tinaProps.query,
-      variables: tinaProps.variables,
-    },
-  };
 };
 
 export const getStaticPaths = async () => {

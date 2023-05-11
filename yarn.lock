@@ -2600,15 +2600,6 @@
   dependencies:
     isomorphic-fetch "^3.0.0"
 
-"@tinacms/schema-tools@1.4.3":
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/@tinacms/schema-tools/-/schema-tools-1.4.3.tgz#d8d29f38baa17563c12dc6e135628fc389927bd2"
-  integrity sha512-9cE7QSVPuGVyeiDsJJhgvd0495sUFDnxMpCbBY+hwhRtfWS7cR9qFC0loOlqBpjxi8dxb71G8ZHb6BfZ/0JZAA==
-  dependencies:
-    micromatch "4.0.5"
-    url-pattern "^1.0.3"
-    zod "^3.14.3"
-
 "@tinacms/schema-tools@1.4.4":
   version "1.4.4"
   resolved "https://registry.yarnpkg.com/@tinacms/schema-tools/-/schema-tools-1.4.4.tgz#632d679dc27431777e9dfd8e7b4880edc220ddba"
@@ -9860,7 +9851,7 @@ thenify-all@^1.0.0:
   dependencies:
     any-promise "^1.0.0"
 
-tinacms@1.5.5:
+tinacms@1.5.5, tinacms@^1.5.5:
   version "1.5.5"
   resolved "https://registry.yarnpkg.com/tinacms/-/tinacms-1.5.5.tgz#e1da63db5fd5510e28409b4806e3e1cd7b15af56"
   integrity sha512-1Gq7dolHoOugArf2U3VZJhIvYhnbu6FqWZoKleKf+rdYBgsSf+t7yUkpuXgQtrN3h9CI8YfVXh4p3FEYycd1Jw==
@@ -9871,32 +9862,6 @@ tinacms@1.5.5:
     "@heroicons/react" "^1.0.4"
     "@react-hook/window-size" "^3.0.7"
     "@tinacms/schema-tools" "1.4.4"
-    "@tinacms/sharedctx" "1.0.1"
-    "@tinacms/toolkit" "1.7.1"
-    crypto-js "^4.0.0"
-    encoding "0.1.13"
-    fetch-ponyfill "^7.1.0"
-    final-form "4.20.1"
-    graphql "15.8.0"
-    graphql-tag "^2.11.0"
-    lodash.set "^4.3.2"
-    prism-react-renderer "^1.3.5"
-    react-icons "^4.3.1"
-    react-router-dom "6"
-    yup "^0.32.0"
-    zod "^3.14.3"
-
-tinacms@^1.4.5:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/tinacms/-/tinacms-1.5.4.tgz#e11894bad5721f8499d43966a2b3a8fcea19e304"
-  integrity sha512-Q5Qi53ydEk+VJ+402xi1qFUOUc23E89OX1q/0cOp79Ct67rs+uBF1Qg/mXMbuzb9CSdXlsfmjsuU1HtxenHSOg==
-  dependencies:
-    "@graphql-inspector/core" "^4.0.0"
-    "@graphql-tools/relay-operation-optimizer" "^6.4.1"
-    "@headlessui/react" "^1.5.0"
-    "@heroicons/react" "^1.0.4"
-    "@react-hook/window-size" "^3.0.7"
-    "@tinacms/schema-tools" "1.4.3"
     "@tinacms/sharedctx" "1.0.1"
     "@tinacms/toolkit" "1.7.1"
     crypto-js "^4.0.0"

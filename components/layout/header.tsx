@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
 import { useTheme } from ".";
-import { Icon } from "../util/icon";
+import { FaBars, FaSearchLocation } from "react-icons/fa";
 
 export const Header = ({ data }) => {
   const router = useRouter();
@@ -29,34 +29,9 @@ export const Header = ({ data }) => {
       ? headerColor.primary[theme.color]
       : headerColor.default;
 
-  const activeItemClasses = {
-    blue: "border-b-3 border-blue-200 text-blue-700 dark:text-blue-300 font-medium dark:border-blue-700",
-    teal: "border-b-3 border-teal-200 text-teal-700 dark:text-teal-300 font-medium dark:border-teal-700",
-    green:
-      "border-b-3 border-green-200 text-green-700 dark:text-green-300 font-medium dark:border-green-700",
-    red: "border-b-3 border-red-300 text-red-700 dark:text-green-300 font-medium dark:border-red-700",
-    pink: "border-b-3 border-pink-200 text-pink-700 dark:text-pink-300 font-medium dark:border-pink-700",
-    purple:
-      "border-b-3 border-purple-200 text-purple-700 dark:text-purple-300 font-medium dark:border-purple-700",
-    orange:
-      "border-b-3 border-orange-200 text-orange-700 dark:text-orange-300 font-medium dark:border-orange-700",
-    yellow:
-      "border-b-3 border-yellow-300 text-yellow-700 dark:text-yellow-300 font-medium dark:border-yellow-600",
-  };
-
-  const activeBackgroundClasses = {
-    blue: "text-blue-500",
-    teal: "text-teal-500",
-    green: "text-green-500",
-    red: "text-red-500",
-    pink: "text-pink-500",
-    purple: "text-purple-500",
-    orange: "text-orange-500",
-    yellow: "text-yellow-500",
-  };
-
   // If we're on an admin path, other links should also link to their admin paths
-  const [prefix, setPrefix] = React.useState("");
+  const [prefix, setPrefix] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
   React.useEffect(() => {
     if (window && window.location.pathname.startsWith("/admin")) {
@@ -69,23 +44,45 @@ export const Header = ({ data }) => {
       className={`relative overflow-hidden bg-gradient-to-b ${headerColorCss}`}
     >
       <Container size="custom" className="py-0 relative z-10 max-w-8xl">
-        <div className="flex items-center justify-between gap-6">
-          <h4 className="select-none text-lg font-bold tracking-tight my-4 transition duration-150 ease-out transform">
-            <Link href="/" passHref>
-              <a className="flex gap-1 items-center whitespace-nowrap tracking-[.002em]">
-                <Icon
-                  parentColor={data.color}
-                  data={{
-                    name: data.icon.name,
-                    color: data.icon.color,
-                    style: data.icon.style,
-                  }}
-                />
-                {data.name}
-              </a>
-            </Link>
-          </h4>
-          <ul className="flex gap-6 sm:gap-8 lg:gap-10 tracking-[.002em] -mx-4">
+        <nav className="flex items-center justify-between flex-wrap p-6">
+          <div className="flex items-center flex-shrink-0 text-white mr-6">
+            <FaSearchLocation className="fill-current h-8 w-8 mr-2" />
+            <span className="font-semibold text-xl tracking-tight">
+              Parmi Picks
+            </span>
+          </div>
+          <div className="block md:hidden">
+            <button className="flex items-center px-3 py-2 text-teal-20 hover:text-white">
+              <FaBars onClick={() => setExpanded(!expanded)} />
+            </button>
+          </div>
+          <div
+            className={`w-full block flex-grow md:items-center md:w-auto ${
+              expanded ? "" : "hidden md:flex"
+            }`}
+          >
+            <div className="text-sm lg:flex-grow">
+              {data.nav &&
+                data.nav.map((item, i) => {
+                  const activeItem =
+                    item.href === ""
+                      ? router.asPath === "/"
+                      : router.asPath.includes(item.href);
+
+                  return (
+                    <a
+                      key={i}
+                      href={item.href}
+                      className={`block mt-4 md:inline-block md:mt-0 text-blue-200 hover:text-white mr-4 ${activeItem ? "opacity-50" : ""}`}
+                    >
+                      {item.label}
+                    </a>
+                  );
+                })}
+            </div>
+          </div>
+        </nav>
+        {/* <ul className="flex gap-6 sm:gap-8 lg:gap-10 tracking-[.002em] -mx-4">
             {data.nav &&
               data.nav.map((item, i) => {
                 const activeItem =
@@ -148,8 +145,8 @@ export const Header = ({ data }) => {
                   </li>
                 );
               })}
-          </ul>
-        </div>
+          </ul> */}
+        {/* </div> */}
         <div
           className={`absolute h-1 bg-gradient-to-r from-transparent ${
             data.color === "primary" ? `via-white` : `via-black dark:via-white`

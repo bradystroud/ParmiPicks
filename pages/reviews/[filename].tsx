@@ -27,19 +27,16 @@ export default function ReviewPage(
     return (
       <Layout rawData={data} data={data.global as any}>
         <Section className="flex-1">
-          <Container
-            width="small"
-            className={`flex-1 pb-2`}
-            size="large"
-          >
+          <Container width="small" className={`flex-1 pb-2`} size="large">
             <h1
               className={`w-full relative	mb-8 text-6xl tracking-normal text-center title-font`}
             >
-              <span className="font-extrabold">{data.review.score}</span> - {data.review.restaurant.name}
+              <span className="font-extrabold">{data.review.score}</span> -{" "}
+              {data.review.restaurant.name}
             </h1>
             <div className="relative w-300 h-400 m-auto">
               {data?.review?.parmiImg ? (
-                <Image src={data.review?.parmiImg} layout="fill" />
+                <img src={data.review?.parmiImg} />
               ) : (
                 "No image 🫢"
               )}

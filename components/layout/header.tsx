@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
 import { useTheme } from ".";
@@ -73,7 +72,9 @@ export const Header = ({ data }) => {
                     <a
                       key={i}
                       href={item.href}
-                      className={`block mt-4 md:inline-block md:mt-0 text-blue-200 hover:text-white mr-4 ${activeItem ? "opacity-50" : ""}`}
+                      className={`block mt-4 md:inline-block md:mt-0 text-blue-200 hover:text-white mr-4 ${
+                        activeItem ? "opacity-50" : ""
+                      }`}
                     >
                       {item.label}
                     </a>
@@ -82,71 +83,6 @@ export const Header = ({ data }) => {
             </div>
           </div>
         </nav>
-        {/* <ul className="flex gap-6 sm:gap-8 lg:gap-10 tracking-[.002em] -mx-4">
-            {data.nav &&
-              data.nav.map((item, i) => {
-                const activeItem =
-                  item.href === ""
-                    ? router.asPath === "/"
-                    : router.asPath.includes(item.href);
-                return (
-                  <li
-                    key={`${item.label}-${i}`}
-                    className={`${
-                      activeItem ? activeItemClasses[theme.color] : ""
-                    }`}
-                  >
-                    <Link href={`${prefix}/${item.href}`} passHref>
-                      <a
-                        className={`relative select-none	text-base inline-block tracking-wide transition duration-150 ease-out hover:opacity-100 py-8 px-4 ${
-                          activeItem ? `` : `opacity-70`
-                        }`}
-                      >
-                        {item.label}
-                        {activeItem && (
-                          <svg
-                            className={`absolute bottom-0 left-1/2 w-[180%] h-full -translate-x-1/2 -z-1 opacity-10 dark:opacity-15 ${
-                              activeBackgroundClasses[theme.color]
-                            }`}
-                            preserveAspectRatio="none"
-                            viewBox="0 0 230 230"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                          >
-                            <rect
-                              x="230"
-                              y="230"
-                              width="230"
-                              height="230"
-                              transform="rotate(-180 230 230)"
-                              fill="url(#paint0_radial_1_33)"
-                            />
-                            <defs>
-                              <radialGradient
-                                id="paint0_radial_1_33"
-                                cx="0"
-                                cy="0"
-                                r="1"
-                                gradientUnits="userSpaceOnUse"
-                                gradientTransform="translate(345 230) rotate(90) scale(230 115)"
-                              >
-                                <stop stopColor="currentColor" />
-                                <stop
-                                  offset="1"
-                                  stopColor="currentColor"
-                                  stopOpacity="0"
-                                />
-                              </radialGradient>
-                            </defs>
-                          </svg>
-                        )}
-                      </a>
-                    </Link>
-                  </li>
-                );
-              })}
-          </ul> */}
-        {/* </div> */}
         <div
           className={`absolute h-1 bg-gradient-to-r from-transparent ${
             data.color === "primary" ? `via-white` : `via-black dark:via-white`

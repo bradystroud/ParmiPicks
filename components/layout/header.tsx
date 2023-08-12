@@ -71,7 +71,7 @@ export const Header = ({ data }) => {
                   return (
                     <a
                       key={i}
-                      href={item.href}
+                      href={"/" + item.href}
                       className={`block mt-4 md:inline-block md:mt-0 text-blue-200 hover:text-white mr-4 ${
                         activeItem ? "opacity-50" : ""
                       }`}

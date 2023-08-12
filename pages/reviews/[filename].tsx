@@ -4,7 +4,7 @@ import { Layout } from "../../components/layout";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import format from "date-fns/format";
-import { TinaMarkdown, TinaMarkdownContent } from "tinacms/dist/rich-text";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { Configuration, OpenAIApi } from "openai";
 import { useState } from "react";
 import { FaSpinner } from "react-icons/fa";

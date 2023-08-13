@@ -19,6 +19,7 @@ query pageQuery {
   }
 }
 
+# TODO: Add sorting options
 query reviewPageQuery {
   ...LayoutQueryFragment
   reviewConnection(sort: "score") {

@@ -1,8 +1,8 @@
-import { Container } from "../components/util/container";
-import { Section } from "../components/util/section";
-import { client } from "../tina/__generated__/client";
-import { Layout } from "../components/layout";
-import { Reviews } from "../components/posts/reviews";
+import { Container } from "../../components/util/container";
+import { Section } from "../../components/util/section";
+import { client } from "../../tina/__generated__/client";
+import { Layout } from "../../components/layout";
+import { Reviews } from "../../components/posts/reviews";
 
 export default function ReviewPage(
   props: AsyncReturnType<typeof getStaticProps>["props"]

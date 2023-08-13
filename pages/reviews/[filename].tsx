@@ -5,7 +5,10 @@ import Image from "next/image";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import format from "date-fns/format";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { TinaMarkdown, TinaMarkdownContent } from "tinacms/dist/rich-text";
+import { Configuration, OpenAIApi } from "openai";
+import { useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 
 // Use the props returned by get static props
 export default function ReviewPage(

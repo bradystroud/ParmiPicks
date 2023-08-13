@@ -1,8 +1,6 @@
 import { Actions } from "../util/actions";
 import { Section } from "../util/section";
 import { Container } from "../util/container";
-import { Icon } from "../util/icon";
-import { iconSchema } from "../util/icon";
 
 export const Feature = ({ featuresColor, data, tinaField }) => {
   return (
@@ -98,7 +96,6 @@ export const featureBlockSchema = {
         },
       },
       fields: [
-        iconSchema,
         {
           type: "string",
           label: "Title",

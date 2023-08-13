@@ -7,6 +7,7 @@ export const Header = ({ data }) => {
   const router = useRouter();
 
   // If we're on an admin path, other links should also link to their admin paths
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [prefix, setPrefix] = useState("");
   const [expanded, setExpanded] = useState(false);
 

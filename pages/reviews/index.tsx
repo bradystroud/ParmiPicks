@@ -3,9 +3,10 @@ import { Section } from "../../components/util/section";
 import { client } from "../../tina/__generated__/client";
 import { Layout } from "../../components/layout";
 import { Reviews } from "../../components/posts/reviews";
+import { InferGetStaticPropsType } from "next";
 
 export default function ReviewPage(
-  props: AsyncReturnType<typeof getStaticProps>["props"]
+  props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
   const reviews = props.data.reviewConnection.edges;
 
@@ -28,6 +29,3 @@ export const getStaticProps = async () => {
     },
   };
 };
-
-export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
-  T extends (...args: any) => Promise<infer R> ? R : any;

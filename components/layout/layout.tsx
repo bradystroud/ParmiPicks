@@ -17,7 +17,7 @@ export const Layout = ({ rawData = {}, data = layoutData, children }) => {
           {children}
         </div>
         <Footer
-          rawData={rawData}
+          rawData={rawData as any}
           data={data?.footer}
           icon={data?.header.icon}
         />

@@ -1,18 +1,16 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { client } from "../../tina/__generated__/client";
 import { useTina } from "tinacms/dist/react";
 import { Layout } from "../../components/layout";
-import Image from "next/image";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import format from "date-fns/format";
-import { TinaMarkdown, TinaMarkdownContent } from "tinacms/dist/rich-text";
-import { Configuration, OpenAIApi } from "openai";
-import { useState } from "react";
-import { FaSpinner } from "react-icons/fa";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { InferGetStaticPropsType } from "next";
 
 // Use the props returned by get static props
 export default function ReviewPage(
-  props: AsyncReturnType<typeof getStaticProps>["props"]
+  props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
   const { data } = useTina({
     query: props.query,
@@ -109,6 +107,3 @@ export const getStaticPaths = async () => {
     fallback: "blocking",
   };
 };
-
-export type AsyncReturnType<T extends (...args: any) => Promise<any>> =
-  T extends (...args: any) => Promise<infer R> ? R : any;

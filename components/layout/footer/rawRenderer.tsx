@@ -1,20 +1,8 @@
 import React from "react";
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import { useTheme } from "..";
 
 export const RawRenderer = ({ rawData, parentColor }) => {
-  const theme = useTheme();
-  const buttonColorClasses = {
-    blue: "text-blue-500",
-    teal: "text-teal-500",
-    green: "text-green-500",
-    red: "text-red-500",
-    pink: "text-pink-500",
-    purple: "text-purple-500",
-    orange: "text-orange-500",
-    yellow: "text-yellow-600",
-  };
   const [isOpen, setIsOpen] = useState(false);
 
   function closeModal() {
@@ -30,9 +18,7 @@ export const RawRenderer = ({ rawData, parentColor }) => {
       <button
         type="button"
         onClick={openModal}
-        className={`z-10 relative flex items-center px-5 py-2 mx-3 my-2 font-semibold shadow-sm text-sm transition duration-150 ease-out rounded transform focus:shadow-outline focus:outline-none whitespace-nowrap opacity-80 hover:opacity-100 shadow-md ${
-          buttonColorClasses[theme.color]
-        }`}
+        className={`z-10 relative flex items-center px-5 py-2 mx-3 my-2 font-semibold shadow-sm text-sm transition duration-150 ease-out rounded transform focus:shadow-outline focus:outline-none whitespace-nowrap opacity-80 hover:opacity-100 text-blue-500`}
       >
         View Raw Data
         <span

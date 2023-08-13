@@ -3,8 +3,6 @@ import { contentBlockSchema } from "../components/blocks/content";
 import { featureBlockSchema } from "../components/blocks/features";
 import { heroBlockSchema } from "../components/blocks/hero";
 import { testimonialBlockSchema } from "../components/blocks/testimonial";
-import { ColorPickerInput } from "../components/fields/color";
-import { iconSchema } from "../components/util/icon";
 
 const config = defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
@@ -209,7 +207,6 @@ const config = defineConfig({
             label: "Header",
             name: "header",
             fields: [
-              iconSchema as any,
               {
                 type: "string",
                 label: "Name",
@@ -300,16 +297,7 @@ const config = defineConfig({
             type: "object",
             label: "Theme",
             name: "theme",
-            // @ts-ignore
             fields: [
-              {
-                type: "string",
-                label: "Primary Color",
-                name: "color",
-                ui: {
-                  component: ColorPickerInput,
-                },
-              },
               {
                 type: "string",
                 name: "font",

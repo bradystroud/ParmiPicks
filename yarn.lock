@@ -8795,10 +8795,10 @@ tinacms@1.5.20:
     yup "^0.32.0"
     zod "^3.14.3"
 
-tinacms@^1.5.25:
-  version "1.5.25"
-  resolved "https://registry.yarnpkg.com/tinacms/-/tinacms-1.5.25.tgz#14a8ad6f53733444a2d4dc7a1cfb1a750d79f5c2"
-  integrity sha512-Ei7gq7aKsdruxWM1kSe6Ppyl5TKiigPNjvgNiPGEShsgQc8/CYJFupbyScYS4zcHcwWr2+eE1vXNn4nS9tlCbA==
+tinacms@^1.5.26:
+  version "1.5.26"
+  resolved "https://registry.yarnpkg.com/tinacms/-/tinacms-1.5.26.tgz#e11893378efbdecc412e53666a4141fc9b823040"
+  integrity sha512-0EkoRMSPXMXmuOW4XQIU7sV+CYrWHvh1Jr0M6QZzVamLlkBTBo3uVnrPwBMfhO2kgucxm6utsRGENd1rbwmwow==
   dependencies:
     "@floating-ui/dom" "^1.4.4"
     "@floating-ui/react-dom" "^2.0.1"

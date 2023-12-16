@@ -31,6 +31,7 @@ export const Layout = ({ rawData = {}, data = layoutData, children }) => {
           {children}
         </div>
         <Footer
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           rawData={rawData as any}
           data={data?.footer}
           icon={data?.header.icon}

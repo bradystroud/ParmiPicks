@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Section = ({ children, color = "", className = "" }) => {
+export const Section = ({ children, className = "" }) => {
   const sectionColor = {
     default:
       "text-gray-800 dark:text-gray-50 bg-gradient-to-tl from-gray-50 dark:from-gray-900 via-transparent to-transparent",

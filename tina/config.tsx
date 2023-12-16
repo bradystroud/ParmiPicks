@@ -317,25 +317,6 @@ const config = defineConfig({
                   },
                 ],
               },
-              {
-                type: "string",
-                name: "darkMode",
-                label: "Dark Mode",
-                options: [
-                  {
-                    label: "System",
-                    value: "system",
-                  },
-                  {
-                    label: "Light",
-                    value: "light",
-                  },
-                  {
-                    label: "Dark",
-                    value: "dark",
-                  },
-                ],
-              },
             ],
           },
         ],

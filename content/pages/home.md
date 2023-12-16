@@ -1,7 +1,7 @@
 ---
 title: Parmi Picks Home
 blocks:
-  - tagline: ''
+  - tagline: ""
     headline: Parmi Picks
     text: >
       Welcome to ParmiPicks! This is my personal list of every parmi I've tried
@@ -17,11 +17,10 @@ blocks:
         icon: false
         link: /about
     image:
-      src: /uploads/rx057_family_meals_under_20_minutes_6_of_6.jpg
+      src: /uploads/nice-parm.jpg
       alt: >-
         Photo of palm trees at sunset by Adam Birkett -
         unsplash.com/photos/75EFpyXu3Wg
     color: default
     _template: hero
 ---
-

@@ -84,3 +84,38 @@ query reviewQuery($relativePath: String!) {
     }
   }
 }
+
+query topReviewQuery {
+  ...LayoutQueryFragment
+  reviewConnection(sort: "score", last: 1) {
+    edges {
+      cursor
+      node {
+        ... on Document {
+          _sys {
+            filename
+            basename
+            breadcrumbs
+            path
+            relativePath
+            extension
+          }
+          id
+        }
+        ...ReviewParts
+        restaurant {
+          ... on Restaurant {
+            name
+            url
+          }
+        }
+        author {
+          ... on Author {
+            name
+            avatar
+          }
+        }
+      }
+    }
+  }
+}

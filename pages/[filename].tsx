@@ -14,8 +14,28 @@ export default function HomePage(
   });
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
     <Layout rawData={data} data={data.global as any}>
       <Blocks {...data.page} />
+      <section className="m-auto">
+        <div className="badge">
+          <svg width="300" height="50" className="best">
+            {" "}
+            <path
+              id="curve"
+              d="M100,25 A140,85 0 0 1 290,120"
+              fill="transparent"
+            />
+            <text fill="white" style={{ fontSize: "20px" }}>
+              <textPath href="#curve">BEST PARMI</textPath>
+            </text>
+          </svg>
+          <div className="flex flex-col items-center pt-4">
+            <div className="score">{props.topParmi.node.score}</div>
+            <div className="text-xl">{props.topParmi.node.restaurant.name}</div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 }
@@ -24,11 +44,15 @@ export const getStaticProps = async ({ params }) => {
   const tinaProps = await client.queries.contentQuery({
     relativePath: `${params.filename}.md`,
   });
+
+  const moreProps = await client.queries.topReviewQuery();
+
   return {
     props: {
       data: tinaProps.data,
       query: tinaProps.query,
       variables: tinaProps.variables,
+      topParmi: moreProps.data.reviewConnection.edges[0],
     },
   };
 };

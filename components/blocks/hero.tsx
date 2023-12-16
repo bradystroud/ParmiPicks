@@ -7,7 +7,7 @@ import type { TinaTemplate } from "tinacms";
 
 export const Hero = ({ data, parentField }) => {
   return (
-    <Section color={data.color}>
+    <Section>
       <Container
         size="large"
         className="grid grid-cols-1 lg:grid-cols-5 gap-14 items-center justify-center"
@@ -44,7 +44,6 @@ export const Hero = ({ data, parentField }) => {
             <Actions
               parentField={`${parentField}.actions`}
               className="justify-center lg:justify-start py-2"
-              parentColor={data.color}
               actions={data.actions}
             />
           )}

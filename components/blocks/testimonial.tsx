@@ -5,7 +5,7 @@ import type { TinaTemplate } from "tinacms";
 
 export const Testimonial = ({ data, parentField = "" }) => {
   return (
-    <Section color={data.color}>
+    <Section>
       <Container size="large">
         <blockquote>
           <div

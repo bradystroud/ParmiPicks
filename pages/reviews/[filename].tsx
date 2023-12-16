@@ -26,7 +26,7 @@ export default function ReviewPage(
 
   if (data && data.review) {
     return (
-      <Layout rawData={data} data={data.global as any}>
+      <Layout data={data.global as any}>
         <Section className="flex-1">
           <Container width="small" className={`flex-1 pb-2`} size="large">
             <h1

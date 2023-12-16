@@ -2,20 +2,13 @@ import { Actions } from "../util/actions";
 import { Section } from "../util/section";
 import { Container } from "../util/container";
 
-export const Feature = ({ featuresColor, data, tinaField }) => {
+export const Feature = ({ data, tinaField }) => {
   return (
     <div
       data-tinafield={tinaField}
       className="flex-1 flex flex-col gap-6 text-center items-center lg:items-start lg:text-left max-w-xl mx-auto"
       style={{ flexBasis: "16rem" }}
     >
-      {data.icon && (
-        <Icon
-          tinaField={`${tinaField}.icon`}
-          parentColor={featuresColor}
-          data={{ size: "large", ...data.icon }}
-        />
-      )}
       {data.title && (
         <h3
           data-tinafield={`${tinaField}.title`}
@@ -39,7 +32,7 @@ export const Feature = ({ featuresColor, data, tinaField }) => {
 
 export const Features = ({ data, parentField }) => {
   return (
-    <Section color={data.color}>
+    <Section>
       <Container
         className={`flex flex-wrap gap-x-10 gap-y-8 text-left`}
         size="large"
@@ -49,7 +42,6 @@ export const Features = ({ data, parentField }) => {
             return (
               <Feature
                 tinaField={`${parentField}.items.${i}`}
-                featuresColor={data.color}
                 key={i}
                 data={block}
               />

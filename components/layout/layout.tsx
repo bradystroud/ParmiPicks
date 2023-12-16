@@ -4,7 +4,7 @@ import { Header } from "./header";
 import { Footer } from "./footer";
 import layoutData from "../../content/global/index.json";
 
-export const Layout = ({ rawData = {}, data = layoutData, children }) => {
+export const Layout = ({ data = layoutData, children }) => {
   return (
     <>
       <Head>
@@ -32,9 +32,7 @@ export const Layout = ({ rawData = {}, data = layoutData, children }) => {
         </div>
         <Footer
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          rawData={rawData as any}
           data={data?.footer}
-          icon={data?.header.icon}
         />
       </div>
     </>

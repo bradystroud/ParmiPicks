@@ -24,6 +24,10 @@ export const Layout = ({ data = layoutData, children }) => {
           property="og:image"
           content="https://assets.tina.io/c68a0182-b88f-4a74-8514-0cbe71f98577/nice-parm.jpg"
         />
+        <link
+          rel="icon"
+          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍴</text></svg>"
+        />
       </Head>
       <div>
         <Header data={data?.header} />

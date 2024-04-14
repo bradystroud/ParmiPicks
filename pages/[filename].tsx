@@ -3,6 +3,7 @@ import { useTina } from "tinacms/dist/react";
 import { Layout } from "../components/layout";
 import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
+import Link from "next/link";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -12,28 +13,31 @@ export default function HomePage(
     variables: props.variables,
     data: props.data,
   });
+  const bestParmi = props.topParmi.node;
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
       <Blocks {...data.page} />
       <section className="m-auto">
-        <div className="badge">
-          <svg width="300" height="50" className="best">
-            {" "}
-            <path
-              id="curve"
-              d="M100,25 A140,85 0 0 1 290,120"
-              fill="transparent"
-            />
-            <text fill="white" style={{ fontSize: "20px" }}>
-              <textPath href="#curve">BEST PARMI</textPath>
-            </text>
-          </svg>
-          <div className="flex flex-col items-center pt-4">
-            <div className="score">{props.topParmi.node.score}</div>
-            <div className="text-xl">{props.topParmi.node.restaurant.name}</div>
+        <Link href={bestParmi.id.split(".")[0]}>
+          <div className="badge">
+            <svg width="300" height="50" className="best">
+              {" "}
+              <path
+                id="curve"
+                d="M100,25 A140,85 0 0 1 290,120"
+                fill="transparent"
+              />
+              <text fill="white" style={{ fontSize: "20px" }}>
+                <textPath href="#curve">BEST PARMI</textPath>
+              </text>
+            </svg>
+            <div className="flex flex-col items-center pt-4">
+              <div className="score">{bestParmi.score}</div>
+              <div className="text-xl">{bestParmi.restaurant.name}</div>
+            </div>
           </div>
-        </div>
+        </Link>
       </section>
     </Layout>
   );

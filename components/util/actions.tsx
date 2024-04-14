@@ -27,7 +27,12 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
           }
           if (action.type === "link" || action.type === "linkExternal") {
             element = (
-              <Link key={index} href={action.link ? action.link : "/"} passHref>
+              <Link
+                key={index}
+                href={action.link ? action.link : "/"}
+                passHref
+                legacyBehavior
+              >
                 <a
                   data-tinafield={`${parentField}.${index}`}
                   className={`group inline-flex items-center font-semibold text-lg transition duration-150 ease-out`}

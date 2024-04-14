@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
-import { FaBars, FaSearchLocation } from "react-icons/fa";
+import { FaBars, FaSearchLocation, FaUtensils } from "react-icons/fa";
+import Link from "next/link";
 
 export const Header = ({ data }) => {
   const router = useRouter();
@@ -23,8 +24,11 @@ export const Header = ({ data }) => {
         <nav className="flex items-center justify-between flex-wrap p-6">
           <div className="flex items-center flex-shrink-0 text-white mr-6">
             <FaSearchLocation className="fill-current h-8 w-8 mr-2" />
-            <span className="font-semibold text-xl tracking-tight text-black">
-              <a href="/">Parmi Picks</a>
+            <span className="font-semibold text-xl tracking-tight text-black ">
+              <Link href="/" className="flex">
+                <FaUtensils className="fill-current h-8 w-8 mr-2" />
+                Parmi Picks
+              </Link>
             </span>
           </div>
           <div className="block md:hidden">
@@ -46,7 +50,7 @@ export const Header = ({ data }) => {
                       : router.asPath.includes(item.href);
 
                   return (
-                    <a
+                    <Link
                       key={i}
                       href={"/" + item.href}
                       className={`block mt-4 md:inline-block md:mt-0 hover:text-blue-600 mr-4 ${
@@ -54,7 +58,7 @@ export const Header = ({ data }) => {
                       }`}
                     >
                       {item.label}
-                    </a>
+                    </Link>
                   );
                 })}
             </div>

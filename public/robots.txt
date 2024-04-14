@@ -1,0 +1,11 @@
+# *
+User-agent: *
+Allow: /
+Disallow: /404
+Disallow: /500
+
+# Host
+Host: https://parmipicks.com/
+
+# Sitemaps
+Sitemap: https://parmipicks.com/sitemap.xml

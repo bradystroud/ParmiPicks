@@ -4,7 +4,6 @@ import { useTina } from "tinacms/dist/react";
 import { Layout } from "../../components/layout";
 import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
-import format from "date-fns/format";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 
@@ -20,8 +19,13 @@ export default function ReviewPage(
 
   const date = new Date(data.review.date);
   let formattedDate = "";
+
   if (!isNaN(date.getTime())) {
-    formattedDate = format(date, "MMM dd, yyyy");
+    formattedDate = date.toLocaleDateString("en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
   }
 
   if (data && data.review) {

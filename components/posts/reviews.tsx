@@ -1,7 +1,6 @@
 import React from "react";
 import Link from "next/link";
 import { BsArrowRight, BsPinMap } from "react-icons/bs";
-import { format } from "date-fns";
 
 export const Reviews = ({ data }) => {
   return (
@@ -10,8 +9,13 @@ export const Reviews = ({ data }) => {
         const post = reviewData.node;
         const date = new Date(post.date);
         let formattedDate = "";
+
         if (!isNaN(date.getTime())) {
-          formattedDate = format(date, "MMM dd, yyyy");
+          formattedDate = date.toLocaleDateString("en-US", {
+            day: "numeric",
+            month: "long",
+            year: "numeric",
+          });
         }
         return (
           <Link

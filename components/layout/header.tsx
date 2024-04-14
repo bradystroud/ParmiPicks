@@ -28,7 +28,7 @@ export const Header = ({ data }) => {
             </span>
           </div>
           <div className="block md:hidden">
-            <button className="flex items-center px-3 py-2 text-teal-20 hover:text-white">
+            <button className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400">
               <FaBars onClick={() => setExpanded(!expanded)} />
             </button>
           </div>
@@ -61,9 +61,7 @@ export const Header = ({ data }) => {
           </div>
         </nav>
         <div
-          className={`absolute h-1 bg-gradient-to-r from-transparent ${
-            data.color === "primary" ? `via-white` : `via-black dark:via-white`
-          } to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
+          className={`absolute h-1 bg-gradient-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
         />
       </Container>
     </div>

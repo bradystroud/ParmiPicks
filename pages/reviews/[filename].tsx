@@ -6,6 +6,7 @@ import { Section } from "../../components/util/section";
 import { Container } from "../../components/util/container";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
+import Head from "next/head";
 
 // Use the props returned by get static props
 export default function ReviewPage(
@@ -31,10 +32,36 @@ export default function ReviewPage(
   if (data && data.review) {
     return (
       <Layout data={data.global as any}>
+        <Head>
+          <script type="application/ld+json">
+            {JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "Review",
+              itemReviewed: {
+                "@type": "Thing",
+                name: data.review.restaurant.name,
+              },
+              author: {
+                "@type": "Person",
+                name: data.review.author
+                  ? data.review.author.name
+                  : "Anonymous",
+              },
+              reviewRating: {
+                "@type": "Rating",
+                ratingValue: data.review.score,
+                bestRating: "10",
+              },
+              datePublished: formattedDate,
+              image: data.review.parmiImg,
+              reviewBody: data.review._body.raw, // Or however you access the raw text content
+            })}
+          </script>
+        </Head>
         <Section className="flex-1">
           <Container width="small" className={`flex-1 pb-2`} size="large">
             <h1
-              className={`w-full relative	mb-8 text-6xl tracking-normal text-center title-font`}
+              className={`w-full relative mb-8 text-6xl tracking-normal text-center title-font`}
             >
               <span className="font-extrabold">{data.review.score}</span> -{" "}
               {data.review.restaurant.name}

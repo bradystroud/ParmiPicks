@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { BsArrowRight, BsPinMap } from "react-icons/bs";
-import format from "date-fns/format";
+import { format } from "date-fns";
 
 export const Reviews = ({ data }) => {
   return (

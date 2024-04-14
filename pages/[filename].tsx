@@ -14,12 +14,13 @@ export default function HomePage(
     data: props.data,
   });
   const bestParmi = props.topParmi.node;
+  const bestParmiReview = bestParmi.id.split(".")[0];
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
       <Blocks {...data.page} />
       <section className="m-auto">
-        <Link href={bestParmi.id.split(".")[0]}>
+        <Link href={bestParmiReview}>
           <div className="badge">
             <svg width="300" height="50" className="best">
               {" "}

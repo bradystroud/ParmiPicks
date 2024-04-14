@@ -15,6 +15,10 @@ export const Layout = ({ data = layoutData, children }) => {
           content="Chicken parmi reviews - my personal list of every parmi I've tried and rated. Browse through my reviews to find the best"
           key="desc"
         />
+        <link rel="canonical" href="https://parmipicks.com/" />
+        <meta property="og:site_name" content="Parmi Picks" />
+        <meta property="og:url" content="https://parmipicks.com/" />
+        <meta property="og:type" content="website" />
         <meta property="og:title" content="Parmi Picks" />
         <meta
           property="og:description"
@@ -28,6 +32,26 @@ export const Layout = ({ data = layoutData, children }) => {
           rel="icon"
           href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍴</text></svg>"
         />
+        <meta name="robots" content="index, follow" />{" "}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "http://schema.org",
+            "@type": "Review",
+            itemReviewed: {
+              "@type": "Food",
+              name: "Chicken Parmi",
+            },
+            author: {
+              "@type": "Person",
+              name: "Your Name",
+            },
+            reviewRating: {
+              "@type": "Rating",
+              ratingValue: review.rating,
+              bestRating: "5",
+            },
+          })}
+        </script>
       </Head>
       <div>
         <Header data={data?.header} />

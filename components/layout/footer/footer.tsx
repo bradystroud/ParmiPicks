@@ -1,5 +1,5 @@
 import React from "react";
-import { FaFacebookF, FaGithub, FaTwitter } from "react-icons/fa";
+import { FaGithub, FaTwitter } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { Container } from "../../util/container";
 
@@ -38,15 +38,6 @@ export const Footer = ({ data }) => {
           </p>
 
           <div className="flex gap-4">
-            {data.social && data.social.facebook && (
-              <a
-                className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
-                href={data.social.facebook}
-                target="_blank"
-              >
-                <FaFacebookF className={`${socialIconClasses} primary`} />
-              </a>
-            )}
             {data.social && data.social.twitter && (
               <a
                 className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"

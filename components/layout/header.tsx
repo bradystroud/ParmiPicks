@@ -24,7 +24,7 @@ export const Header = ({ data }) => {
           <div className="flex items-center flex-shrink-0 text-white mr-6">
             <FaSearchLocation className="fill-current h-8 w-8 mr-2" />
             <span className="font-semibold text-xl tracking-tight text-black">
-              Parmi Picks
+              <a href="/">Parmi Picks</a>
             </span>
           </div>
           <div className="block md:hidden">

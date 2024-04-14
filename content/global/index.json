@@ -1,17 +1,8 @@
 {
   "header": {
-    "icon": {
-      "name": "BiMap",
-      "color": "orange",
-      "style": "float"
-    },
     "name": "Parmi Picks",
     "color": "default",
     "nav": [
-      {
-        "href": "home",
-        "label": "Home"
-      },
       {
         "href": "about",
         "label": "About"
@@ -25,15 +16,12 @@
   "footer": {
     "color": "default",
     "social": {
-      "facebook": "/",
-      "twitter": "/",
-      "instagram": "/",
+      "twitter": "/bradystroud_",
+      "instagram": "/bradystroud",
       "github": "https://github.com/bradystroud/parmiPicks"
     }
   },
   "theme": {
-    "color": "blue",
-    "font": "sans",
-    "darkMode": "system"
+    "font": "sans"
   }
 }

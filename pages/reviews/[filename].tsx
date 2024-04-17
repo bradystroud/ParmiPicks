@@ -34,10 +34,15 @@ export default function ReviewPage(
     return (
       <Layout data={data.global as any}>
         <Head>
+          <title>{data.review.restaurant.name} | ParmiPicks</title>
           <link
             rel="canonical"
             href={data.review.cannonicalUrl}
             key="canonical"
+          />
+          <meta
+            property="og:title"
+            content={`${data.review.restaurant.name} | Parmi Picks`}
           />
           <script type="application/ld+json">
             {JSON.stringify({

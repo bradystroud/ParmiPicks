@@ -1,15 +1,11 @@
 // /components/NextBreadcrumb.tsx
 "use client";
 
-import React, { ReactNode } from "react";
+import React from "react";
 
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { FaHome } from "react-icons/fa";
-
-type TBreadCrumbProps = {
-  homeElement: ReactNode;
-};
 
 const replacements: Record<string, string> = {
   EmbassyBarKitchen: "Embassy Bar & Kitchen",

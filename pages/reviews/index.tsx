@@ -4,6 +4,7 @@ import { client } from "../../tina/__generated__/client";
 import { Layout } from "../../components/layout";
 import { Reviews } from "../../components/posts/reviews";
 import { InferGetStaticPropsType } from "next";
+import Head from "next/head";
 
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -12,6 +13,14 @@ export default function ReviewPage(
 
   return (
     <Layout>
+      <Head>
+        <title>ParmiPicks | Reviews</title>
+        <link
+          rel="canonical"
+          href="https://parmipicks.com/reviews"
+          key="canonical"
+        />
+      </Head>
       <Section className="flex-1">
         <Container size="large" width="small">
           <Reviews data={reviews} />

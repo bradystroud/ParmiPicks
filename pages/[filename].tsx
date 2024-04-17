@@ -21,6 +21,8 @@ export default function HomePage(
     <Layout data={data.global as any}>
       <Head>
         <link rel="canonical" href={data.page.cannonicalUrl} key="canonical" />
+        <meta property="og:title" content="Parmi Picks" />
+        <title>ParmiPicks</title>
       </Head>
       <Blocks {...data.page} />
       <section className="m-auto">

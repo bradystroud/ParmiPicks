@@ -9,7 +9,6 @@ export const Layout = ({ data = layoutData, children }) => {
   return (
     <>
       <Head>
-        <title>Parmi Picks</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
         <meta
           name="description"
@@ -19,7 +18,6 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta property="og:site_name" content="Parmi Picks" />
         <meta property="og:url" content="https://parmipicks.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:title" content="Parmi Picks" />
         <meta
           property="og:description"
           content="Reviews of every parmi I've tried and reviews. Browse through my reviews to find the best"
@@ -37,7 +35,7 @@ export const Layout = ({ data = layoutData, children }) => {
       <div>
         <Header data={data?.header} />
         <div className="flex-1 text-gray-80 flex flex-col">
-          <NextBreadcrumb homeElement={"Home"} />
+          <NextBreadcrumb />
           {children}
         </div>
         <Footer

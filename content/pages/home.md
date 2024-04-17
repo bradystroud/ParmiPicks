@@ -1,5 +1,6 @@
 ---
 title: Parmi Picks Home
+cannonicalUrl: https://parmipicks.com
 blocks:
   - tagline: ""
     headline: Parmi Picks

@@ -8,7 +8,6 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 
-// Use the props returned by get static props
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
@@ -17,6 +16,8 @@ export default function ReviewPage(
     variables: props.variables,
     data: props.data,
   });
+
+  console.log(props.__filename);
 
   const date = new Date(data.review.date);
   let formattedDate = "";
@@ -33,6 +34,11 @@ export default function ReviewPage(
     return (
       <Layout data={data.global as any}>
         <Head>
+          <link
+            rel="canonical"
+            href={data.review.cannonicalUrl}
+            key="canonical"
+          />
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
@@ -54,7 +60,7 @@ export default function ReviewPage(
               },
               datePublished: formattedDate,
               image: data.review.parmiImg,
-              reviewBody: data.review._body.raw, // Or however you access the raw text content
+              reviewBody: data.review._body.raw,
             })}
           </script>
         </Head>
@@ -125,12 +131,16 @@ export const getStaticProps = async ({ params }) => {
   return {
     props: {
       ...tinaProps,
+      __filename,
     },
   };
 };
 
 export const getStaticPaths = async () => {
   const reviewsListData = await client.queries.reviewConnection();
+  console.log(
+    reviewsListData.data.reviewConnection.edges[0].node._sys.filename
+  );
   return {
     paths: reviewsListData.data.reviewConnection.edges.map((post) => ({
       params: { filename: post.node._sys.filename },

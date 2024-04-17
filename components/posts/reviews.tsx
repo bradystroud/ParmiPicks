@@ -1,6 +1,6 @@
 import React from "react";
 import Link from "next/link";
-import { BsArrowRight, BsPinMap } from "react-icons/bs";
+import { BsArrowRight } from "react-icons/bs";
 
 export const Reviews = ({ data }) => {
   return (
@@ -24,9 +24,9 @@ export const Reviews = ({ data }) => {
             passHref
             legacyBehavior
           >
-            <a
+            <div
               key={post.id}
-              className="group block px-6 sm:px-8 md:px-10 py-10 mb-8 last:mb-0 bg-gray-50 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-1000 rounded-md shadow-sm transition-all duration-150 ease-out hover:shadow-md hover:to-gray-50 dark:hover:to-gray-800"
+              className="group block px-6 sm:px-8 md:px-10 py-10 mb-8 last:mb-0 bg-gray-50 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-1000 rounded-md shadow-sm transition-all duration-150 ease-out hover:shadow-md hover:to-gray-50 dark:hover:to-gray-800 hover:cursor-pointer"
             >
               <h3
                 className={`text-gray-700 dark:text-white text-3xl lg:text-4xl title-font mb-5 transition-all duration-150 ease-out group-hover:text-blue-600 dark:group-hover:text-blue-300`}
@@ -37,34 +37,29 @@ export const Reviews = ({ data }) => {
                   <BsArrowRight className="inline-block h-8 -mt-1 ml-1 w-auto opacity-70" />
                 </span>
               </h3>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center">
-                  <div className="flex-shrink-0 mr-2">
-                    <img
-                      className="h-10 w-10 object-cover rounded-full shadow-sm"
-                      src={post?.author?.avatar}
-                      alt={post?.author?.name}
-                    />
-                  </div>
-                  <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">
-                    {post?.author?.name}
-                  </p>
-                  {formattedDate !== "" && (
-                    <>
-                      <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">
-                        —
-                      </span>
-                      <p className="text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150">
-                        {formattedDate}
-                      </p>
-                    </>
-                  )}
+              <div className="flex items-center">
+                <div className="flex-shrink-0 mr-2">
+                  <img
+                    className="h-10 w-10 object-cover rounded-full shadow-sm"
+                    src={post?.author?.avatar}
+                    alt={post?.author?.name}
+                  />
                 </div>
-                <a href={post?.restaurant?.url} target="_blank">
-                  <BsPinMap className="inline-block h-8 -mt-1 ml-1 w-auto opacity-70 hover:opacity-20" />
-                </a>
+                <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">
+                  {post?.author?.name}
+                </p>
+                {formattedDate !== "" && (
+                  <>
+                    <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">
+                      —
+                    </span>
+                    <p className="text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150">
+                      {formattedDate}
+                    </p>
+                  </>
+                )}
               </div>
-            </a>
+            </div>
           </Link>
         );
       })}

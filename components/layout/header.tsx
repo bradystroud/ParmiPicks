@@ -1,29 +1,30 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
-import { FaBars, FaSearchLocation, FaUtensils } from "react-icons/fa";
+import { FaBars, FaSearchLocation, FaTimes, FaUtensils } from "react-icons/fa";
 import Link from "next/link";
 
 export const Header = ({ data }) => {
   const router = useRouter();
 
-  // If we're on an admin path, other links should also link to their admin paths
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [prefix, setPrefix] = useState("");
   const [expanded, setExpanded] = useState(false);
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (window && window.location.pathname.startsWith("/admin")) {
       setPrefix("/admin");
     }
-  }, []);
+    console.log("Menu expanded state changed to:", expanded);
+  }, [expanded]);
 
   return (
     <div className={`relative overflow-hidden bg-gradient-to-b`}>
       <Container size="custom" className="py-0 relative z-10 max-w-8xl">
         <nav className="flex items-center justify-between flex-wrap p-6">
           <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <FaSearchLocation className="fill-current h-8 w-8 mr-2" />
+            <FaSearchLocation className="fill-current h-8 w-8 mr-2" />{" "}
+            {/* Weird stuff happens when i removed the above line, so it stays */}
             <span className="font-semibold text-xl tracking-tight text-black ">
               <Link href="/" className="flex">
                 <FaUtensils className="fill-current h-8 w-8 mr-2" />
@@ -33,15 +34,19 @@ export const Header = ({ data }) => {
           </div>
           <div className="block md:hidden">
             <button className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400">
-              <FaBars onClick={() => setExpanded(!expanded)} />
+              {expanded ? (
+                <FaTimes onClick={() => setExpanded(!expanded)} />
+              ) : (
+                <FaBars onClick={() => setExpanded(!expanded)} />
+              )}
             </button>
           </div>
           <div
-            className={`w-full block flex-grow md:items-center md:w-auto ${
+            className={`w-full block md:items-center md:w-auto ${
               expanded ? "" : "hidden md:flex"
             }`}
           >
-            <div className="text-sm lg:flex-grow">
+            <div className="text-sm lg:flex-grow mx-10">
               {data.nav &&
                 data.nav.map((item, i) => {
                   const activeItem =

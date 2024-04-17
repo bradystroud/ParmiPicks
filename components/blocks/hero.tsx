@@ -3,7 +3,7 @@ import { Actions } from "../util/actions";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
-import type { TinaTemplate } from "tinacms";
+import type { Template } from "tinacms";
 
 export const Hero = ({ data, parentField }) => {
   return (
@@ -70,7 +70,7 @@ export const Hero = ({ data, parentField }) => {
   );
 };
 
-export const heroBlockSchema: TinaTemplate = {
+export const heroBlockSchema: Template = {
   name: "hero",
   label: "Hero",
   ui: {

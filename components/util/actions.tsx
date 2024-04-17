@@ -13,7 +13,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
               <Link key={index} href={action.link ? action.link : "/"}>
                 <button
                   data-tinafield={`${parentField}.${index}`}
-                  className={`z-10 relative flex items-center px-7 py-3 font-semibold text-lg transition duration-150 ease-out rounded-lg transform focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 whitespace-nowrap`}
+                  className={`z-10 relative flex items-center px-7 py-3 font-semibold text-lg transition duration-150 ease-out rounded-lg transform focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 whitespace-nowrap hover:opacity-80 bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-md hover:shadow-lg`}
                 >
                   {action.label}
                   {action.icon && (
@@ -35,7 +35,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
               >
                 <a
                   data-tinafield={`${parentField}.${index}`}
-                  className={`group inline-flex items-center font-semibold text-lg transition duration-150 ease-out`}
+                  className={`group inline-flex items-center font-semibold text-lg transition duration-150 ease-out hover:opacity-70`}
                   style={{
                     textShadow: `0 3px 7px rgba(var(--color-rgb-blue-400),0.2)`,
                   }}

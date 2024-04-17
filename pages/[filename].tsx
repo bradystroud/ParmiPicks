@@ -4,6 +4,7 @@ import { Layout } from "../components/layout";
 import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
+import Head from "next/head";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -18,6 +19,9 @@ export default function HomePage(
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
+      <Head>
+        <link rel="canonical" href={data.page.cannonicalUrl} key="canonical" />
+      </Head>
       <Blocks {...data.page} />
       <section className="m-auto">
         <Link href={bestParmiReview}>

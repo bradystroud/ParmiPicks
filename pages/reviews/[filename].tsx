@@ -7,6 +7,7 @@ import { Container } from "../../components/util/container";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import Image from "next/image";
 
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -79,9 +80,11 @@ export default function ReviewPage(
             </h1>
             <div className="relative w-300 h-400 m-auto">
               {data?.review?.parmiImg ? (
-                <img
+                <Image
                   src={data.review?.parmiImg}
                   alt={`Chicken parmi from ${data.review.restaurant.name}`}
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                  fill
                 />
               ) : (
                 "No image 🫢"
@@ -94,10 +97,12 @@ export default function ReviewPage(
               {data.review.author && (
                 <>
                   <div className="flex-shrink-0 mr-4">
-                    <img
+                    <Image
                       className="h-14 w-14 object-cover rounded-full shadow-sm"
                       src={data.review.author.avatar}
                       alt={data.review.author.name}
+                      height={56}
+                      width={56}
                     />
                   </div>
                   <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">

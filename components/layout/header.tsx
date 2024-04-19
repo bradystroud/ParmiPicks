@@ -15,7 +15,7 @@ export const Header = ({ data }) => {
     if (window && window.location.pathname.startsWith("/admin")) {
       setPrefix("/admin");
     }
-    console.log("Menu expanded state changed to:", expanded);
+
   }, [expanded]);
 
   return (

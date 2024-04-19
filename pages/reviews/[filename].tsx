@@ -18,8 +18,6 @@ export default function ReviewPage(
     data: props.data,
   });
 
-  console.log(props.__filename);
-
   const date = new Date(data.review.date);
   let formattedDate = "";
 
@@ -151,9 +149,6 @@ export const getStaticProps = async ({ params }) => {
 
 export const getStaticPaths = async () => {
   const reviewsListData = await client.queries.reviewConnection();
-  console.log(
-    reviewsListData.data.reviewConnection.edges[0].node._sys.filename
-  );
   return {
     paths: reviewsListData.data.reviewConnection.edges.map((post) => ({
       params: { filename: post.node._sys.filename },

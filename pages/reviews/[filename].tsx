@@ -79,7 +79,10 @@ export default function ReviewPage(
             </h1>
             <div className="relative w-300 h-400 m-auto">
               {data?.review?.parmiImg ? (
-                <img src={data.review?.parmiImg} />
+                <img
+                  src={data.review?.parmiImg}
+                  alt={`Chicken parmi from ${data.review.restaurant.name}`}
+                />
               ) : (
                 "No image 🫢"
               )}

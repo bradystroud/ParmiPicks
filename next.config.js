@@ -3,7 +3,7 @@ module.exports = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "parmipicks.com",
+        hostname: "assets.tina.io",
         port: "",
       },
     ],

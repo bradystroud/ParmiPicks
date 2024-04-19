@@ -43,6 +43,7 @@ export const Footer = ({ data }) => {
                 className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
                 href={data.social.twitter}
                 target="_blank"
+                aria-label="Twitter"
               >
                 <FaTwitter className={`${socialIconClasses} primary`} />
               </a>
@@ -52,6 +53,7 @@ export const Footer = ({ data }) => {
                 className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
                 href={data.social.instagram}
                 target="_blank"
+                aria-label="Instagram"
               >
                 <AiFillInstagram className={`${socialIconClasses} primary`} />
               </a>
@@ -61,6 +63,7 @@ export const Footer = ({ data }) => {
                 className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
                 href={data.social.github}
                 target="_blank"
+                aria-label="Github"
               >
                 <FaGithub className={`${socialIconClasses} primary`} />
               </a>

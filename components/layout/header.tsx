@@ -33,7 +33,10 @@ export const Header = ({ data }) => {
             </span>
           </div>
           <div className="block md:hidden">
-            <button className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400">
+            <button
+              className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400"
+              aria-label="menu"
+            >
               {expanded ? (
                 <FaTimes onClick={() => setExpanded(!expanded)} />
               ) : (

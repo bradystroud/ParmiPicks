@@ -38,7 +38,7 @@ const NextBreadcrumb = () => {
       <div className="mx-20">
         <ul className="flex py-5">
           <li className="hover:opacity-70 hover:underline mx-2">
-            <Link href={"/"}>
+            <Link href={"/"} aria-label="Go to home page">
               <FaHome className="mt-1" />
             </Link>
           </li>

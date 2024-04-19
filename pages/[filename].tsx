@@ -16,6 +16,8 @@ export default function HomePage(
   });
   const bestParmi = props.topParmi.node;
   const bestParmiReview = bestParmi.id.split(".")[0];
+  // remove content from the url✅✅
+  const bestParmiReviewUrl = bestParmiReview.replace("content", "");
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
@@ -26,7 +28,7 @@ export default function HomePage(
       </Head>
       <Blocks {...data.page} />
       <section className="m-auto">
-        <Link href={bestParmiReview}>
+        <Link href={bestParmiReviewUrl} className="hidden sm:block">
           <div className="badge">
             <svg width="300" height="50" className="best">
               {" "}

@@ -1,6 +1,11 @@
 import React from "react";
 import { Fragment, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import {
+  Dialog,
+  DialogPanel,
+  Transition,
+  TransitionChild,
+} from "@headlessui/react";
 
 export const RawRenderer = ({ rawData, parentColor }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -36,7 +41,7 @@ export const RawRenderer = ({ rawData, parentColor }) => {
           onClose={closeModal}
         >
           <div className="min-h-screen max-h-screen px-4 py-12 text-center flex flex-col items-center justify-center">
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0"
@@ -46,11 +51,11 @@ export const RawRenderer = ({ rawData, parentColor }) => {
               leaveTo="opacity-0"
             >
               <div className="">
-                <Dialog.Overlay className="fixed inset-0 bg-gradient-to-br from-gray-800 to-gray-1000 opacity-80" />
+                <DialogPanel className="fixed inset-0 bg-gradient-to-br from-gray-800 to-gray-1000 opacity-80" />
               </div>
-            </Transition.Child>
+            </TransitionChild>
 
-            <Transition.Child
+            <TransitionChild
               as={Fragment}
               enter="ease-out duration-300"
               enterFrom="opacity-0 scale-95"
@@ -71,7 +76,7 @@ export const RawRenderer = ({ rawData, parentColor }) => {
                   Great, thanks!
                 </button>
               </div>
-            </Transition.Child>
+            </TransitionChild>
           </div>
         </Dialog>
       </Transition>

@@ -14,7 +14,7 @@ export default function ReviewPage(
   const reviews = props.data.reviewConnection.edges;
   const pageTitle = "ParmiPicks | Reviews";
 
-  const [selectedSort, setSelectedSort] = useState<SortType | "Low">("Low");
+  const [selectedSort, setSelectedSort] = useState<SortType | "Recent">("Recent");
 
   const handleChange = (event) => {
     setSelectedSort(event.target.value);

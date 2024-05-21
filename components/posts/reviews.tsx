@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
 import { SortType } from "../types";
+import Image from "next/image";
 
 export const Reviews = ({
   data,
@@ -59,10 +60,12 @@ export const Reviews = ({
               </h2>
               <div className="flex items-center">
                 <div className="flex-shrink-0 mr-2">
-                  <img
+                  <Image
                     className="h-10 w-10 object-cover rounded-full shadow-sm"
                     src={post?.author?.avatar}
                     alt={post?.author?.name}
+                    height={40}
+                    width={40}
                   />
                 </div>
                 <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">

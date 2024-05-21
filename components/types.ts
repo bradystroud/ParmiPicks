@@ -1,7 +1,7 @@
 export const sortOptions = {
+    Recent: "Recent",
     Top: "Top",
     Low: "Low",
-    Recent: "Recent",
     // "": "",
 } as const;
 

@@ -8,6 +8,7 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Giscus from "@giscus/react";
 
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -30,19 +31,18 @@ export default function ReviewPage(
   }
 
   if (data && data.review) {
+    const title = `${data.review.restaurant.name} | Parmi Picks`;
+
     return (
       <Layout data={data.global as any}>
         <Head>
-          <title>{data.review.restaurant.name} | ParmiPicks</title>
+          <title>{title}</title>
           <link
             rel="canonical"
             href={data.review.cannonicalUrl}
             key="canonical"
           />
-          <meta
-            property="og:title"
-            content={`${data.review.restaurant.name} | Parmi Picks`}
-          />
+          <meta property="og:title" content={title} />
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
@@ -123,6 +123,23 @@ export default function ReviewPage(
             <div className="prose dark:prose-dark w-full max-w-none">
               <TinaMarkdown content={data.review._body} />
             </div>
+            <br />
+            <Giscus
+              key={title}
+              repo="bradystroud/parmipicks"
+              category="Comments"
+              categoryId="DIC_kwDOJVwLxc4CfgKc"
+              repoId="R_kgDOJVwLxQ"
+              mapping="title"
+              strict="0"
+              reactionsEnabled="1"
+              emitMetadata="0"
+              inputPosition="top"
+              theme="light"
+              lang="en"
+              loading="lazy"
+              term="Welcome to Parmi Picks! Leave a comment or ask a question."
+            />
           </Container>
         </Section>
       </Layout>

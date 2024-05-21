@@ -5,6 +5,7 @@ import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
 import Link from "next/link";
 import Head from "next/head";
+import { Section } from "../components/util/section";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -16,7 +17,7 @@ export default function HomePage(
   });
   const bestParmi = props.topParmi.node;
   const bestParmiReview = bestParmi.id.split(".")[0];
-  // remove content from the url✅✅
+
   const bestParmiReviewUrl = bestParmiReview.replace("content", "");
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,7 +28,7 @@ export default function HomePage(
         <title>ParmiPicks</title>
       </Head>
       <Blocks {...data.page} />
-      <section className="m-auto">
+      <Section className="m-auto">
         <Link href={bestParmiReviewUrl} className="hidden sm:block">
           <div className="badge">
             <svg width="300" height="50" className="best">
@@ -47,7 +48,7 @@ export default function HomePage(
             </div>
           </div>
         </Link>
-      </section>
+      </Section>
     </Layout>
   );
 }

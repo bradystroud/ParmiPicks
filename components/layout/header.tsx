@@ -1,13 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
-import {
-  FaBars,
-  FaSearchLocation,
-  FaTimes,
-  FaUtensils,
-  FaWaveSquare,
-} from "react-icons/fa";
+import { FaBars, FaSearchLocation, FaTimes, FaUtensils } from "react-icons/fa";
 import Link from "next/link";
 
 export const Header = ({ data }) => {
@@ -32,7 +26,7 @@ export const Header = ({ data }) => {
             {/* Weird stuff happens when i removed the above line, so it stays */}
             <span className="font-semibold text-xl tracking-tight text-black ">
               <Link href="/" className="flex">
-                <FaWaveSquare className="fill-current h-8 w-8 mr-2" />
+                <FaUtensils className="fill-current h-8 w-8 mr-2" />
                 Parmi Picks
               </Link>
             </span>

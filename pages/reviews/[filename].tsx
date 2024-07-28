@@ -43,6 +43,8 @@ export default function ReviewPage(
             key="canonical"
           />
           <meta property="og:title" content={title} />
+          <meta property="description" content={data.review._body.raw} />
+          <meta property="og:description" content={data.review._body.raw} />
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",

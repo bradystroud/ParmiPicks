@@ -1,8 +1,15 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import { defineConfig } from "tinacms";
+import { defineConfig, wrapFieldsWithMeta } from "tinacms";
 import { contentBlockSchema } from "../components/blocks/content";
 import { featureBlockSchema } from "../components/blocks/features";
 import { heroBlockSchema } from "../components/blocks/hero";
+import OpenAI from "openai";
+
+import React, { useState } from "react";
+import { FaStar } from "react-icons/fa";
+
+
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
 const config = defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
@@ -69,6 +76,70 @@ const config = defineConfig({
             ui: {
               dateFormat: "MMMM DD YYYY",
               timeFormat: "hh:mm A",
+            },
+          },
+          {
+            type: "string",
+            label: "Notes (hidden)",
+            name: "notes",
+            ui: {
+              component: "textarea",
+            },
+          },
+          {
+            type: "string",
+            label: "TESTBody",
+            name: "testbody",
+            description: "Enter your notes and we'll generate a review 🤖",
+            ui: {
+              component: wrapFieldsWithMeta(({ input }) => {
+                const [notes, setNotes] = useState("");
+                const [review, setReview] = useState("no review yet");
+
+                return (
+                  <>
+                    <div className="flex justify-between">
+                      <textarea
+                        value={notes}
+                        onChange={(e) => setNotes(e.target.value)}
+                        placeholder="Enter your notes and we'll generate a review 🤖"
+                      />
+                      <button>
+                        <FaStar
+                          onClick={async () => {
+                            console.log("generating content");
+
+                            const openai = new OpenAI({
+                              apiKey: OPENAI_API_KEY,
+                              dangerouslyAllowBrowser: true,
+                            });
+
+                            const completion =
+                              await openai.chat.completions.create({
+                                model: "gpt-4o-mini",
+                                messages: [
+                                  {
+                                    role: "system",
+                                    content:
+                                      "You are a content writer. You take notes from the user and turn them into a review (in Markdown, but no headings needed).",
+                                  },
+                                  {
+                                    role: "user",
+                                    content: "here are the notes: " + notes,
+                                  },
+                                ],
+                              });
+
+                            console.log(completion.choices[0].message);
+                            setReview(completion.choices[0].message.content);
+                          }}
+                        />
+                      </button>
+                    </div>
+                    <p className="w-48 m-3">{review}</p>
+                  </>
+                );
+              }),
             },
           },
           {

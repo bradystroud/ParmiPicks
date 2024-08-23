@@ -1,13 +1,12 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
+import OpenAI from "openai";
 import { defineConfig, wrapFieldsWithMeta } from "tinacms";
 import { contentBlockSchema } from "../components/blocks/content";
 import { featureBlockSchema } from "../components/blocks/features";
 import { heroBlockSchema } from "../components/blocks/hero";
-import OpenAI from "openai";
 
 import React, { useState } from "react";
 import { FaStar } from "react-icons/fa";
-
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
 
@@ -99,12 +98,15 @@ const config = defineConfig({
                 return (
                   <>
                     <div className="flex justify-between">
-                      <textarea
+
+                      <textarea  className="shadow-inner focus:shadow-outline focus:border-blue-500 focus:outline-none block text-base placeholder:text-gray-300 px-3 py-2 text-gray-600 w-full bg-white border border-gray-200 transition-all ease-out duration-150 focus:text-gray-900 rounded-md"
                         value={notes}
                         onChange={(e) => setNotes(e.target.value)}
                         placeholder="Enter your notes and we'll generate a review 🤖"
                       />
                       <button>
+
+                        
                         <FaStar
                           onClick={async () => {
                             console.log("generating content");
@@ -135,6 +137,11 @@ const config = defineConfig({
                           }}
                         />
                       </button>
+                      {/* <img
+                        src="/llama_thinking.png"
+
+                        alt="orange llama thinking"
+                      /> */}
                     </div>
                     <p className="w-48 m-3">{review}</p>
                   </>

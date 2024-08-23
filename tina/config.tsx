@@ -1,12 +1,9 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
-import OpenAI from "openai";
 import { defineConfig, wrapFieldsWithMeta } from "tinacms";
 import { contentBlockSchema } from "../components/blocks/content";
 import { featureBlockSchema } from "../components/blocks/features";
 import { heroBlockSchema } from "../components/blocks/hero";
 
-import React, { useState } from "react";
-import { FaMagic } from "react-icons/fa";
 import { aiBody } from "../components/ai-body";
 
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY;

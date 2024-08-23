@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { client } from "../../tina/__generated__/client";
-import { useTina } from "tinacms/dist/react";
-import { Layout } from "../../components/layout";
-import { Section } from "../../components/util/section";
-import { Container } from "../../components/util/container";
-import { TinaMarkdown } from "tinacms/dist/rich-text";
+import Giscus from "@giscus/react";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Giscus from "@giscus/react";
+import { useTina } from "tinacms/dist/react";
+import { TinaMarkdown } from "tinacms/dist/rich-text";
+import { Layout } from "../../components/layout";
+import { Container } from "../../components/util/container";
+import { Section } from "../../components/util/section";
+import { client } from "../../tina/__generated__/client";
 
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -43,6 +43,8 @@ export default function ReviewPage(
             key="canonical"
           />
           <meta property="og:title" content={title} />
+          <meta property="description" content={data.review._body.raw} />
+          <meta property="og:description" content={data.review._body.raw} />
           <script type="application/ld+json">
             {JSON.stringify({
               "@context": "https://schema.org",
@@ -121,7 +123,8 @@ export default function ReviewPage(
           </Container>
           <Container className={`flex-1 pt-4`} width="small" size="large">
             <div className="prose dark:prose-dark w-full max-w-none">
-              <TinaMarkdown content={data.review._body} />
+              {/* <TinaMarkdown content={data.review._body} /> */}
+              <p>{data.review.testbody}</p>
             </div>
             <br />
             <Giscus

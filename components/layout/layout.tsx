@@ -26,7 +26,7 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta property="og:type" content="website" />
         <meta property="og:description" content={ogDescription} />
         <meta property="twitter:description" content={ogDescription} />
-        <meta property="twitter:image" content={ogImageUrl}></meta>
+        <meta property="twitter:image" content={ogImageUrl} />
         <meta property="og:image" content={ogImageUrl} />
         <link
           rel="icon"

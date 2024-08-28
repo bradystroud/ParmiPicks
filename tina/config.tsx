@@ -84,12 +84,6 @@ const config = defineConfig({
               component: wrapFieldsWithMeta(aiBody),
             },
           },
-          {
-            type: "rich-text",
-            label: "Body",
-            name: "_body",
-            isBody: true,
-          },
         ],
       },
       {

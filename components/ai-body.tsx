@@ -6,6 +6,7 @@ export const aiBody = ({ input }) => {
   const [notes, setNotes] = useState("");
   const [review, setReview] = useState("no review yet");
   const [loading, setLoading] = useState(false);
+
   return (
     <>
       <h3>Notes</h3>
@@ -25,8 +26,8 @@ export const aiBody = ({ input }) => {
               console.log("generating content");
 
               const openai = new OpenAI({
-                apiKey:
-                "test",
+                // apiKey: NOT_API_KEY,
+                apiKey: process.env.NEXT_PUBLIC_OPENAI_API_KEY,
                 dangerouslyAllowBrowser: true,
               });
 
@@ -51,7 +52,7 @@ export const aiBody = ({ input }) => {
               setReview(content);
               input.onChange(content);
             }}
-            className="icon-parent pl-4 inline-flex items-center font-medium focus:outline-none focus:ring-2 focus:shadow-outline text-center inline-flex justify-center transition-all duration-150 ease-out  shadow text-white bg-blue-500 hover:bg-blue-600 focus:ring-blue-500 border-0 text-sm h-10 px-4  rounded-full "
+            className="icon-parent pl-4 inline-flex items-center font-medium focus:outline-none focus:ring-2 focus:shadow-outline text-center justify-center transition-all duration-150 ease-out  shadow text-white bg-blue-500 hover:bg-blue-600 focus:ring-blue-500 border-0 text-sm h-10 px-4  rounded-full "
           >
             <FaMagic />
           </button>

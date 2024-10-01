@@ -3,9 +3,7 @@ import { useTina } from "tinacms/dist/react";
 import { Layout } from "../components/layout";
 import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
-import Link from "next/link";
 import Head from "next/head";
-import { Section } from "../components/util/section";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -15,10 +13,10 @@ export default function HomePage(
     variables: props.variables,
     data: props.data,
   });
-  const bestParmi = props.topParmi.node;
-  const bestParmiReview = bestParmi.id.split(".")[0];
+  // const bestParmi = props.topParmi.node;
+  // const bestParmiReview = bestParmi.id.split(".")[0];
 
-  const bestParmiReviewUrl = bestParmiReview.replace("content", "");
+  // const bestParmiReviewUrl = bestParmiReview.replace("content", "");
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>

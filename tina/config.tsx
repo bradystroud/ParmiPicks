@@ -3,10 +3,7 @@ import { defineConfig } from "tinacms";
 import { contentBlockSchema } from "../components/blocks/content";
 import { featureBlockSchema } from "../components/blocks/features";
 import { heroBlockSchema } from "../components/blocks/hero";
-import {
-  BestParmi,
-  bestParmiBlockSchema,
-} from "../components/blocks/best-parmi";
+import { bestParmiBlockSchema } from "../components/blocks/best-parmi";
 
 const config = defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,

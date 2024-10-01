@@ -41,7 +41,7 @@ export const Layout = ({ data = layoutData, children }) => {
           {children}
         </div>
         <Footer
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+           
           data={data?.footer}
         />
       </div>

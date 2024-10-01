@@ -1,5 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 
+// eslint-disable-next-line no-undef
 module.exports = {
   siteUrl: "https://parmipicks.com/",
   changefreq: "daily",

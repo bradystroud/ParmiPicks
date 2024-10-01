@@ -3,6 +3,7 @@ import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { Template } from "tinacms";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const BestParmi = ({ data, parentField }) => {
   return (
     <Section>

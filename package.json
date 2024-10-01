@@ -7,7 +7,7 @@
     "start": "tinacms build && next start",
     "export": "npm run build && next export",
     "postbuild": "next-sitemap --config next-sitemap.config.js",
-    "lint": "eslint . --ext .ts,.tsx"
+    "lint": "eslint ."
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",

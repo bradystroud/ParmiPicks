@@ -1,8 +1,8 @@
 ---
+cannonicalUrl: 'https://parmipicks.com'
 title: Parmi Picks Home
-cannonicalUrl: https://parmipicks.com
 blocks:
-  - tagline: ""
+  - tagline: ''
     headline: Parmi Picks
     text: >
       Welcome to ParmiPicks! This is my personal list of every parmi I've tried
@@ -25,3 +25,4 @@ blocks:
     color: default
     _template: hero
 ---
+

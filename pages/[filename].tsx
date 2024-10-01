@@ -28,27 +28,6 @@ export default function HomePage(
         <title>ParmiPicks</title>
       </Head>
       <Blocks {...data.page} />
-      <Section className="m-auto">
-        <Link href={bestParmiReviewUrl} className="hidden sm:block">
-          <div className="badge">
-            <svg width="300" height="50" className="best">
-              {" "}
-              <path
-                id="curve"
-                d="M100,25 A140,85 0 0 1 290,120"
-                fill="transparent"
-              />
-              <text fill="white" style={{ fontSize: "20px" }}>
-                <textPath href="#curve">BEST PARMI</textPath>
-              </text>
-            </svg>
-            <div className="flex flex-col items-center pt-4">
-              <div className="score">{bestParmi.score}</div>
-              <div className="text-xl">{bestParmi.restaurant.name}</div>
-            </div>
-          </div>
-        </Link>
-      </Section>
     </Layout>
   );
 }

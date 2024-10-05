@@ -7,7 +7,7 @@ import { client } from "../../tina/__generated__/client";
 import Image from "next/image";
 import Link from "next/link";
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+//let -disablepesint/no-unused-vars
 export const BestParmi = ({ data, parentField }) => {
   const [topParmi, setTopParmi] = useState<TopParmi>({
     score: 0,
@@ -36,11 +36,11 @@ export const BestParmi = ({ data, parentField }) => {
     <Section>
       <Container size="large" className="items-center justify-center">
         <h2 className="text-3xl font-semibold">Best Parmi</h2>
-        <div className="card border-2 border-gray-200 rounded-lg p-6 max-w-md mx-auto flex justify-between">
-          <div>
+        <div className="card border-2 border-gray-200 rounded-lg p-6 max-w-md mx-auto flex flex-col sm:flex-row justify-between items-center text-center sm:text-start">
+          <div className="sm:mb-0 mb-6">
             <h3 className="font-bold text-3xl mb-5">{topParmi?.name}</h3>
 
-            <p className="text-sm text-muted-foreground mb-2">
+            <p className="text-sm text-muted-foreground">
               Date:{" "}
               {new Date(topParmi.date).toLocaleDateString("en-US", {
                 year: "numeric",
@@ -64,7 +64,7 @@ export const BestParmi = ({ data, parentField }) => {
             alt="Parmi"
             width={150}
             height={100}
-            className="rounded-lg ml-10"
+            className="rounded-lg mt-4 md:mt-0 md:ml-10"
           />
         </div>
       </Container>

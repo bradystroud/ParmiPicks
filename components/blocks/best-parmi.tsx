@@ -32,16 +32,5 @@ export const bestParmiBlockSchema: Template = {
       label: "Data Driven?",
       name: "isDataDriven",
     },
-    {
-      type: "reference",
-      label: "Restaurant",
-      name: "restaurant",
-      collections: ["restaurant"],
-    },
-    {
-      type: "number",
-      label: "Score",
-      name: "score",
-    },
   ],
 };

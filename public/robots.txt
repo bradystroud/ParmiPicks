@@ -3,7 +3,6 @@ User-agent: *
 Allow: /
 Disallow: /404
 Disallow: /500
-Disallow: /[filename]
 
 # Host
 Host: https://parmipicks.com/

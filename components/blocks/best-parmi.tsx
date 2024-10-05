@@ -2,19 +2,71 @@ import * as React from "react";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { Template } from "tinacms";
+import { useEffect, useState } from "react";
+import { client } from "../../tina/__generated__/client";
+import Image from "next/image";
+import Link from "next/link";
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export const BestParmi = ({ data, parentField }) => {
+  const [topParmi, setTopParmi] = useState<TopParmi>({
+    score: 0,
+    name: "",
+    date: new Date(),
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const result = await client.queries.topReviewQuery();
+      data = result.data.reviewConnection.edges[0].node;
+      console.log(data);
+
+      setTopParmi({
+        score: data.score,
+        name: data.restaurant.name,
+        date: data.date,
+        imageUrl: data.parmiImg,
+        reviewUrl: data.cannonicalUrl,
+      });
+    };
+    fetchData();
+  }, []);
+
   return (
     <Section>
-      <Container
-        size="large"
-        className="grid grid-cols-1 lg:grid-cols-5 gap-14 items-center justify-center"
-      >
+      <Container size="large" className="items-center justify-center">
         <h2 className="text-3xl font-semibold">Best Parmi</h2>
-        <p>
-          {data?.restaurant?.name} - {data.score}
-        </p>
+        <div className="card border-2 border-gray-200 rounded-lg p-6 max-w-md mx-auto flex justify-between">
+          <div>
+            <h3 className="font-bold text-3xl mb-5">{topParmi?.name}</h3>
+
+            <p className="text-sm text-muted-foreground mb-2">
+              Date:{" "}
+              {new Date(topParmi.date).toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+              })}
+            </p>
+            <p className="text-2xl font-semibold mb-2">
+              Score {topParmi.score}/10
+            </p>
+            <Link
+              href={"reviews/" + topParmi?.reviewUrl || "/reviews"}
+              className="bg-black text-white rounded-lg p-2 m-1"
+            >
+              Read Full Review
+            </Link>
+          </div>
+
+          <Image
+            src={topParmi.imageUrl}
+            alt="Parmi"
+            width={150}
+            height={100}
+            className="rounded-lg ml-10"
+          />
+        </div>
       </Container>
     </Section>
   );
@@ -34,3 +86,11 @@ export const bestParmiBlockSchema: Template = {
     },
   ],
 };
+
+interface TopParmi {
+  score: number;
+  name: string;
+  date: Date;
+  imageUrl?: string;
+  reviewUrl?: string;
+}

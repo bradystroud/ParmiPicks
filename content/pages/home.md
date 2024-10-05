@@ -24,5 +24,6 @@ blocks:
         unsplash.com/photos/75EFpyXu3Wg
     color: default
     _template: hero
+  - _template: bestParmi
 ---
 

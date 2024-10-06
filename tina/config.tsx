@@ -166,32 +166,6 @@ const config = defineConfig({
               },
             ],
           },
-          {
-            type: "object",
-            label: "Theme",
-            name: "theme",
-            fields: [
-              {
-                type: "string",
-                name: "font",
-                label: "Font Family",
-                options: [
-                  {
-                    label: "System Sans",
-                    value: "sans",
-                  },
-                  {
-                    label: "Nunito",
-                    value: "nunito",
-                  },
-                  {
-                    label: "Lato",
-                    value: "lato",
-                  },
-                ],
-              },
-            ],
-          },
         ],
       },
       {
@@ -229,8 +203,16 @@ const config = defineConfig({
           },
           {
             type: "string",
-            label: "Url",
+            label: "Url (e.g. restaurant website)",
             name: "url",
+            required: true,
+          },
+          {
+            type: "string",
+            label: "Location",
+            description:
+              "for Google Maps, if left blank name will be used. Normally restaurant name and suburb is enough info",
+            name: "location",
           },
         ],
       },

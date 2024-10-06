@@ -9,6 +9,7 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Giscus from "@giscus/react";
+import MapEmbed from "../../components/blocks/map";
 
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -31,7 +32,8 @@ export default function ReviewPage(
   }
 
   if (data && data.review) {
-    const title = `${data.review.restaurant.name} | Parmi Picks`;
+    const restaurant = data.review.restaurant;
+    const title = `${restaurant.name} | Parmi Picks`;
 
     return (
       <Layout data={data.global as any}>
@@ -51,7 +53,7 @@ export default function ReviewPage(
               "@type": "Review",
               itemReviewed: {
                 "@type": "Thing",
-                name: data.review.restaurant.name,
+                name: restaurant.name,
               },
               author: {
                 "@type": "Person",
@@ -76,13 +78,13 @@ export default function ReviewPage(
               className={`w-full relative mb-8 text-6xl tracking-normal text-center title-font`}
             >
               <span className="font-extrabold">{data.review.score}</span> -{" "}
-              {data.review.restaurant.name}
+              {restaurant.name}
             </h1>
             <div className="relative w-300 h-400 m-auto">
               {data?.review?.parmiImg ? (
                 <Image
                   src={data.review?.parmiImg}
-                  alt={`Chicken parmi from ${data.review.restaurant.name}`}
+                  alt={`Chicken parmi from ${restaurant.name}`}
                   sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                   fill
                 />
@@ -125,6 +127,7 @@ export default function ReviewPage(
             <div className="prose dark:prose-dark w-full max-w-none">
               <TinaMarkdown content={data.review._body} />
             </div>
+            <MapEmbed location={restaurant.location || restaurant.name} />
             <br />
             <Giscus
               key={title}

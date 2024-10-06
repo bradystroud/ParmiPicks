@@ -28,10 +28,7 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta property="twitter:description" content={ogDescription} />
         <meta property="twitter:image" content={ogImageUrl} />
         <meta property="og:image" content={ogImageUrl} />
-        <link
-          rel="icon"
-          href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍴</text></svg>"
-        />
+        <link rel="icon" href="favicon.svg" />
         <meta name="robots" content="index, follow" />{" "}
       </Head>
       <div>
@@ -40,10 +37,7 @@ export const Layout = ({ data = layoutData, children }) => {
           <NextBreadcrumb />
           {children}
         </div>
-        <Footer
-           
-          data={data?.footer}
-        />
+        <Footer data={data?.footer} />
       </div>
     </>
   );

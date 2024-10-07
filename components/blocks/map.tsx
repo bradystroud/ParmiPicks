@@ -5,7 +5,7 @@ interface MapEmbedProps {
 }
 
 const MapEmbed: React.FC<MapEmbedProps> = ({ location }) => {
-  const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+  const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
   if (!location) {
     return <p>No location provided 😔</p>;

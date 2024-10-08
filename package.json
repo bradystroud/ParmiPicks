@@ -39,5 +39,6 @@
   },
   "resolutions": {
     "final-form": "4.20.1"
-  }
+  },
+  "packageManager": "yarn@4.5.0"
 }

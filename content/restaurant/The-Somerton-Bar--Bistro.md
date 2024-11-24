@@ -1,6 +1,6 @@
 ---
 name: The Somerton Bar & Bistro
 url: 'https://www.thesomerton.com.au/'
-location: 'The Somerton Bar & Bistro, SA'
+location: 'The Somerton Bar, SA'
 ---
 

@@ -11,7 +11,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.0.1",
-    "@tinacms/cli": "^1.6.8",
+    "@tinacms/cli": "^1.8.0",
     "@types/js-cookie": "^3.0.3",
     "@types/node": "^22.7.4",
     "@types/react": "^18.3.11",
@@ -35,7 +35,7 @@
     "react-icons": "^5.3.0",
     "sharp": "^0.33.5",
     "tailwindcss": "^3.4.13",
-    "tinacms": "^2.2.8"
+    "tinacms": "^2.6.0"
   },
   "resolutions": {
     "final-form": "4.20.1"

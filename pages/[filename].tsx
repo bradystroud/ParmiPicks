@@ -13,10 +13,7 @@ export default function HomePage(
     variables: props.variables,
     data: props.data,
   });
-  // const bestParmi = props.topParmi.node;
-  // const bestParmiReview = bestParmi.id.split(".")[0];
 
-  // const bestParmiReviewUrl = bestParmiReview.replace("content", "");
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>

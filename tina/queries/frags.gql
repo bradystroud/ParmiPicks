@@ -3,3 +3,17 @@ fragment LayoutQueryFragment on Query {
     ...GlobalParts
   }
 }
+
+fragment BlogPostParts on Blog {
+  title
+  date
+  heroImage
+  cannonicalUrl
+  _body
+  author {
+    ... on Author {
+      name
+      avatar
+    }
+  }
+}

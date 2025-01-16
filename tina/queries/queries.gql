@@ -70,3 +70,24 @@ query topReviewQuery {
     }
   }
 }
+
+query blogListQuery {
+  ...LayoutQueryFragment
+  blogConnection {
+    edges {
+      node {
+        ...BlogPostParts
+        _sys {
+          filename
+        }
+      }
+    }
+  }
+}
+
+query blogQuery($relativePath: String!) {
+  ...LayoutQueryFragment
+  blog(relativePath: $relativePath) {
+    ...BlogPostParts
+  }
+}

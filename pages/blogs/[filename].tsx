@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { client } from "../../tina/__generated__/client";
 import { useTina } from "tinacms/dist/react";
 import { Layout } from "../../components/layout";
@@ -9,9 +8,8 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Giscus from "@giscus/react";
-import MapEmbed from "../../components/blocks/map";
 
-export default function ReviewPage(
+export default function BlogPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
   const { data } = useTina({
@@ -20,7 +18,7 @@ export default function ReviewPage(
     data: props.data,
   });
 
-  if (!data || !data.review) {
+  if (!data || !data.blog) {
     return (
       <Layout>
         <div>No data</div>
@@ -28,17 +26,16 @@ export default function ReviewPage(
     );
   }
 
-  const date = new Date(data.review.date);
-  const formattedDate = !isNaN(date.getTime()) 
+  const date = new Date(data.blog.date);
+  const formattedDate = !isNaN(date.getTime())
     ? date.toLocaleDateString("en-US", {
         day: "numeric",
-        month: "long", 
+        month: "long",
         year: "numeric",
       })
     : "";
 
-  const restaurant = data.review.restaurant;
-  const title = `${restaurant.name} | Parmi Picks`;
+  const title = `${data.blog.title} | Parmi Picks`;
 
   return (
     <Layout data={data.global as any}>
@@ -46,72 +43,61 @@ export default function ReviewPage(
         <title>{title}</title>
         <link
           rel="canonical"
-          href={data.review.cannonicalUrl}
+          href={data.blog.cannonicalUrl}
           key="canonical"
         />
         <meta property="og:title" content={title} />
-        <meta property="description" content={data.review._body.raw} />
-        <meta property="og:description" content={data.review._body.raw} />
+        <meta property="description" content={data.blog._body.raw} />
+        <meta property="og:description" content={data.blog._body.raw} />
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Review",
-            itemReviewed: {
-              "@type": "Thing",
-              name: restaurant.name,
-            },
+            "@type": "BlogPosting",
+            headline: data.blog.title,
             author: {
               "@type": "Person",
-              name: data.review.author?.name ?? "Anonymous",
-            },
-            reviewRating: {
-              "@type": "Rating",
-              ratingValue: data.review.score,
-              bestRating: "10",
+              name: data.blog.author?.name ?? "Anonymous",
             },
             datePublished: formattedDate,
-            image: data.review.parmiImg,
-            reviewBody: data.review._body.raw,
+            image: data.blog.heroImage,
+            articleBody: data.blog._body.raw,
           })}
         </script>
       </Head>
       <Section className="flex-1">
         <Container width="small" className={`flex-1 pb-2`} size="large">
           <h1
-            className={`w-full relative mb-8 text-6xl tracking-normal text-center title-font`}
+            className={`w-full relative mb-8 text-6xl tracking-normal text-center title-font font-extrabold`}
           >
-            <span className="font-extrabold">{data.review.score}</span> -{" "}
-            {restaurant.name}
+            {data.blog.title}
           </h1>
-          <div className="relative w-300 h-400 m-auto">
-            {data.review.parmiImg ? (
+          {data.blog.heroImage && (
+            <div className="relative w-full h-[400px] mb-8">
               <Image
-                src={data.review.parmiImg}
-                alt={`Chicken parmi from ${restaurant.name}`}
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                src={data.blog.heroImage}
+                alt={data.blog.title}
                 fill
+                className="object-cover rounded-lg"
               />
-            ) : (
-              "No image 🫢"
-            )}
-          </div>
+            </div>
+          )}
           <div
             data-tinafield="author"
-            className="flex items-center justify-center my-8"
+            className="flex items-center justify-center mb-8"
           >
-            {data.review.author && (
+            {data.blog.author && (
               <>
                 <div className="flex-shrink-0 mr-4">
                   <Image
                     className="h-14 w-14 object-cover rounded-full shadow-sm"
-                    src={data.review.author.avatar}
-                    alt={data.review.author.name}
+                    src={data.blog.author.avatar}
+                    alt={data.blog.author.name}
                     height={56}
                     width={56}
                   />
                 </div>
                 <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">
-                  {data.review.author.name}
+                  {data.blog.author.name}
                 </p>
                 <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">
                   —
@@ -128,9 +114,8 @@ export default function ReviewPage(
         </Container>
         <Container className={`flex-1 pt-4`} width="small" size="large">
           <div className="prose dark:prose-dark w-full max-w-none">
-            <TinaMarkdown content={data.review._body} />
+            <TinaMarkdown content={data.blog._body} />
           </div>
-          <MapEmbed location={restaurant.location || restaurant.name} />
           <br />
           <Giscus
             key={title}
@@ -152,9 +137,10 @@ export default function ReviewPage(
       </Section>
     </Layout>
   );
+}
 
 export const getStaticProps = async ({ params }) => {
-  const tinaProps = await client.queries.reviewQuery({
+  const tinaProps = await client.queries.blogQuery({
     relativePath: `${params.filename}.mdx`,
   });
   return {
@@ -166,11 +152,11 @@ export const getStaticProps = async ({ params }) => {
 };
 
 export const getStaticPaths = async () => {
-  const reviewsListData = await client.queries.reviewConnection();
+  const blogsListData = await client.queries.blogConnection();
   return {
-    paths: reviewsListData.data.reviewConnection.edges.map((post) => ({
+    paths: blogsListData.data.blogConnection.edges.map((post) => ({
       params: { filename: post.node._sys.filename },
     })),
     fallback: "blocking",
   };
-};
+}; 

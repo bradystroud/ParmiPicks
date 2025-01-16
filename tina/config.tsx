@@ -217,6 +217,58 @@ const config = defineConfig({
         ],
       },
       {
+        label: "Blogs",
+        name: "blog",
+        path: "content/blogs",
+        format: "mdx",
+        ui: {
+          router: ({ document }) => {
+            return `/blogs/${document._sys.filename}`;
+          },
+        },
+        fields: [
+          {
+            type: "string",
+            name: "title",
+            label: "Title",
+            isTitle: true,
+            required: true,
+          },
+          {
+            type: "string",
+            name: "cannonicalUrl",
+            label: "Cannonical URL",
+            required: true,
+          },
+          {
+            type: "image",
+            name: "heroImage",
+            label: "Hero Image",
+          },
+          {
+            type: "reference",
+            label: "Author",
+            name: "author",
+            collections: ["author"],
+          },
+          {
+            type: "datetime",
+            label: "Posted Date",
+            name: "date",
+            ui: {
+              dateFormat: "MMMM DD YYYY",
+              timeFormat: "hh:mm A",
+            },
+          },
+          {
+            type: "rich-text",
+            label: "Body",
+            name: "_body",
+            isBody: true,
+          },
+        ],
+      },
+      {
         label: "Pages",
         name: "page",
         path: "content/pages",

@@ -29,10 +29,10 @@ export default function ReviewPage(
   }
 
   const date = new Date(data.review.date);
-  const formattedDate = !isNaN(date.getTime()) 
+  const formattedDate = !isNaN(date.getTime())
     ? date.toLocaleDateString("en-US", {
         day: "numeric",
-        month: "long", 
+        month: "long",
         year: "numeric",
       })
     : "";
@@ -152,6 +152,7 @@ export default function ReviewPage(
       </Section>
     </Layout>
   );
+}
 
 export const getStaticProps = async ({ params }) => {
   const tinaProps = await client.queries.reviewQuery({

@@ -25,7 +25,6 @@ def log(message):
     """Log function to track execution progress with timestamps."""
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}")
 
-
 class Blog(BaseModel):
     filename: str
     title: str
@@ -38,7 +37,6 @@ def list_files_in_folder(folder):
     files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
     log(f"Found {len(files)} files.")
     return files
-
 
 def generate_blog_with_openai(context_files):
     """Generate blog content using OpenAI."""
@@ -91,7 +89,7 @@ def generate_image_with_openai(prompt):
         response = client.images.generate(
             model="dall-e-3",
             prompt=prompt,
-            size="1024x1792",
+            size="1792x1024",
             quality="standard",
             n=1,
         )

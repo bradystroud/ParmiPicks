@@ -35,8 +35,10 @@ jobs:
 
       - name: Extract blog title
         id: extract_title
-        run: echo "BLOG_TITLE=$(sed -n 's/^title: //p' content/blogs/*.mdx | tr -d "'" | head -n 1)" >> $GITHUB_ENV
-
+        run: |
+          BLOG_TITLE=$(grep -m 1 '^title:' content/blogs/*.mdx | sed -E 's/^title: [\"\']?([^\"\']+)[\"\']?/\1/' | head -n 1)
+          echo "BLOG_TITLE=$BLOG_TITLE" >> $GITHUB_ENV
+          
       - name: Set unique branch name
         id: set_branch
         run: echo "BRANCH_NAME=new-blog-post-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV

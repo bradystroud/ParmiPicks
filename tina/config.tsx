@@ -37,8 +37,8 @@ const config = defineConfig({
         fields: [
           {
             type: "string",
-            name: "cannonicalUrl",
-            label: "Cannonical URL",
+            name: "canonicalUrl",
+            label: "canonical URL",
             required: true,
           },
           {
@@ -236,8 +236,8 @@ const config = defineConfig({
           },
           {
             type: "string",
-            name: "cannonicalUrl",
-            label: "Cannonical URL",
+            name: "canonicalUrl",
+            label: "canonical URL",
             required: true,
           },
           {
@@ -286,8 +286,8 @@ const config = defineConfig({
         fields: [
           {
             type: "string",
-            name: "cannonicalUrl",
-            label: "Cannonical URL",
+            name: "canonicalUrl",
+            label: "canonical URL",
             required: true,
           },
           {

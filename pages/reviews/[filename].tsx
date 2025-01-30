@@ -46,7 +46,7 @@ export default function ReviewPage(
         <title>{title}</title>
         <link
           rel="canonical"
-          href={data.review.cannonicalUrl}
+          href={data.review.canonicalUrl}
           key="canonical"
         />
         <meta property="og:title" content={title} />

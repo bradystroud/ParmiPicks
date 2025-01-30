@@ -18,7 +18,7 @@ export default function HomePage(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
       <Head>
-        <link rel="canonical" href={data.page.cannonicalUrl} key="canonical" />
+        <link rel="canonical" href={data.page.canonicalUrl} key="canonical" />
         <meta property="og:title" content="Parmi Picks" />
         <title>ParmiPicks</title>
       </Head>

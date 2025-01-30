@@ -26,7 +26,7 @@ export const BestParmi = ({ data, parentField }) => {
         name: data.restaurant.name,
         date: data.date,
         imageUrl: data.parmiImg,
-        reviewUrl: data.cannonicalUrl,
+        reviewUrl: data.canonicalUrl,
       });
     };
     fetchData();

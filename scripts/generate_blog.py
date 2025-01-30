@@ -114,7 +114,7 @@ def save_blog_and_image(blog, image_url):
     formatted_blog = f"""---
 title: '{blog.title}'
 date: '{datetime.now().isoformat()}'
-cannonicalUrl: 'https://parmipicks.com/blogs/{blog.filename}'
+canonicalUrl: 'https://parmipicks.com/blogs/{blog.filename}'
 heroImage: '/blog-images/{timestamp}.jpg'
 author: 'content/authors/brady.md'
 ---

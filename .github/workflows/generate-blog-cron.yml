@@ -22,7 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install requests openai python-dotenv pydantic datetime time
+          pip install requests openai python-dotenv pydantic
 
       - name: Run Python script
         env:

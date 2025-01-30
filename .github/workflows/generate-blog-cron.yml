@@ -1,7 +1,6 @@
 # https://chat.deepseek.com/a/chat/s/a55bd8ef-a8b5-44ee-8364-cd2a15fb270d
 name: Generate Blog
 
-
 on:
   workflow_dispatch: # Allows manual triggering
   schedule:

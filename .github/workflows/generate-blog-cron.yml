@@ -34,10 +34,12 @@ jobs:
         run: python scripts/generate_blog.py
 
       - name: Extract blog title
-        id: extract_title
+        id: extract_title        
         run: |
-          BLOG_TITLE=$(grep -m 1 '^title:' content/blogs/*.mdx | sed -E 's/^title: [\"\']?([^\"\']+)[\"\']?/\1/' | head -n 1)
-          echo "BLOG_TITLE=$BLOG_TITLE" >> $GITHUB_ENV
+          BLOG_TITLE=$(grep -m 1 '^title:' content/blogs/*.mdx | sed -E 's/^title: ["'\'']?([^"'\'']+)["'\'']?/\1/' | head -n 1)
+          echo "Extracted title: $BLOG_TITLE"
+          echo "BLOG_TITLE=${BLOG_TITLE}" >> $GITHUB_ENV
+
           
       - name: Set unique branch name
         id: set_branch

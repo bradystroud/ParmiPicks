@@ -46,14 +46,17 @@ def generate_blog_with_openai(context_files):
     context = " ".join(context_files)
     prompt = f"""
     Write a unique and engaging blog post about chicken parmigiana. 
-    Avoid these topics, as they are existing blogs: {context}
+    Avoid these topics, as they are existing blogs: 
+    
+    {context}
+
     The md blog should include:
-    - A catchy title
     - An introduction to the topic
     - Sections with headings
     - A conclusion
     - A call-to-action for readers to share their thoughts
     ENSURE THE BLOG TOPIC IS ORIGINAL
+    Don't include a title in the body of the content.
     """
 
     client = OpenAI()
@@ -115,7 +118,7 @@ def save_blog_and_image(blog, image_url):
 title: '{blog.title}'
 date: '{datetime.now().isoformat()}'
 canonicalUrl: 'https://parmipicks.com/blogs/{blog.filename}'
-heroImage: '/blog-images/{timestamp}.jpg'
+heroImage: '/uploads/blog-images/{timestamp}.jpg'
 author: 'content/authors/brady.md'
 ---
 

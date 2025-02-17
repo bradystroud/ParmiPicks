@@ -1,7 +1,6 @@
 name: '🐞 Bug Report Form'
 description: 'Create a report to help us improve as per [SSW Rules - Do you know how to report bugs and give suggestions?](https://www.ssw.com.au/rules/report-bugs-and-suggestions/)'
 title: '🐞 '
-type: '🐞 Bug Report'
 assignees: []
 
 body:

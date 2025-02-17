@@ -1,0 +1,61 @@
+name: '🐞 Bug Report Form'
+description: 'Create a report to help us improve as per [SSW Rules - Do you know how to report bugs and give suggestions?](https://www.ssw.com.au/rules/report-bugs-and-suggestions/)'
+title: '🐞 '
+type: '🐞 Bug Report'
+assignees: []
+
+body:
+  - type: textarea
+    attributes:
+      label: Description
+      description: |
+        A clear and concise description of what the bug is.   
+        💡 Tip: Include a video, GIF or screenshots
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Steps To Reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. In this environment...
+        2. With this config...
+        3. Run '...'
+        4. See error...
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Expected Behavior
+      description: A clear and concise description of what you expected to happen.
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Tasks
+      value: |
+        - [ ] Investigate
+        - [ ] Fix
+      render: markdown
+    validations:
+      required: false
+
+  - type: textarea
+    attributes:
+      label: Acceptance Criteria
+      description: |
+        Acceptance Criteria helps to answer the question: "How will I know when I'm done with this story?" 
+        It defines the requirements that must be met for the story to be completed.  
+        See [SSW Rules - Do your PBIs include Acceptance Criteria?](https://www.ssw.com.au/rules/acceptance-criteria)
+      value: |
+        - Meets [Definition of Done](https://github.com/asfaudits/HubX/blob/main/docs/Definition-of-Done.md)
+        - {{ ... }}
+      render: markdown
+    validations:
+      required: false

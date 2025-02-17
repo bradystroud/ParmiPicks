@@ -1,7 +1,6 @@
 name: '🐞 Bug Report Form'
 description: 'Create a report to help us improve as per [SSW Rules - Do you know how to report bugs and give suggestions?](https://www.ssw.com.au/rules/report-bugs-and-suggestions/)'
 title: '🐞 '
-type: '🐞 Bug Report'
 assignees: []
 
 body:
@@ -10,7 +9,7 @@ body:
       label: Description
       description: |
         A clear and concise description of what the bug is.   
-        💡 Tip: Include a video, GIF or screenshots
+        💡 Tip: Include a video, GIF, or screenshots
       render: markdown
     validations:
       required: false

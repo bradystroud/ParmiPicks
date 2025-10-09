@@ -62,11 +62,11 @@ def generate_blog_with_openai(context_files):
     client = OpenAI()
 
     response = client.beta.chat.completions.parse(
-        model="gpt-4o-mini",
+        model="gpt-5",
         messages=[
             {
                 "role": "system",
-                "content": "You are a professional blog writer. You write unique, creative and engaging blog posts about chicken parmis for parmipicks.com.",
+                "content": "You are a professional blog writer. You write unique, creative and engaging blog posts about chicken parmis for parmipicks.com. Chicken parmigiana is a popular dish, mostly in Australia that consists of breaded chicken breast topped with marinara sauce, ham and melted cheese. Your task is to create a blog post that is informative, entertaining, and encourages readers to share their thoughts in the comments section. It also need to be unique and not cover topics that have already been written about.",
             },
             {"role": "user", "content": prompt},
         ],
@@ -90,7 +90,7 @@ def generate_image_with_openai(prompt):
 
     try:
         response = client.images.generate(
-            model="dall-e-3",
+            model="gpt-5",
             prompt=prompt,
             size="1792x1024",
             quality="standard",

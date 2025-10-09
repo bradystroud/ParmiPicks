@@ -14,7 +14,7 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Folder paths
 BLOG_FOLDER = "content/blogs"
-IMAGE_FOLDER = "public/blog-images"
+IMAGE_FOLDER = "public/uploads/blog-images"
 
 # Ensure folders exist
 os.makedirs(BLOG_FOLDER, exist_ok=True)

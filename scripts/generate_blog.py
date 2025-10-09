@@ -90,7 +90,7 @@ def generate_image_with_openai(prompt):
 
     try:
         response = client.images.generate(
-            model="gpt-5",
+            model="dall-e-3",
             prompt=prompt,
             size="1792x1024",
             quality="standard",

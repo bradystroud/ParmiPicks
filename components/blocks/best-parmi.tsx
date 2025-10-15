@@ -115,38 +115,38 @@ export const BestParmi = ({ data, parentField }) => {
           </h2>
         </div>
 
-        <div className="relative isolate overflow-hidden rounded-3xl bg-slate-900 text-white shadow-2xl ring-1 ring-slate-900/10">
+        <div className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 text-slate-900 shadow-2xl ring-1 ring-amber-200/60">
           <div className="grid gap-10 lg:grid-cols-[1.1fr,0.9fr]">
             <div className="relative flex flex-col gap-6 p-8 sm:p-12">
               <div className="flex flex-col gap-4 text-left">
-                <div className="inline-flex items-center gap-3 self-start rounded-full border border-white/20 bg-white/10 px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-white/80">
+                <div className="inline-flex items-center gap-3 self-start rounded-full border border-amber-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-amber-700">
                   Top Rated
                 </div>
 
-                <h3 className="text-4xl font-bold sm:text-5xl">
+                <h3 className="text-4xl font-bold text-slate-900 sm:text-5xl">
                   {isLoading ? "Finding your parmi..." : topParmi?.name ?? "Best Parmi"}
                 </h3>
 
-                <div className="flex flex-col gap-3 text-sm text-white/80 sm:flex-row sm:items-center sm:gap-6">
+                <div className="flex flex-col gap-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:gap-6">
                   <div className="inline-flex items-center gap-3">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-white/10 text-lg font-semibold">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 text-lg font-semibold text-white">
                       ★
                     </span>
-                    <span className="text-base font-semibold sm:text-lg">
+                    <span className="text-base font-semibold text-slate-900 sm:text-lg">
                       {formattedScore}/10
                     </span>
                   </div>
 
                   {formattedDate && (
                     <span className="flex items-center gap-2">
-                      <span className="h-2 w-2 rounded-full bg-emerald-400" aria-hidden="true" />
+                      <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
                       Crowned on {formattedDate}
                     </span>
                   )}
                 </div>
               </div>
 
-              <p className="max-w-xl text-base text-white/70">
+              <p className="max-w-xl text-base text-slate-600">
                 This parmi earned the highest score in our reviews and is the one we
                 keep recommending to friends. Expect golden crumbed chicken, lashings
                 of sauce, and a plate worth travelling for.
@@ -155,7 +155,7 @@ export const BestParmi = ({ data, parentField }) => {
               <div className="mt-auto flex flex-col items-start gap-4 sm:flex-row">
                 <Link
                   href={reviewHref}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100 focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30"
                 >
                   Read the full review
                   <span aria-hidden="true" className="text-lg">
@@ -163,7 +163,7 @@ export const BestParmi = ({ data, parentField }) => {
                   </span>
                 </Link>
 
-                <span className="text-sm text-white/60">
+                <span className="text-sm text-slate-500">
                   Updated {formattedDate ?? "recently"}
                 </span>
               </div>
@@ -180,12 +180,12 @@ export const BestParmi = ({ data, parentField }) => {
                   priority
                 />
               ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent" aria-hidden="true" />
+                <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-white to-white" aria-hidden="true" />
               )}
 
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/30 to-slate-900/60 lg:bg-gradient-to-l" aria-hidden="true" />
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 via-slate-900/0 to-white/40 lg:bg-gradient-to-l" aria-hidden="true" />
 
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-xs font-medium uppercase tracking-[0.3em] text-white/70">
+              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-xs font-medium uppercase tracking-[0.3em] text-slate-500">
                 <span>Chef&apos;s pick</span>
                 <span>Parmi Picks</span>
               </div>

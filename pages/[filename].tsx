@@ -22,7 +22,7 @@ export default function HomePage(
         <meta property="og:title" content="Parmi Picks" />
         <title>ParmiPicks</title>
       </Head>
-      <Blocks {...data.page} />
+      <Blocks {...data.page} topParmi={props.topParmi ?? null} />
     </Layout>
   );
 }
@@ -34,12 +34,15 @@ export const getStaticProps = async ({ params }) => {
 
   const moreProps = await client.queries.topReviewQuery();
 
+  const topParmiNode =
+    moreProps?.data?.reviewConnection?.edges?.[0]?.node ?? null;
+
   return {
     props: {
       data: tinaProps.data,
       query: tinaProps.query,
       variables: tinaProps.variables,
-      topParmi: moreProps.data.reviewConnection.edges[0],
+      topParmi: topParmiNode,
     },
   };
 };

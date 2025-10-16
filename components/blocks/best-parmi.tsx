@@ -7,43 +7,137 @@ import { client } from "../../tina/__generated__/client";
 import Image from "next/image";
 import Link from "next/link";
 
-export const BestParmi = ({ data, parentField }) => {
-  const [topParmi, setTopParmi] = useState<TopParmi | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const shouldFetch = data?.isDataDriven ?? true;
+interface TopParmiSource {
+  score?: number | string | null;
+  name?: string | null;
+  date?: string | null;
+  parmiImg?: string | null;
+  canonicalUrl?: string | null;
+  restaurant?: {
+    name?: string | null;
+  } | null;
+  node?: TopParmiSource | null;
+}
+
+interface BestParmiProps {
+  data?: {
+    isDataDriven?: boolean | null;
+  } | null;
+  parentField?: string;
+  topParmi?: TopParmiSource | null;
+}
+
+interface TopParmi {
+  score: number | null;
+  name: string;
+  date?: string | null;
+  imageUrl?: string | null;
+  reviewUrl?: string | null;
+}
+
+const normalizeTopParmi = (
+  source?: TopParmiSource | null
+): TopParmi | null => {
+  if (!source || typeof source !== "object") {
+    return null;
+  }
+
+  if ("node" in source && source.node) {
+    return normalizeTopParmi(source.node);
+  }
+
+  const rawScore = source.score;
+  const score = (() => {
+    if (typeof rawScore === "number" && Number.isFinite(rawScore)) {
+      return rawScore;
+    }
+    if (typeof rawScore === "string") {
+      const parsed = parseFloat(rawScore);
+      if (Number.isFinite(parsed)) {
+        return parsed;
+      }
+    }
+    return null;
+  })();
+
+  const restaurantName =
+    typeof source.restaurant?.name === "string"
+      ? source.restaurant.name
+      : undefined;
+  const fallbackName = typeof source.name === "string" ? source.name : undefined;
+  const name = restaurantName ?? fallbackName ?? null;
+  const date = typeof source.date === "string" ? source.date : null;
+  const imageUrl =
+    typeof source.parmiImg === "string" ? source.parmiImg : null;
+  const reviewUrl =
+    typeof source.canonicalUrl === "string" ? source.canonicalUrl : null;
+
+  if (!name && score === null && !imageUrl && !reviewUrl && !date) {
+    return null;
+  }
+
+  return {
+    score,
+    name: name ?? "Best Parmi",
+    date,
+    imageUrl,
+    reviewUrl,
+  };
+};
+
+export const BestParmi = ({
+  data,
+  parentField,
+  topParmi: topParmiProp,
+}: BestParmiProps) => {
+  const isDataDriven = data?.isDataDriven ?? true;
+  const initialTopParmi = useMemo(
+    () => normalizeTopParmi(topParmiProp),
+    [topParmiProp]
+  );
+  const [topParmi, setTopParmi] = useState<TopParmi | null>(initialTopParmi);
+  const [isLoading, setIsLoading] = useState<boolean>(
+    isDataDriven && !initialTopParmi
+  );
 
   useEffect(() => {
-    let isMounted = true;
-
-    if (!shouldFetch) {
+    if (initialTopParmi) {
+      setTopParmi(initialTopParmi);
       setIsLoading(false);
-      return () => {
-        isMounted = false;
-      };
+      return;
     }
 
+    setTopParmi(null);
+
+    if (!isDataDriven) {
+      setIsLoading(false);
+    } else {
+      setIsLoading(true);
+    }
+  }, [initialTopParmi, isDataDriven]);
+
+  useEffect(() => {
+    if (!isDataDriven || topParmi) {
+      return;
+    }
+
+    let isMounted = true;
+
     const fetchData = async () => {
+      setIsLoading(true);
+
       try {
         const result = await client.queries.topReviewQuery();
-        const node = result?.data?.reviewConnection?.edges?.[0]?.node;
-
-        if (!node) {
+        if (!isMounted) {
           return;
         }
 
-        const scoreValue =
-          typeof node.score === "number"
-            ? node.score
-            : parseFloat(node.score ?? "0");
+        const fetched = normalizeTopParmi(
+          result?.data?.reviewConnection?.edges?.[0]?.node ?? null
+        );
 
-        if (isMounted) {
-          setTopParmi({
-            score: Number.isFinite(scoreValue) ? scoreValue : 0,
-            name: node?.restaurant?.name ?? "Best Parmi",
-            date: node.date,
-            imageUrl: node.parmiImg,
-            reviewUrl: node.canonicalUrl,
-          });
+        if (fetched) {
+          setTopParmi(fetched);
         }
       } catch (error) {
         console.error("Failed to fetch top parmi", error);
@@ -55,29 +149,39 @@ export const BestParmi = ({ data, parentField }) => {
     };
 
     fetchData();
+
     return () => {
       isMounted = false;
     };
-  }, [shouldFetch]);
+  }, [isDataDriven, topParmi]);
 
   const reviewHref = useMemo(() => {
-    if (!topParmi?.reviewUrl) {
+    const rawReviewUrl = topParmi?.reviewUrl;
+
+    if (!rawReviewUrl) {
       return "/reviews";
     }
 
-    if (topParmi.reviewUrl.startsWith("http")) {
-      return topParmi.reviewUrl;
+    if (rawReviewUrl.startsWith("http")) {
+      return rawReviewUrl;
     }
 
-    return `/reviews/${topParmi.reviewUrl.replace(/^\/+/, "")}`;
+    return `/reviews/${rawReviewUrl.replace(/^\/+/, "")}`;
+  }, [topParmi?.reviewUrl]);
+
+  const isExternalReview = useMemo(() => {
+    const rawReviewUrl = topParmi?.reviewUrl;
+    return Boolean(rawReviewUrl && rawReviewUrl.startsWith("http"));
   }, [topParmi?.reviewUrl]);
 
   const formattedDate = useMemo(() => {
-    if (!topParmi?.date) {
+    const rawDate = topParmi?.date;
+
+    if (!rawDate) {
       return null;
     }
 
-    const date = new Date(topParmi.date);
+    const date = new Date(rawDate);
 
     if (Number.isNaN(date.getTime())) {
       return null;
@@ -91,8 +195,8 @@ export const BestParmi = ({ data, parentField }) => {
   }, [topParmi?.date]);
 
   const formattedScore = useMemo(() => {
-    if (!topParmi) {
-      return "-";
+    if (!topParmi || topParmi.score == null) {
+      return "–";
     }
 
     const formatter = new Intl.NumberFormat("en-US", {
@@ -102,6 +206,32 @@ export const BestParmi = ({ data, parentField }) => {
 
     return formatter.format(topParmi.score);
   }, [topParmi]);
+
+  const badgeLabel = topParmi
+    ? "Top Rated"
+    : isLoading
+    ? "Loading"
+    : "In Review";
+
+  const heading = isLoading
+    ? "Finding your parmi..."
+    : topParmi?.name ?? "No parmi crowned yet";
+
+  const description = topParmi
+    ? "This parmi earned the highest score in our reviews and is the one we keep recommending to friends. Expect golden crumbed chicken, lashings of sauce, and a plate worth travelling for."
+    : "We haven't crowned a best parmi just yet. Explore the full list while we keep tasting and updating our leaderboard.";
+
+  const ctaLabel = topParmi ? "Read the full review" : "Browse all reviews";
+
+  const updatedCopy = topParmi
+    ? `Updated ${formattedDate ?? "recently"}`
+    : isLoading
+    ? "Checking the leaderboard..."
+    : "No winner yet — stay tuned!";
+
+  const externalLinkProps: { target?: string; rel?: string } = isExternalReview
+    ? { target: "_blank", rel: "noopener noreferrer" }
+    : {};
 
   return (
     <Section>
@@ -120,11 +250,11 @@ export const BestParmi = ({ data, parentField }) => {
             <div className="relative flex flex-col gap-6 p-8 sm:p-12">
               <div className="flex flex-col gap-4 text-left">
                 <div className="inline-flex items-center gap-3 self-start rounded-full border border-amber-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-amber-700">
-                  Top Rated
+                  {badgeLabel}
                 </div>
 
                 <h3 className="text-4xl font-bold text-slate-900 sm:text-5xl">
-                  {isLoading ? "Finding your parmi..." : topParmi?.name ?? "Best Parmi"}
+                  {heading}
                 </h3>
 
                 <div className="flex flex-col gap-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:gap-6">
@@ -137,7 +267,7 @@ export const BestParmi = ({ data, parentField }) => {
                     </span>
                   </div>
 
-                  {formattedDate && (
+                  {topParmi && formattedDate && (
                     <span className="flex items-center gap-2">
                       <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
                       Crowned on {formattedDate}
@@ -146,26 +276,21 @@ export const BestParmi = ({ data, parentField }) => {
                 </div>
               </div>
 
-              <p className="max-w-xl text-base text-slate-600">
-                This parmi earned the highest score in our reviews and is the one we
-                keep recommending to friends. Expect golden crumbed chicken, lashings
-                of sauce, and a plate worth travelling for.
-              </p>
+              <p className="max-w-xl text-base text-slate-600">{description}</p>
 
               <div className="mt-auto flex flex-col items-start gap-4 sm:flex-row">
                 <Link
                   href={reviewHref}
                   className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30"
+                  {...externalLinkProps}
                 >
-                  Read the full review
+                  {ctaLabel}
                   <span aria-hidden="true" className="text-lg">
                     →
                   </span>
                 </Link>
 
-                <span className="text-sm text-slate-500">
-                  Updated {formattedDate ?? "recently"}
-                </span>
+                <span className="text-sm text-slate-500">{updatedCopy}</span>
               </div>
             </div>
 
@@ -180,10 +305,16 @@ export const BestParmi = ({ data, parentField }) => {
                   priority
                 />
               ) : (
-                <div className="absolute inset-0 bg-gradient-to-br from-amber-100 via-white to-white" aria-hidden="true" />
+                <div
+                  className="absolute inset-0 bg-gradient-to-br from-amber-100 via-white to-white"
+                  aria-hidden="true"
+                />
               )}
 
-              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 via-slate-900/0 to-white/40 lg:bg-gradient-to-l" aria-hidden="true" />
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-slate-900/10 via-slate-900/0 to-white/40 lg:bg-gradient-to-l"
+                aria-hidden="true"
+              />
 
               <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-xs font-medium uppercase tracking-[0.3em] text-slate-500">
                 <span>Chef&apos;s pick</span>
@@ -211,11 +342,3 @@ export const bestParmiBlockSchema: Template = {
     },
   ],
 };
-
-interface TopParmi {
-  score: number;
-  name: string;
-  date: string;
-  imageUrl?: string | null;
-  reviewUrl?: string | null;
-}

@@ -5,11 +5,15 @@ import { Features } from "./blocks/features";
 import { Hero } from "./blocks/hero";
 import { BestParmi } from "./blocks/best-parmi";
 
-export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
+type BlocksProps = Omit<Page, "id" | "_sys" | "_values"> & {
+  topParmi?: unknown;
+};
+
+export const Blocks = ({ blocks, topParmi }: BlocksProps) => {
   return (
     <>
-      {props.blocks
-        ? props.blocks.map(function (block, i) {
+      {blocks
+        ? blocks.map(function (block, i) {
             switch (block.__typename) {
               case "PageBlocksContent":
                 return (
@@ -44,7 +48,11 @@ export const Blocks = (props: Omit<Page, "id" | "_sys" | "_values">) => {
                     data-tinafield={`blocks.${i}`}
                     key={i + block.__typename}
                   >
-                    <BestParmi data={block} parentField={`blocks.${i}`} />
+                    <BestParmi
+                      data={block}
+                      parentField={`blocks.${i}`}
+                      topParmi={topParmi}
+                    />
                   </div>
                 );
               default:

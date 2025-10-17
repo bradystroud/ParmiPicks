@@ -259,7 +259,7 @@ export const BestParmi = ({
 
                 <div className="flex flex-col gap-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:gap-6">
                   <div className="inline-flex items-center gap-3">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-amber-500 text-lg font-semibold text-white">
+                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-lg font-semibold text-amber-300">
                       ★
                     </span>
                     <span className="text-base font-semibold text-slate-900 sm:text-lg">
@@ -281,7 +281,7 @@ export const BestParmi = ({
               <div className="mt-auto flex flex-col items-start gap-4 sm:flex-row">
                 <Link
                   href={reviewHref}
-                  className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/30"
+                  className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-amber-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40"
                   {...externalLinkProps}
                 >
                   {ctaLabel}
@@ -312,7 +312,7 @@ export const BestParmi = ({
               )}
 
               <div
-                className="absolute inset-0 bg-gradient-to-t from-slate-900/10 via-slate-900/0 to-white/40 lg:bg-gradient-to-l"
+                className="absolute inset-0 bg-gradient-to-t from-slate-900/5 via-slate-900/0 to-white/20 lg:bg-gradient-to-l"
                 aria-hidden="true"
               />
 

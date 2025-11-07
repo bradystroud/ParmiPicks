@@ -31,10 +31,10 @@ export default function ReviewPage(
   const date = new Date(data.review.date);
   const formattedDate = !isNaN(date.getTime())
     ? date.toLocaleDateString("en-US", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-      })
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    })
     : "";
 
   const restaurant = data.review.restaurant;
@@ -132,7 +132,7 @@ export default function ReviewPage(
           </div>
           <MapEmbed location={restaurant.location || restaurant.name} />
           <br />
-          <Giscus
+          {/* <Giscus
             key={title}
             repo="bradystroud/parmipicks"
             category="Comments"
@@ -147,7 +147,7 @@ export default function ReviewPage(
             lang="en"
             loading="lazy"
             term="Welcome to Parmi Picks! Leave a comment or ask a question."
-          />
+          /> */}
         </Container>
       </Section>
     </Layout>

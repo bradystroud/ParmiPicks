@@ -7,15 +7,15 @@ import type { Template } from "tinacms";
 export const Content = ({ data, parentField = "" }) => {
   return (
     <Section>
-      <Container
-        className={`prose prose-lg ${
-          data.color === "primary" ? `prose-primary` : `dark:prose-dark`
-        }`}
-        data-tinafield={`${parentField}.body`}
-        size="large"
-        width="medium"
-      >
-        <TinaMarkdown content={data.body} />
+      <Container size="large" width="medium" className="max-w-3xl">
+        <div
+          className={`prose prose-lg mx-auto rounded-3xl border border-white/60 bg-white/80 px-8 py-10 shadow-lg shadow-amber-100/40 backdrop-blur ${
+            data.color === "primary" ? `prose-primary` : ``
+          }`}
+          data-tinafield={`${parentField}.body`}
+        >
+          <TinaMarkdown content={data.body} />
+        </div>
       </Container>
     </Section>
   );

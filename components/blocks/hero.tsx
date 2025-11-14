@@ -7,35 +7,32 @@ import type { Template } from "tinacms";
 
 export const Hero = ({ data, parentField }) => {
   return (
-    <Section>
+    <Section className="pt-28">
       <Container
         size="large"
-        className="grid grid-cols-1 lg:grid-cols-5 gap-14 items-center justify-center"
+        className="grid max-w-6xl grid-cols-1 items-center gap-16 lg:grid-cols-[1.15fr,0.85fr]"
       >
-        <div className="row-start-2 lg:row-start-1 lg:col-span-3 text-center lg:text-left">
+        <div className="order-2 flex flex-col items-center text-center lg:order-1 lg:items-start lg:text-left">
           {data.tagline && (
-            <h2
+            <p
               data-tinafield={`${parentField}.tagline`}
-              className="relative inline-block px-3 py-1 mb-8 text-md font-bold tracking-wide title-font z-20"
+              className="mb-6 inline-flex items-center gap-2 rounded-full border border-amber-200/70 bg-amber-50/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.35em] text-amber-600"
             >
               {data.tagline}
-              <span className="absolute w-full h-full left-0 top-0 rounded-full -z-1 bg-current opacity-7"></span>
-            </h2>
+            </p>
           )}
           {data.headline && (
-            <h3
+            <h1
               data-tinafield={`${parentField}.headline`}
-              className={`w-full relative	mb-10 text-5xl font-extrabold tracking-normal leading-tight title-font`}
+              className="text-4xl font-extrabold leading-tight text-slate-900 sm:text-5xl lg:text-6xl"
             >
-              <span className={`bg-clip-text`}>{data.headline}</span>
-            </h3>
+              {data.headline}
+            </h1>
           )}
           {data.text && (
             <div
               data-tinafield={`${parentField}.text`}
-              className={`prose prose-lg mx-auto lg:mx-0 mb-10 ${
-                data.color === "primary" ? `prose-primary` : `dark:prose-dark`
-              }`}
+              className="mt-6 max-w-2xl text-lg leading-relaxed text-slate-600"
             >
               <TinaMarkdown content={data.text} />
             </div>
@@ -43,7 +40,7 @@ export const Hero = ({ data, parentField }) => {
           {data.actions && (
             <Actions
               parentField={`${parentField}.actions`}
-              className="justify-center lg:justify-start py-2"
+              className="mt-8 justify-center gap-4 lg:justify-start"
               actions={data.actions}
             />
           )}
@@ -51,18 +48,23 @@ export const Hero = ({ data, parentField }) => {
         {data.image && (
           <div
             data-tinafield={`${parentField}.image`}
-            className="relative row-start-1 lg:col-span-2 flex justify-center"
+            className="order-1 relative flex justify-center lg:order-2"
           >
-            <img
-              className="absolute w-full rounded-lg max-w-xs lg:max-w-none h-auto blur-2xl brightness-150 contrast-[0.9] dark:brightness-150 saturate-200 opacity-50 dark:opacity-30 mix-blend-multiply dark:mix-blend-hard-light"
-              src={data.image.src}
+            <div
+              className="backdrop-card absolute inset-0 -z-10 rounded-[3rem] bg-white/60 blur-3xl"
               aria-hidden="true"
             />
-            <img
-              className="relative z-10 w-full max-w-xs rounded-lg lg:max-w-none h-auto"
-              alt={data.image.alt}
-              src={data.image.src}
-            />
+            <div className="relative overflow-hidden rounded-[2.5rem] border border-white/70 bg-white/80 shadow-2xl shadow-amber-100/60">
+              <div
+                className="pointer-events-none absolute -top-10 right-4 h-28 w-28 rounded-full bg-orange-300/30 blur-2xl"
+                aria-hidden="true"
+              />
+              <img
+                className="relative z-10 h-full w-full max-w-sm object-cover"
+                alt={data.image.alt}
+                src={data.image.src}
+              />
+            </div>
           </div>
         )}
       </Container>

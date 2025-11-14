@@ -31,9 +31,9 @@ export const Layout = ({ data = layoutData, children }) => {
         <link rel="icon" href="favicon.svg" />
         <meta name="robots" content="index, follow" />{" "}
       </Head>
-      <div>
+      <div className="flex min-h-screen flex-col">
         <Header data={data?.header} />
-        <div className="flex-1 text-gray-80 flex flex-col">
+        <div className="flex flex-1 flex-col">
           <NextBreadcrumb />
           {children}
         </div>

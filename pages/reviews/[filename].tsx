@@ -8,7 +8,6 @@ import { TinaMarkdown } from "tinacms/dist/rich-text";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
-import Giscus from "@giscus/react";
 import MapEmbed from "../../components/blocks/map";
 
 export default function ReviewPage(
@@ -83,13 +82,14 @@ export default function ReviewPage(
             <span className="font-extrabold">{data.review.score}</span> -{" "}
             {restaurant.name}
           </h1>
-          <div className="relative w-300 h-400 m-auto">
+          <div className="relative mx-auto mb-10 aspect-[4/3] w-full max-w-3xl overflow-hidden rounded-3xl border border-amber-200/60 bg-white/80 shadow-xl shadow-amber-100/50">
             {data.review.parmiImg ? (
               <Image
                 src={data.review.parmiImg}
                 alt={`Chicken parmi from ${restaurant.name}`}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 fill
+                className="object-cover"
               />
             ) : (
               "No image 🫢"
@@ -130,8 +130,23 @@ export default function ReviewPage(
           <div className="prose dark:prose-dark w-full max-w-none">
             <TinaMarkdown content={data.review._body} />
           </div>
-          <MapEmbed location={restaurant.location || restaurant.name} />
-          <br />
+          <div className="mt-12 rounded-3xl border border-amber-200/60 bg-gradient-to-br from-amber-50/80 via-white to-emerald-50/80 p-8 shadow-lg shadow-amber-100/40">
+            <h3 className="text-2xl font-semibold text-slate-900">
+              Plan your visit
+            </h3>
+            <p className="mt-2 text-sm text-slate-500">
+              Find {restaurant.name} on the map and plan your next parmi pilgrimage.
+            </p>
+            <div className="mt-6 overflow-hidden rounded-2xl border border-white/80 bg-white/70 shadow-inner">
+              <div className="relative h-[320px] w-full">
+                <MapEmbed
+                  location={restaurant.location || restaurant.name}
+                  className="h-full w-full"
+                  title={`Map showing ${restaurant.name}`}
+                />
+              </div>
+            </div>
+          </div>
           {/* <Giscus
             key={title}
             repo="bradystroud/parmipicks"

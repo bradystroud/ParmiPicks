@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
-import { FaBars, FaSearchLocation, FaTimes, FaUtensils } from "react-icons/fa";
+import { FaBars, FaTimes, FaUtensils } from "react-icons/fa";
 import Link from "next/link";
 
 export const Header = ({ data }) => {
@@ -75,15 +75,8 @@ export const Header = ({ data }) => {
               <span className="tracking-tight">Parmi Picks</span>
             </Link>
 
-            <div className="hidden md:flex items-center gap-2">
+            <div className="hidden items-center gap-2 md:flex">
               {navItems.map((item, index) => renderNavItem(item, index))}
-              <Link
-                href="/reviews"
-                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-slate-800"
-              >
-                See reviews
-                <FaSearchLocation className="h-4 w-4" aria-hidden="true" />
-              </Link>
             </div>
 
             <button
@@ -105,13 +98,6 @@ export const Header = ({ data }) => {
             <div className="md:hidden rounded-3xl border border-white/60 bg-white/80 px-6 py-5 shadow-lg shadow-amber-100/70 backdrop-blur">
               <div className="flex flex-col gap-3">
                 {navItems.map((item, index) => renderNavItem(item, index, true))}
-                <Link
-                  href="/reviews"
-                  className="flex items-center justify-center gap-2 rounded-full bg-slate-900/90 px-4 py-3 text-sm font-semibold text-white shadow-sm"
-                >
-                  See reviews
-                  <FaSearchLocation className="h-4 w-4" aria-hidden="true" />
-                </Link>
               </div>
             </div>
           )}

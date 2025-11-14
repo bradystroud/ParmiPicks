@@ -61,7 +61,7 @@ export const Footer = ({ data }) => {
             Made with ❤️ by{" "}
             <a
               className="text-slate-100 underline decoration-amber-400/60 decoration-2 underline-offset-4 transition hover:text-amber-200"
-              href="https://github.com/bradystroud"
+              href="https://bradystroud.dev"
               target="_blank"
               rel="noopener noreferrer"
             >

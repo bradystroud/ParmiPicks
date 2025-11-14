@@ -4,77 +4,90 @@ import { AiFillInstagram } from "react-icons/ai";
 import { Container } from "../../util/container";
 
 export const Footer = ({ data }) => {
-  const socialIconClasses = "h-7 w-auto";
+  const social = data?.social ?? {};
 
-  const footerColor = {
-    default:
-      "text-gray-800 from-white to-gray-50 dark:from-gray-900 dark:to-gray-1000",
-    primary: {
-      blue: "text-white from-blue-500 to-blue-700",
-      teal: "text-white from-teal-500 to-teal-600",
-      green: "text-white from-green-500 to-green-600",
-      red: "text-white from-red-500 to-red-600",
-      pink: "text-white from-pink-500 to-pink-600",
-      purple: "text-white from-purple-500 to-purple-600",
-      orange: "text-white from-orange-500 to-orange-600",
-      yellow: "text-white from-yellow-500 to-yellow-600",
-    },
+  const SocialLink = ({
+    href,
+    label,
+    children,
+  }: {
+    href?: string | null;
+    label: string;
+    children: React.ReactNode;
+  }) => {
+    if (!href) {
+      return null;
+    }
+
+    const isRelative = href.startsWith("/");
+    const resolvedHref = isRelative ? `https://parmipicks.com${href}` : href;
+
+    return (
+      <a
+        className="inline-flex h-11 w-11 items-center justify-center rounded-full bg-white/10 text-slate-100 transition hover:-translate-y-1 hover:bg-white/20"
+        href={resolvedHref}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={label}
+      >
+        {children}
+      </a>
+    );
   };
 
   return (
-    <footer className={`bg-gradient-to-br ${footerColor.default}`}>
-      <Container className="relative" size="small">
-        <div className="flex justify-between items-center gap-6 flex-wrap">
-          <p className="text-gray-300">
+    <footer className="relative overflow-hidden bg-slate-950 text-slate-100">
+      <div
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -top-32 right-12 h-72 w-72 rounded-full bg-orange-500/30 blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -bottom-20 left-0 h-56 w-56 rounded-full bg-emerald-400/20 blur-3xl"
+        aria-hidden="true"
+      />
+      <Container className="relative flex flex-col gap-10 py-12 md:flex-row md:items-center md:justify-between" size="large">
+        <div className="max-w-xl">
+          <p className="text-sm uppercase tracking-[0.35em] text-amber-200/80">
+            Parmi Picks
+          </p>
+          <h2 className="mt-3 text-3xl font-semibold text-white">
+            Sharing the tastiest chicken parmigiana around Australia.
+          </h2>
+          <p className="mt-4 text-base text-slate-300">
             Made with ❤️ by{" "}
             <a
-              className="text-gray-300 hover:text-gray-400 transition ease-out duration-150"
+              className="text-slate-100 underline decoration-amber-400/60 decoration-2 underline-offset-4 transition hover:text-amber-200"
               href="https://github.com/bradystroud"
               target="_blank"
               rel="noopener noreferrer"
             >
               Brady Stroud
             </a>
+            .
           </p>
-
-          <div className="flex gap-4">
-            {data.social && data.social.twitter && (
-              <a
-                className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
-                href={data.social.twitter}
-                target="_blank"
-                aria-label="Twitter"
-              >
-                <FaTwitter className={`${socialIconClasses} primary`} />
-              </a>
-            )}
-            {data.social && data.social.instagram && (
-              <a
-                className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
-                href={data.social.instagram}
-                target="_blank"
-                aria-label="Instagram"
-              >
-                <AiFillInstagram className={`${socialIconClasses} primary`} />
-              </a>
-            )}
-            {data.social && data.social.github && (
-              <a
-                className="inline-block opacity-80 hover:opacity-100 transition ease-out duration-150"
-                href={data.social.github}
-                target="_blank"
-                aria-label="Github"
-              >
-                <FaGithub className={`${socialIconClasses} primary`} />
-              </a>
-            )}
-          </div>
         </div>
-        <div
-          className={`absolute h-1 bg-gradient-to-r from-transparent ${
-            data.color === "primary" ? `via-white` : `via-black dark:via-white`
-          } to-transparent top-0 left-4 right-4 opacity-5`}
-        ></div>
+
+        <div className="flex flex-col items-start gap-6 text-sm text-slate-300 md:items-end">
+          <p className="font-semibold text-slate-200">Stay in the loop</p>
+          <div className="flex items-center gap-3">
+            <SocialLink href={social.twitter} label="Twitter">
+              <FaTwitter className="h-5 w-5" aria-hidden="true" />
+            </SocialLink>
+            <SocialLink href={social.instagram} label="Instagram">
+              <AiFillInstagram className="h-6 w-6" aria-hidden="true" />
+            </SocialLink>
+            <SocialLink href={social.github} label="GitHub">
+              <FaGithub className="h-5 w-5" aria-hidden="true" />
+            </SocialLink>
+          </div>
+          <p className="text-xs text-slate-500">
+            © {new Date().getFullYear()} Parmi Picks. All rights reserved.
+          </p>
+        </div>
       </Container>
     </footer>
   );

@@ -6,13 +6,12 @@ export const Feature = ({ data, tinaField }) => {
   return (
     <div
       data-tinafield={tinaField}
-      className="flex-1 flex flex-col gap-6 text-center items-center lg:items-start lg:text-left max-w-xl mx-auto"
-      style={{ flexBasis: "16rem" }}
+      className="flex min-h-[220px] flex-1 flex-col items-center gap-6 rounded-3xl border border-white/70 bg-white/80 px-8 py-10 text-center shadow-lg shadow-amber-100/50 backdrop-blur lg:items-start lg:text-left"
     >
       {data.title && (
         <h3
           data-tinafield={`${tinaField}.title`}
-          className="text-2xl font-semibold title-font"
+          className="text-2xl font-semibold text-slate-900"
         >
           {data.title}
         </h3>
@@ -20,7 +19,7 @@ export const Feature = ({ data, tinaField }) => {
       {data.text && (
         <p
           data-tinafield={`${tinaField}.text`}
-          className="text-base opacity-80 leading-relaxed"
+          className="text-base leading-relaxed text-slate-600"
         >
           {data.text}
         </p>
@@ -33,20 +32,30 @@ export const Feature = ({ data, tinaField }) => {
 export const Features = ({ data, parentField }) => {
   return (
     <Section>
-      <Container
-        className={`flex flex-wrap gap-x-10 gap-y-8 text-left`}
-        size="large"
-      >
-        {data.items &&
-          data.items.map(function (block, i) {
-            return (
-              <Feature
-                tinaField={`${parentField}.items.${i}`}
-                key={i}
-                data={block}
-              />
-            );
-          })}
+      <Container size="large" className="max-w-6xl">
+        <div className="mb-12 flex flex-col items-center text-center lg:items-start lg:text-left">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-500">
+            Why locals love us
+          </p>
+          <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
+            Every parmi tells a story
+          </h2>
+          <p className="mt-4 max-w-2xl text-base text-slate-600">
+            From crispy crumbs to rich Napoli sauce, our reviews dig into the details so you can plan your next pub visit with confidence.
+          </p>
+        </div>
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {data.items &&
+            data.items.map(function (block, i) {
+              return (
+                <Feature
+                  tinaField={`${parentField}.items.${i}`}
+                  key={i}
+                  data={block}
+                />
+              );
+            })}
+        </div>
       </Container>
     </Section>
   );

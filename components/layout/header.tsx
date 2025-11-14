@@ -12,69 +12,111 @@ export const Header = ({ data }) => {
   const [expanded, setExpanded] = useState(false);
 
   useEffect(() => {
-    if (window && window.location.pathname.startsWith("/admin")) {
+    if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
       setPrefix("/admin");
     }
-  }, [expanded]);
+  }, []);
+
+  useEffect(() => {
+    setExpanded(false);
+  }, [router.asPath]);
+
+  const navItems = data?.nav ?? [];
+
+  const renderNavItem = (item, index: number, mobile = false) => {
+    const href = `/${item.href ?? ""}`.replace(/\/+/g, "/");
+    const isActive =
+      item.href === ""
+        ? router.asPath === "/"
+        : router.asPath.replace(/\/$/, "").includes(item.href);
+
+    const baseClasses =
+      "transition-colors duration-200 ease-out font-semibold";
+    const desktopClasses = isActive
+      ? "bg-slate-900 text-white shadow-sm"
+      : "text-slate-600 hover:bg-amber-100/70 hover:text-slate-900";
+    const mobileClasses = isActive
+      ? "bg-slate-900/90 text-white"
+      : "text-slate-700 hover:bg-amber-100/80";
+
+    return (
+      <Link
+        key={index}
+        href={href}
+        className={`rounded-full px-4 py-2 ${baseClasses} ${
+          mobile ? mobileClasses : desktopClasses
+        }`}
+      >
+        {item.label}
+      </Link>
+    );
+  };
 
   return (
-    <div className={`relative overflow-hidden bg-gradient-to-b`}>
-      <Container size="custom" className="py-0 relative z-10 max-w-8xl">
-        <nav className="flex items-center justify-between flex-wrap p-6">
-          <div className="flex items-center flex-shrink-0 text-white mr-6">
-            <FaSearchLocation className="fill-current h-8 w-8 mr-2" />{" "}
-            {/* Weird stuff happens when i removed the above line, so it stays */}
-            <span className="font-semibold text-xl tracking-tight text-black ">
-              <Link href="/" className="flex">
-                <FaUtensils className="fill-current h-8 w-8 mr-2" />
-                Parmi Picks
+    <header className="relative">
+      <div
+        className="pointer-events-none absolute inset-0 h-48 bg-gradient-to-b from-amber-100/70 via-white to-transparent"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -top-24 left-1/2 h-56 w-56 -translate-x-1/2 rounded-full bg-orange-200/40 blur-3xl"
+        aria-hidden="true"
+      />
+      <Container size="custom" className="relative z-10 max-w-6xl py-6">
+        <nav className="flex flex-col gap-4">
+          <div className="flex items-center justify-between gap-6 rounded-3xl border border-white/60 bg-white/80 px-6 py-4 shadow-lg shadow-amber-100/70 backdrop-blur">
+            <Link
+              href="/"
+              className="flex items-center gap-3 text-lg font-bold text-slate-900"
+            >
+              <span className="flex h-11 w-11 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-400 via-orange-400 to-rose-400 text-white shadow-inner">
+                <FaUtensils className="h-5 w-5" aria-hidden="true" />
+              </span>
+              <span className="tracking-tight">Parmi Picks</span>
+            </Link>
+
+            <div className="hidden md:flex items-center gap-2">
+              {navItems.map((item, index) => renderNavItem(item, index))}
+              <Link
+                href="/reviews"
+                className="inline-flex items-center gap-2 rounded-full bg-slate-900 px-5 py-2 text-sm font-semibold text-white shadow-lg transition hover:-translate-y-0.5 hover:bg-slate-800"
+              >
+                See reviews
+                <FaSearchLocation className="h-4 w-4" aria-hidden="true" />
               </Link>
-            </span>
-          </div>
-          <div className="block md:hidden">
+            </div>
+
             <button
-              className="flex items-center px-3 py-2 text-teal-20 hover:text-gray-400"
-              aria-label="menu"
+              type="button"
+              className="flex h-10 w-10 items-center justify-center rounded-2xl border border-white/60 bg-white/70 text-slate-600 transition hover:bg-white md:hidden"
+              onClick={() => setExpanded((value) => !value)}
+              aria-expanded={expanded}
+              aria-label="Toggle navigation menu"
             >
               {expanded ? (
-                <FaTimes onClick={() => setExpanded(!expanded)} />
+                <FaTimes className="h-5 w-5" />
               ) : (
-                <FaBars onClick={() => setExpanded(!expanded)} />
+                <FaBars className="h-5 w-5" />
               )}
             </button>
           </div>
-          <div
-            className={`w-full block md:items-center md:w-auto ${
-              expanded ? "" : "hidden md:flex"
-            }`}
-          >
-            <div className="text-sm lg:flex-grow mx-10">
-              {data.nav &&
-                data.nav.map((item, i) => {
-                  const activeItem =
-                    item.href === ""
-                      ? router.asPath === "/"
-                      : router.asPath.includes(item.href);
 
-                  return (
-                    <Link
-                      key={i}
-                      href={"/" + item.href}
-                      className={`block mt-4 md:inline-block md:mt-0 hover:text-blue-600 mr-4 ${
-                        activeItem ? "opacity-50" : ""
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
+          {expanded && (
+            <div className="md:hidden rounded-3xl border border-white/60 bg-white/80 px-6 py-5 shadow-lg shadow-amber-100/70 backdrop-blur">
+              <div className="flex flex-col gap-3">
+                {navItems.map((item, index) => renderNavItem(item, index, true))}
+                <Link
+                  href="/reviews"
+                  className="flex items-center justify-center gap-2 rounded-full bg-slate-900/90 px-4 py-3 text-sm font-semibold text-white shadow-sm"
+                >
+                  See reviews
+                  <FaSearchLocation className="h-4 w-4" aria-hidden="true" />
+                </Link>
+              </div>
             </div>
-          </div>
+          )}
         </nav>
-        <div
-          className={`absolute h-1 bg-gradient-to-r from-transparent via-black to-transparent bottom-0 left-4 right-4 -z-1 opacity-5`}
-        />
       </Container>
-    </div>
+    </header>
   );
 };

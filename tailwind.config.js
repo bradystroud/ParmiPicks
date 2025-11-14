@@ -16,6 +16,9 @@ module.exports = {
       current: "currentColor",
       black: colors.black,
       white: colors.white,
+      slate: colors.slate,
+      amber: colors.amber,
+      emerald: colors.emerald,
       teal: colors.cyan,
       green: colors.emerald,
       red: colors.rose,
@@ -108,6 +111,8 @@ module.exports = {
       fontFamily: {
         nunito: ["Nunito", ...defaultTheme.fontFamily.sans],
         lato: ["Lato", ...defaultTheme.fontFamily.sans],
+        sans: ["Manrope", ...defaultTheme.fontFamily.sans],
+        display: ["Manrope", ...defaultTheme.fontFamily.sans],
       },
       typography: (theme) => ({
         DEFAULT: {

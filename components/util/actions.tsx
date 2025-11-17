@@ -10,43 +10,53 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
           let element = null;
           if (action.type === "button") {
             element = (
-              <Link key={index} href={action.link ? action.link : "/"}>
-                <button
-                  data-tinafield={`${parentField}.${index}`}
-                  className={`z-10 relative flex items-center px-7 py-3 font-semibold text-lg transition duration-150 ease-out rounded-lg transform focus:shadow-outline focus:outline-none focus:ring-2 ring-offset-current ring-offset-2 whitespace-nowrap hover:opacity-80 bg-gradient-to-br from-blue-600 to-blue-800 text-white shadow-md hover:shadow-lg`}
-                >
-                  {action.label}
-                  {action.icon && (
-                    <BiRightArrowAlt
-                      className={`ml-1 -mr-1 w-6 h-6 opacity-80`}
-                    />
-                  )}
-                </button>
+              <Link
+                key={index}
+                href={action.link ? action.link : "/"}
+                data-tinafield={`${parentField}.${index}`}
+                className="group inline-flex items-center gap-3 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+              >
+                <span>{action.label}</span>
+                {action.icon && (
+                  <BiRightArrowAlt
+                    className="h-5 w-5 transition-transform group-hover:translate-x-1"
+                  />
+                )}
               </Link>
             );
           }
           if (action.type === "link" || action.type === "linkExternal") {
-            element = (
+            const href = action.link ? action.link : "/";
+            const isExternal = action.type === "linkExternal" || href.startsWith("http");
+
+            const linkContent = (
+              <span className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-700 transition hover:text-slate-900">
+                {action.label}
+                {action.icon && (
+                  <BiRightArrowAlt className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                )}
+              </span>
+            );
+
+            element = isExternal ? (
+              <a
+                key={index}
+                href={href}
+                data-tinafield={`${parentField}.${index}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-full border border-slate-300/70 bg-white/70 px-4 py-2 shadow-sm shadow-slate-200/60 backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-300/80 hover:bg-amber-50/80"
+              >
+                {linkContent}
+              </a>
+            ) : (
               <Link
                 key={index}
-                href={action.link ? action.link : "/"}
-                passHref
-                legacyBehavior
+                href={href}
+                data-tinafield={`${parentField}.${index}`}
+                className="rounded-full border border-slate-300/70 bg-white/70 px-4 py-2 shadow-sm shadow-slate-200/60 backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-300/80 hover:bg-amber-50/80"
               >
-                <a
-                  data-tinafield={`${parentField}.${index}`}
-                  className={`group inline-flex items-center font-semibold text-lg transition duration-150 ease-out hover:opacity-70`}
-                  style={{
-                    textShadow: `0 3px 7px rgba(var(--color-rgb-blue-400),0.2)`,
-                  }}
-                >
-                  {action.label}
-                  {action.icon && (
-                    <BiRightArrowAlt
-                      className={`ml-0 mr-0 w-6 h-6 opacity-80`}
-                    />
-                  )}
-                </a>
+                {linkContent}
               </Link>
             );
           }

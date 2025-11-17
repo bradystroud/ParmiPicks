@@ -4,7 +4,7 @@ import { useCallback, useRef, useState } from 'react';
 
 const containerStyle = {
   width: "100%",
-  height: "100vh",
+  height: "70vh",
 };
 
 const defaultCenter = {

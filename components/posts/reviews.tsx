@@ -42,47 +42,45 @@ export const Reviews = ({
           <Link
             key={post._sys.filename}
             href={`/reviews/` + post._sys.filename}
-            passHref
-            legacyBehavior
+            className="group block"
           >
-            <div
-              key={post.id}
-              className="group block px-6 sm:px-8 md:px-10 py-10 mb-8 last:mb-0 bg-gray-50 bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-1000 rounded-md shadow-sm transition-all duration-150 ease-out hover:shadow-md hover:to-gray-50 dark:hover:to-gray-800 hover:cursor-pointer"
-            >
-              <h2
-                className={`text-gray-700 dark:text-white text-3xl title-font mb-5 transition-all duration-150 ease-out group-hover:text-blue-600 dark:group-hover:text-blue-300`}
-              >
-                <span className="font-semibold">{post.score}</span> -{" "}
-                {post.restaurant.name}{" "}
-                <span className="inline-block opacity-0 group-hover:opacity-100 transition-all duration-300 ease-out">
-                  <BsArrowRight className="inline-block h-8 -mt-1 ml-1 w-auto opacity-70" />
+            <article className="mb-8 rounded-3xl border border-white/70 bg-white/80 px-8 py-10 shadow-lg shadow-amber-100/40 transition hover:-translate-y-1 hover:shadow-2xl">
+              <div className="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+                <h2 className="text-3xl font-semibold text-slate-900 transition group-hover:text-amber-600">
+                  <span className="mr-3 inline-flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br from-amber-400 to-orange-500 text-lg font-bold text-white shadow-inner">
+                    {post.score}
+                  </span>
+                  {post.restaurant.name}
+                </h2>
+                <span className="hidden items-center gap-2 text-sm font-medium text-slate-400 sm:inline-flex">
+                  Read review
+                  <BsArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
                 </span>
-              </h2>
-              <div className="flex items-center">
-                <div className="flex-shrink-0 mr-2">
-                  <Image
-                    className="h-10 w-10 object-cover rounded-full shadow-sm"
-                    src={post?.author?.avatar}
-                    alt={post?.author?.name}
-                    height={40}
-                    width={40}
-                  />
+              </div>
+
+              <div className="mt-4 flex items-center gap-4 text-sm text-slate-500">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center overflow-hidden rounded-full border border-amber-200/60 bg-white/70 shadow-sm">
+                    <Image
+                      className="h-full w-full object-cover"
+                      src={post?.author?.avatar}
+                      alt={post?.author?.name}
+                      height={48}
+                      width={48}
+                    />
+                  </div>
+                  <p className="text-base font-semibold text-slate-700 group-hover:text-slate-900">
+                    {post?.author?.name}
+                  </p>
                 </div>
-                <p className="text-base font-medium text-gray-600 group-hover:text-gray-800 dark:text-gray-200 dark:group-hover:text-white">
-                  {post?.author?.name}
-                </p>
                 {formattedDate !== "" && (
-                  <>
-                    <span className="font-bold text-gray-200 dark:text-gray-500 mx-2">
-                      —
-                    </span>
-                    <p className="text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150">
-                      {formattedDate}
-                    </p>
-                  </>
+                  <div className="inline-flex items-center gap-2 text-sm text-slate-400 group-hover:text-slate-500">
+                    <span className="h-1 w-1 rounded-full bg-amber-400" aria-hidden="true" />
+                    {formattedDate}
+                  </div>
                 )}
               </div>
-            </div>
+            </article>
           </Link>
         );
       })}

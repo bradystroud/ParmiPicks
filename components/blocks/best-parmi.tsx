@@ -2,8 +2,7 @@ import * as React from "react";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { Template } from "tinacms";
-import { useEffect, useMemo, useState } from "react";
-import { client } from "../../tina/__generated__/client";
+import { useMemo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -91,69 +90,7 @@ export const BestParmi = ({
   topParmi: topParmiProp,
 }: BestParmiProps) => {
   const isDataDriven = data?.isDataDriven ?? true;
-  const initialTopParmi = useMemo(
-    () => normalizeTopParmi(topParmiProp),
-    [topParmiProp]
-  );
-  const [topParmi, setTopParmi] = useState<TopParmi | null>(initialTopParmi);
-  const [isLoading, setIsLoading] = useState<boolean>(
-    isDataDriven && !initialTopParmi
-  );
-
-  useEffect(() => {
-    if (initialTopParmi) {
-      setTopParmi(initialTopParmi);
-      setIsLoading(false);
-      return;
-    }
-
-    setTopParmi(null);
-
-    if (!isDataDriven) {
-      setIsLoading(false);
-    } else {
-      setIsLoading(true);
-    }
-  }, [initialTopParmi, isDataDriven]);
-
-  useEffect(() => {
-    if (!isDataDriven || topParmi) {
-      return;
-    }
-
-    let isMounted = true;
-
-    const fetchData = async () => {
-      setIsLoading(true);
-
-      try {
-        const result = await client.queries.topReviewQuery();
-        if (!isMounted) {
-          return;
-        }
-
-        const fetched = normalizeTopParmi(
-          result?.data?.reviewConnection?.edges?.[0]?.node ?? null
-        );
-
-        if (fetched) {
-          setTopParmi(fetched);
-        }
-      } catch (error) {
-        console.error("Failed to fetch top parmi", error);
-      } finally {
-        if (isMounted) {
-          setIsLoading(false);
-        }
-      }
-    };
-
-    fetchData();
-
-    return () => {
-      isMounted = false;
-    };
-  }, [isDataDriven, topParmi]);
+  const topParmi = useMemo(() => normalizeTopParmi(topParmiProp), [topParmiProp]);
 
   const reviewHref = useMemo(() => {
     const rawReviewUrl = topParmi?.reviewUrl;
@@ -207,15 +144,9 @@ export const BestParmi = ({
     return formatter.format(topParmi.score);
   }, [topParmi]);
 
-  const badgeLabel = topParmi
-    ? "Top Rated"
-    : isLoading
-    ? "Loading"
-    : "In Review";
+  const badgeLabel = topParmi ? "Top Rated" : "In Review";
 
-  const heading = isLoading
-    ? "Finding your parmi..."
-    : topParmi?.name ?? "No parmi crowned yet";
+  const heading = topParmi?.name ?? "No parmi crowned yet";
 
   const description = topParmi
     ? "This parmi earned the highest score in our reviews and is the one we keep recommending to friends. Expect golden crumbed chicken, lashings of sauce, and a plate worth travelling for."
@@ -225,9 +156,9 @@ export const BestParmi = ({
 
   const updatedCopy = topParmi
     ? `Updated ${formattedDate ?? "recently"}`
-    : isLoading
-    ? "Checking the leaderboard..."
-    : "No winner yet — stay tuned!";
+    : isDataDriven
+    ? "No winner yet — stay tuned!"
+    : "Editor curated — update this block anytime.";
 
   const externalLinkProps: { target?: string; rel?: string } = isExternalReview
     ? { target: "_blank", rel: "noopener noreferrer" }

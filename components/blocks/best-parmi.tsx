@@ -157,8 +157,8 @@ export const BestParmi = ({
   const updatedCopy = topParmi
     ? `Updated ${formattedDate ?? "recently"}`
     : isDataDriven
-    ? "No winner yet — stay tuned!"
-    : "Editor curated — update this block anytime.";
+      ? "No winner yet — stay tuned!"
+      : "Editor curated — update this block anytime.";
 
   const externalLinkProps: { target?: string; rel?: string } = isExternalReview
     ? { target: "_blank", rel: "noopener noreferrer" }

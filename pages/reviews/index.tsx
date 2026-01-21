@@ -34,26 +34,22 @@ export default function ReviewPage(
         />
       </Head>
       <Section className="flex-1">
-        <Container size="large" width="small" className="max-w-6xl">
-          <div className="mb-12 rounded-3xl border border-white/70 bg-white/80 px-8 py-10 shadow-lg shadow-amber-100/40 backdrop-blur">
-            <div className="flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-500">
-                  Real pub experiences
-                </p>
-                <h1 className="mt-3 text-4xl font-extrabold text-slate-900 sm:text-5xl">
-                  Parmi reviews
-                </h1>
-                <p className="mt-4 max-w-2xl text-base text-slate-600">
-                  Browse every chicken parmigiana we&apos;ve tasted — complete with scores, tasting notes, and the pubs that serve them best.
-                </p>
-              </div>
-              <div className="flex items-center gap-3">
-                <label htmlFor="sort" className="text-sm font-semibold text-slate-500">
-                  Sort by
-                </label>
+        <Container size="large" width="small" className="max-w-5xl">
+          <div className="mb-14 text-center">
+            <h1 className="text-3xl font-semibold text-[#d85530] sm:text-4xl">
+              Parmi Reviews
+            </h1>
+            <p className="mx-auto mt-4 max-w-2xl text-base text-[#d85530]/80">
+              Browse every chicken parmigiana we&apos;ve tasted — complete with scores,
+              tasting notes, and the pubs that serve them best.
+            </p>
+            <div className="mt-8 flex justify-center">
+              <label htmlFor="sort" className="sr-only">
+                Sort by
+              </label>
+              <div className="relative">
                 <select
-                  className="w-full max-w-[10rem] rounded-full border border-slate-300/70 bg-white/90 px-4 py-2 text-sm font-medium text-slate-700 shadow-sm shadow-slate-200/60 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/60"
+                  className="appearance-none rounded-full bg-[#d85530] px-8 py-3 text-sm font-semibold text-white shadow-md shadow-[#d85530]/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d85530]/50"
                   name="sort"
                   id="sort"
                   onChange={handleChange}
@@ -65,6 +61,12 @@ export default function ReviewPage(
                     </option>
                   ))}
                 </select>
+                <span
+                  aria-hidden="true"
+                  className="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 text-xs text-white/80"
+                >
+                  ▼
+                </span>
               </div>
             </div>
           </div>

@@ -166,53 +166,54 @@ export const BestParmi = ({
 
   return (
     <Section>
-      <Container size="large" className="gap-8" data-tinafield={parentField}>
-        <div className="flex flex-col gap-6 text-center md:text-left">
-          <p className="text-sm font-medium uppercase tracking-[0.25em] text-slate-500">
-            House Favourite
-          </p>
-          <h2 className="text-4xl font-semibold text-slate-900 md:text-5xl">
-            Best Parmi
-          </h2>
-        </div>
+      <Container size="large" className="max-w-5xl" data-tinafield={parentField}>
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#d85530] text-white shadow-xl">
+          <div className="pointer-events-none absolute -left-10 -top-6 h-28 w-28 rotate-[-12deg]" aria-hidden="true">
+            <svg viewBox="0 0 120 120" className="h-full w-full fill-white/80">
+              <path d="M10 90L35 35l25 30 25-40 25 65z" />
+              <circle cx="35" cy="35" r="6" />
+              <circle cx="60" cy="65" r="6" />
+              <circle cx="85" cy="25" r="6" />
+            </svg>
+          </div>
 
-        <div className="relative isolate overflow-hidden rounded-3xl bg-gradient-to-br from-amber-50 via-orange-50 to-amber-100 text-slate-900 shadow-2xl ring-1 ring-amber-200/60">
-          <div className="grid gap-10 lg:grid-cols-[1.1fr,0.9fr]">
-            <div className="relative flex flex-col gap-6 p-8 sm:p-12">
-              <div className="flex flex-col gap-4 text-left">
-                <div className="inline-flex items-center gap-3 self-start rounded-full border border-amber-200 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-[0.3em] text-amber-700">
-                  {badgeLabel}
-                </div>
-
-                <h3 className="text-4xl font-bold text-slate-900 sm:text-5xl">
+          <div className="grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.1fr,0.9fr]">
+            <div className="flex flex-col gap-6">
+              <div className="text-center lg:text-left">
+                <p className="text-sm font-semibold uppercase tracking-[0.3em] text-white/70">
+                  House Favourite
+                </p>
+                <h2 className="mt-2 text-3xl font-semibold sm:text-4xl">
                   {heading}
-                </h3>
+                </h2>
+              </div>
 
-                <div className="flex flex-col gap-3 text-sm text-slate-600 sm:flex-row sm:items-center sm:gap-6">
-                  <div className="inline-flex items-center gap-3">
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-900 text-lg font-semibold text-amber-300">
-                      ★
-                    </span>
-                    <span className="text-base font-semibold text-slate-900 sm:text-lg">
+              <div className="flex flex-col gap-4 text-sm text-white/80 sm:flex-row sm:items-center sm:gap-6">
+                <div className="flex items-center gap-4">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-3xl text-[#d85530]">
+                    ★
+                  </span>
+                  <div>
+                    <p className="text-lg font-semibold text-white">
                       {formattedScore}/10
-                    </span>
+                    </p>
+                    {topParmi && formattedDate && (
+                      <p className="text-xs text-white/70">
+                        Crowned on {formattedDate}
+                      </p>
+                    )}
                   </div>
-
-                  {topParmi && formattedDate && (
-                    <span className="flex items-center gap-2">
-                      <span className="h-2 w-2 rounded-full bg-emerald-500" aria-hidden="true" />
-                      Crowned on {formattedDate}
-                    </span>
-                  )}
                 </div>
               </div>
 
-              <p className="max-w-xl text-base text-slate-600">{description}</p>
+              <p className="max-w-xl text-sm leading-relaxed text-white/85">
+                {description}
+              </p>
 
-              <div className="mt-auto flex flex-col items-start gap-4 sm:flex-row">
+              <div className="mt-2 flex flex-wrap items-center gap-4">
                 <Link
                   href={reviewHref}
-                  className="inline-flex items-center gap-2 rounded-full bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-amber-400 focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-500/40"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#d85530] shadow-sm transition hover:bg-[#fff3ee] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                   {...externalLinkProps}
                 >
                   {ctaLabel}
@@ -220,36 +221,31 @@ export const BestParmi = ({
                     →
                   </span>
                 </Link>
-
-                <span className="text-sm text-slate-500">{updatedCopy}</span>
+                <span className="text-xs uppercase tracking-[0.2em] text-white/60">
+                  {updatedCopy}
+                </span>
               </div>
             </div>
 
-            <div className="relative min-h-[260px] overflow-hidden lg:min-h-[380px]">
-              {topParmi?.imageUrl ? (
-                <Image
-                  src={topParmi.imageUrl}
-                  alt={topParmi?.name ? `${topParmi.name} parmi` : "Parmi"}
-                  fill
-                  sizes="(min-width: 1024px) 40vw, 100vw"
-                  className="object-cover"
-                  priority
-                />
-              ) : (
-                <div
-                  className="absolute inset-0 bg-gradient-to-br from-amber-100 via-white to-white"
-                  aria-hidden="true"
-                />
-              )}
-
-              <div
-                className="absolute inset-0 bg-gradient-to-t from-slate-900/5 via-slate-900/0 to-white/20 lg:bg-gradient-to-l"
-                aria-hidden="true"
-              />
-
-              <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-xs font-medium uppercase tracking-[0.3em] text-slate-500">
-                <span>Chef&apos;s pick</span>
-                <span>Parmi Picks</span>
+            <div className="relative flex items-center justify-center">
+              <div className="relative h-full w-full overflow-hidden rounded-3xl bg-white/10 p-3">
+                <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white">
+                  {topParmi?.imageUrl ? (
+                    <Image
+                      src={topParmi.imageUrl}
+                      alt={topParmi?.name ? `${topParmi.name} parmi` : "Parmi"}
+                      fill
+                      sizes="(min-width: 1024px) 40vw, 100vw"
+                      className="object-cover"
+                      priority
+                    />
+                  ) : (
+                    <div
+                      className="absolute inset-0 bg-white/80"
+                      aria-hidden="true"
+                    />
+                  )}
+                </div>
               </div>
             </div>
           </div>

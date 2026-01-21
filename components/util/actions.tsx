@@ -14,7 +14,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
                 key={index}
                 href={action.link ? action.link : "/"}
                 data-tinafield={`${parentField}.${index}`}
-                className="group inline-flex items-center gap-3 rounded-full bg-slate-900 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-slate-900/10 transition hover:-translate-y-0.5 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="group inline-flex items-center gap-3 rounded-full bg-[#d85530] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#d85530]/25 transition hover:-translate-y-0.5 hover:bg-[#c84e2d] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d85530]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 <span>{action.label}</span>
                 {action.icon && (
@@ -30,7 +30,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
             const isExternal = action.type === "linkExternal" || href.startsWith("http");
 
             const linkContent = (
-              <span className="group inline-flex items-center gap-2 text-sm font-semibold text-slate-700 transition hover:text-slate-900">
+              <span className="group inline-flex items-center gap-2">
                 {action.label}
                 {action.icon && (
                   <BiRightArrowAlt className="h-5 w-5 transition-transform group-hover:translate-x-1" />
@@ -45,7 +45,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
                 data-tinafield={`${parentField}.${index}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border border-slate-300/70 bg-white/70 px-4 py-2 shadow-sm shadow-slate-200/60 backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-300/80 hover:bg-amber-50/80"
+                className="rounded-full border-2 border-[#d85530] bg-white px-6 py-3 text-sm font-semibold text-[#d85530] shadow-sm shadow-[#d85530]/15 transition hover:-translate-y-0.5 hover:bg-[#fff3ee]"
               >
                 {linkContent}
               </a>
@@ -54,7 +54,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
                 key={index}
                 href={href}
                 data-tinafield={`${parentField}.${index}`}
-                className="rounded-full border border-slate-300/70 bg-white/70 px-4 py-2 shadow-sm shadow-slate-200/60 backdrop-blur transition hover:-translate-y-0.5 hover:border-amber-300/80 hover:bg-amber-50/80"
+                className="rounded-full border-2 border-[#d85530] bg-white px-6 py-3 text-sm font-semibold text-[#d85530] shadow-sm shadow-[#d85530]/15 transition hover:-translate-y-0.5 hover:bg-[#fff3ee]"
               >
                 {linkContent}
               </Link>

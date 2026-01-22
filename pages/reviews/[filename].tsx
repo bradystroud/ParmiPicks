@@ -176,7 +176,6 @@ export const getStaticProps = async ({ params }) => {
   return {
     props: {
       ...tinaProps,
-      __filename,
     },
   };
 };

@@ -28,7 +28,7 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta property="twitter:description" content={ogDescription} />
         <meta property="twitter:image" content={ogImageUrl} />
         <meta property="og:image" content={ogImageUrl} />
-        <link rel="icon" href="favicon.svg" />
+        <link rel="icon" href="/parmi-picks-logo.svg" />
         <meta name="robots" content="index, follow" />{" "}
       </Head>
       <div className="flex min-h-screen flex-col">

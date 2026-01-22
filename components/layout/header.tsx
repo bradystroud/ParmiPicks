@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { Container } from "../util/container";
 import { FaBars, FaTimes } from "react-icons/fa";
 import Link from "next/link";
+import Image from "next/image";
 
 export const Header = ({ data }) => {
   const router = useRouter();
@@ -57,13 +58,13 @@ export const Header = ({ data }) => {
       <Container size="custom" className="max-w-6xl py-5">
         <nav className="flex items-center justify-between gap-6">
           <Link href="/" className="flex items-center gap-4">
-            <span className="flex h-14 w-14 items-center justify-center rounded-full border-2 border-white bg-white text-[10px] font-extrabold uppercase leading-tight text-[#d85530]">
-              <span className="text-center">
-                Parmi
-                <br />
-                Picks
-              </span>
-            </span>
+            <Image 
+                  src="/parmi-picks-logo.svg" 
+                  alt="Parmi Picks Logo" 
+                  width={44} 
+                  height={44}
+                  className="h-11 w-11"
+                />
           </Link>
 
           <div className="hidden items-center gap-6 md:flex">

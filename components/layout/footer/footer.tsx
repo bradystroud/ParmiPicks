@@ -2,6 +2,7 @@ import React from "react";
 import { FaGithub, FaTwitter } from "react-icons/fa";
 import { AiFillInstagram } from "react-icons/ai";
 import { Container } from "../../util/container";
+import Image from "next/image";
 
 export const Footer = ({ data }) => {
   const social = data?.social ?? {};
@@ -43,12 +44,14 @@ export const Footer = ({ data }) => {
       >
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-white text-[9px] font-extrabold uppercase leading-tight text-[#d85530]">
-              <span className="text-center">
-                Parmi
-                <br />
-                Picks
-              </span>
+            <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-white overflow-hidden">
+              <Image 
+                src="/parmi-picks-logo.svg" 
+                alt="Parmi Picks Logo" 
+                width={48} 
+                height={48}
+                className="h-12 w-12"
+              />
             </span>
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white/80">
               Parmi Picks

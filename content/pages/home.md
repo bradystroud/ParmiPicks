@@ -18,7 +18,7 @@ blocks:
         icon: false
         link: /about
     image:
-      src: /uploads/parmi-illustration.svg
+      src: /Parmi-graphic.svg
       alt: Illustration of a parmi on a plate
     color: default
     _template: hero

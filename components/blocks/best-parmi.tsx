@@ -168,15 +168,6 @@ export const BestParmi = ({
     <Section>
       <Container size="large" className="max-w-5xl" data-tinafield={parentField}>
         <div className="relative overflow-hidden rounded-[2.5rem] bg-[#d85530] text-white shadow-xl">
-          <div className="pointer-events-none absolute -left-10 -top-6 h-28 w-28 rotate-[-12deg]" aria-hidden="true">
-            <svg viewBox="0 0 120 120" className="h-full w-full fill-white/80">
-              <path d="M10 90L35 35l25 30 25-40 25 65z" />
-              <circle cx="35" cy="35" r="6" />
-              <circle cx="60" cy="65" r="6" />
-              <circle cx="85" cy="25" r="6" />
-            </svg>
-          </div>
-
           <div className="grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.1fr,0.9fr]">
             <div className="flex flex-col gap-6">
               <div className="text-center lg:text-left">

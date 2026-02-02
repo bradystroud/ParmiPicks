@@ -4,6 +4,7 @@ import { Container } from "../util/container";
 import { Section } from "../util/section";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { Template } from "tinacms";
+import Image from "next/image";
 
 export const Hero = ({ data, parentField }) => {
   return (
@@ -34,15 +35,18 @@ export const Hero = ({ data, parentField }) => {
             />
           )}
         </div>
-        {data.image && (
+        {data.image?.src && (
           <div
             data-tinafield={`${parentField}.image`}
             className="mt-10 flex justify-center"
           >
-            <img
+            <Image
               className="h-auto w-48 sm:w-56"
-              alt={data.image.alt}
+              alt={typeof data.image.alt === "string" ? data.image.alt : ""}
               src={data.image.src}
+              width={224}
+              height={224}
+              priority
             />
           </div>
         )}

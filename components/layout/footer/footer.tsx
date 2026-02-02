@@ -44,13 +44,13 @@ export const Footer = ({ data }) => {
       >
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-white overflow-hidden">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-[#d85530] p-1 overflow-hidden">
               <Image 
                 src="/parmi-picks-logo.svg" 
                 alt="Parmi Picks Logo" 
-                width={48} 
-                height={48}
-                className="h-12 w-12"
+                width={40} 
+                height={40}
+                className="h-10 w-10"
               />
             </span>
             <p className="text-sm font-semibold uppercase tracking-[0.25em] text-white/80">

@@ -20,6 +20,12 @@
   }
 }
 
+@layer base {
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-[#d85530];
+  }
+}
+
 @layer utilities {
   .backdrop-card {
     @apply border border-white/60 bg-white/70 shadow-xl shadow-slate-200/60 backdrop-blur;

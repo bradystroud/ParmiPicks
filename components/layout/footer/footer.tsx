@@ -37,7 +37,7 @@ export const Footer = ({ data }) => {
   };
 
   return (
-    <footer className="bg-[#d85530] text-white">
+    <footer className="bg-[#d85530] text-white" role="contentinfo">
       <Container
         className="flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between"
         size="large"

@@ -32,11 +32,17 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta name="robots" content="index, follow" />{" "}
       </Head>
       <div className="flex min-h-screen flex-col">
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-full focus:bg-[#d85530] focus:px-6 focus:py-3 focus:text-sm focus:font-semibold focus:text-white focus:shadow-lg"
+        >
+          Skip to main content
+        </a>
         <Header data={data?.header} />
-        <div className="flex flex-1 flex-col">
+        <main id="main-content" className="flex flex-1 flex-col">
           <NextBreadcrumb />
           {children}
-        </div>
+        </main>
         <Footer data={data?.footer} />
       </div>
     </>

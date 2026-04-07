@@ -105,7 +105,7 @@ export default function ReviewPage(
                   <Image
                     className="h-14 w-14 object-cover rounded-full shadow-sm"
                     src={data.review.author.avatar}
-                    alt={data.review.author.name}
+                    alt={`Avatar of ${data.review.author.name}`}
                     height={56}
                     width={56}
                   />
@@ -118,12 +118,13 @@ export default function ReviewPage(
                 </span>
               </>
             )}
-            <p
+            <time
               data-tinafield="date"
+              dateTime={data.review.date}
               className="text-base text-gray-400 group-hover:text-gray-500 dark:text-gray-300 dark:group-hover:text-gray-150"
             >
               {formattedDate}
-            </p>
+            </time>
           </div>
         </Container>
         <Container className={`flex-1 pt-4`} width="small" size="large">
@@ -131,9 +132,9 @@ export default function ReviewPage(
             <TinaMarkdown content={data.review._body} />
           </div>
           <div className="mt-12 rounded-3xl border border-amber-200/60 bg-gradient-to-br from-amber-50/80 via-white to-emerald-50/80 p-8 shadow-lg shadow-amber-100/40">
-            <h3 className="text-2xl font-semibold text-slate-900">
+            <h2 className="text-2xl font-semibold text-slate-900">
               Plan your visit
-            </h3>
+            </h2>
             <p className="mt-2 text-sm text-slate-500">
               Find {restaurant.name} on the map and plan your next parmi pilgrimage.
             </p>

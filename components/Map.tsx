@@ -73,6 +73,8 @@ const Map = ({ locations }) => {
         zoom={zoomLevel}
         onLoad={onLoad}
         onZoomChanged={onZoomChanged}
+        options={{ mapTypeControlOptions: { position: undefined } }}
+        aria-label="Map showing reviewed parmi locations"
       >
         {locations.map((location, index) => (
           <Marker

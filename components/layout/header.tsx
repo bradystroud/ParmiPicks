@@ -47,6 +47,7 @@ export const Header = ({ data }) => {
         className={`rounded-full px-4 py-2 ${baseClasses} ${
           mobile ? mobileClasses : desktopClasses
         }`}
+        {...(isActive ? { "aria-current": "page" as const } : {})}
       >
         {item.label}
       </Link>
@@ -56,8 +57,8 @@ export const Header = ({ data }) => {
   return (
     <header className="bg-[#d85530] text-white">
       <Container size="custom" className="max-w-6xl py-5">
-        <nav className="flex items-center justify-between gap-6">
-          <Link href="/" className="flex items-center gap-4">
+        <nav className="flex items-center justify-between gap-6" aria-label="Main navigation">
+          <Link href="/" className="flex items-center gap-4" aria-label="Parmi Picks home">
             <Image 
                   src="/parmi-picks-logo.svg" 
                   alt="Parmi Picks Logo" 
@@ -87,7 +88,7 @@ export const Header = ({ data }) => {
         </nav>
 
         {expanded && (
-          <div className="mt-4 rounded-3xl border border-white/30 bg-white/10 px-6 py-5 md:hidden">
+          <div className="mt-4 rounded-3xl border border-white/30 bg-white/10 px-6 py-5 md:hidden" role="navigation" aria-label="Mobile navigation">
             <div className="flex flex-col gap-3">
               {navItems.map((item, index) => renderNavItem(item, index, true))}
             </div>

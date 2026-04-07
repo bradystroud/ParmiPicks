@@ -64,7 +64,7 @@ const NextBreadcrumb = () => {
                 </li>
                 <li>
                   {isLast ? (
-                    <span className="rounded-full bg-transparent px-2 py-1">{cleanUpLink(link)}</span>
+                    <span className="rounded-full bg-transparent px-2 py-1" aria-current="page">{cleanUpLink(link)}</span>
                   ) : (
                     <Link
                       className={`rounded-full px-2 py-1 transition ${itemClasses}`}

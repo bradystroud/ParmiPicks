@@ -181,7 +181,7 @@ export const BestParmi = ({
 
               <div className="flex flex-col gap-4 text-sm text-white/80 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex items-center gap-4">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-3xl text-[#d85530]">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-3xl text-[#d85530]" aria-hidden="true">
                     ★
                   </span>
                   <div>

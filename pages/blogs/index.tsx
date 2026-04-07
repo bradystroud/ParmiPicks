@@ -72,7 +72,7 @@ export default function BlogsPage(
                             <div className="flex items-center mr-4">
                               <Image
                                 src={post.node.author.avatar}
-                                alt={post.node.author.name}
+                                alt={`Avatar of ${post.node.author.name}`}
                                 width={24}
                                 height={24}
                                 className="rounded-full mr-2"
@@ -80,7 +80,7 @@ export default function BlogsPage(
                               <span>{post.node.author.name}</span>
                             </div>
                           )}
-                          <time>{formattedDate}</time>
+                          <time dateTime={post.node.date}>{formattedDate}</time>
                         </div>
                       </div>
                     </article>

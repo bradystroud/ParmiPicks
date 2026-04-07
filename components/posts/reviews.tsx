@@ -36,7 +36,7 @@ export const Reviews = ({
             <article className="mb-8 rounded-3xl border-2 border-[#6b63ff] bg-[#d85530] px-8 py-9 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-4">
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-[#fff3ee] text-lg font-bold text-[#d85530] shadow-inner">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-[#fff3ee] text-lg font-bold text-[#d85530] shadow-inner" aria-label={`Score: ${post.score} out of 10`} role="img">
                     {post.score}
                   </span>
                   <div>
@@ -50,7 +50,7 @@ export const Reviews = ({
                 </div>
                 <span className="hidden items-center gap-2 text-sm font-medium text-white/70 sm:inline-flex">
                   Read review
-                  <BsArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  <BsArrowRight className="h-4 w-4 transition group-hover:translate-x-1" aria-hidden="true" />
                 </span>
               </div>
             </article>

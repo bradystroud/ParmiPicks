@@ -20,6 +20,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
                 {action.icon && (
                   <BiRightArrowAlt
                     className="h-5 w-5 transition-transform group-hover:translate-x-1"
+                    aria-hidden="true"
                   />
                 )}
               </Link>
@@ -33,7 +34,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
               <span className="group inline-flex items-center gap-2">
                 {action.label}
                 {action.icon && (
-                  <BiRightArrowAlt className="h-5 w-5 transition-transform group-hover:translate-x-1" />
+                  <BiRightArrowAlt className="h-5 w-5 transition-transform group-hover:translate-x-1" aria-hidden="true" />
                 )}
               </span>
             );

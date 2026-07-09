@@ -1,7 +1,9 @@
 # https://chat.deepseek.com/a/chat/s/a55bd8ef-a8b5-44ee-8364-cd2a15fb270d
+import base64
 import os
 import time
-import requests
+import urllib.request
+import xml.etree.ElementTree as ET
 from datetime import datetime
 from dotenv import load_dotenv
 import openai
@@ -38,18 +40,54 @@ def list_files_in_folder(folder):
     log(f"Found {len(files)} files.")
     return files
 
-def generate_blog_with_openai(context_files):
+NEWS_FEEDS = [
+    "https://www.abc.net.au/news/feed/51120/rss.xml",  # ABC News Australia - Just In
+    "https://feeds.bbci.co.uk/sport/rss.xml",  # BBC Sport - big events like the World Cup
+]
+
+
+def fetch_recent_headlines(limit_per_feed=5):
+    """Fetch recent news headlines to give the blog topical flavour. Best-effort: returns [] on failure."""
+    headlines = []
+    for feed in NEWS_FEEDS:
+        try:
+            request = urllib.request.Request(feed, headers={"User-Agent": "parmipicks-blog-bot"})
+            with urllib.request.urlopen(request, timeout=10) as response:
+                root = ET.fromstring(response.read())
+            titles = [item.findtext("title") for item in root.iter("item")]
+            headlines.extend(title for title in titles[:limit_per_feed] if title)
+        except Exception as e:
+            log(f"Could not fetch news from {feed}: {e}")
+    log(f"Fetched {len(headlines)} news headlines.")
+    return headlines
+
+
+def generate_blog_with_openai(context_files, headlines=None):
     """Generate blog content using OpenAI."""
     log("Starting blog generation...")
     start_time = time.time()
 
     context = " ".join(context_files)
-    prompt = f"""
-    Write a unique and engaging blog post about chicken parmigiana. 
-    Avoid these topics, as they are existing blogs: 
-    
-    {context}
 
+    news_section = ""
+    if headlines:
+        headline_list = "\n".join(f"- {headline}" for headline in headlines)
+        news_section = f"""
+    For inspiration, here are some current news headlines:
+
+    {headline_list}
+
+    If one of these (e.g. a major sporting event or cultural moment) can be tied to chicken
+    parmigiana in a fun, natural way, weave it into the blog post. If none fit, ignore them
+    entirely - never force a connection.
+    """
+
+    prompt = f"""
+    Write a unique and engaging blog post about chicken parmigiana.
+    Avoid these topics, as they are existing blogs:
+
+    {context}
+    {news_section}
     The md blog should include:
     - An introduction to the topic
     - Sections with headings
@@ -61,8 +99,8 @@ def generate_blog_with_openai(context_files):
 
     client = OpenAI()
 
-    response = client.beta.chat.completions.parse(
-        model="gpt-5",
+    response = client.chat.completions.parse(
+        model="gpt-5.5",
         messages=[
             {
                 "role": "system",
@@ -82,7 +120,7 @@ def generate_blog_with_openai(context_files):
 
 
 def generate_image_with_openai(prompt):
-    """Generate an image using OpenAI DALL·E."""
+    """Generate an image using OpenAI GPT Image."""
     log("Starting image generation...")
     start_time = time.time()
 
@@ -90,22 +128,23 @@ def generate_image_with_openai(prompt):
 
     try:
         response = client.images.generate(
-            model="dall-e-3",
+            model="gpt-image-2",
             prompt=prompt,
-            size="1792x1024",
-            quality="standard",
+            size="1536x1024",
+            quality="high",
             n=1,
         )
     except openai.OpenAIError as e:
-        print(e.http_status)
-        print(e.error)
+        log(f"Image generation failed: {e}")
+        return None
 
     log(f"Image generated in {time.time() - start_time:.2f} seconds.")
 
-    return response.data[0].url
+    # GPT Image models return base64-encoded images, not URLs
+    return base64.b64decode(response.data[0].b64_json)
 
 
-def save_blog_and_image(blog, image_url):
+def save_blog_and_image(blog, image_bytes):
     """Save the blog post and image locally."""
     log("Saving blog and image...")
     start_time = time.time()
@@ -133,11 +172,10 @@ author: 'content/authors/brady.md'
         f.write(formatted_blog)
     log(f"Blog saved to {blog_filename}")
 
-    # Download and save image
-    if image_url:
-        image_response = requests.get(image_url)
+    # Save image
+    if image_bytes:
         with open(image_filename, "wb") as f:
-            f.write(image_response.content)
+            f.write(image_bytes)
         log(f"Image saved to {image_filename}")
 
     log(f"Save operation completed in {time.time() - start_time:.2f} seconds.")
@@ -163,15 +201,24 @@ def main():
     # Step 1: List files for context
     context_files = list_files_in_folder(BLOG_FOLDER)
 
-    # Step 2: Generate blog content
-    blog_content = generate_blog_with_openai(context_files)
+    # Step 2: Fetch recent headlines for topical flavour
+    headlines = fetch_recent_headlines()
 
-    # Step 3: Generate image
+    # Step 3: Generate blog content
+    blog_content = generate_blog_with_openai(context_files, headlines)
+
+    # Step 4: Generate image
     image_prompt = f"I am writing a blog about {blog_content.title} and I need an image to go with it. The image should be related to the topic and visually appealing."
-    image_url = generate_image_with_openai(image_prompt)
+    image_bytes = generate_image_with_openai(image_prompt)
 
-    # Step 4: Save blog and image
-    save_blog_and_image(blog_content, image_url)
+    # Step 5: Save blog and image
+    save_blog_and_image(blog_content, image_bytes)
+
+    # Expose the title to later workflow steps (e.g. the PR title)
+    github_env = os.getenv("GITHUB_ENV")
+    if github_env:
+        with open(github_env, "a") as f:
+            f.write(f"BLOG_TITLE<<BLOG_TITLE_EOF\n{blog_content.title}\nBLOG_TITLE_EOF\n")
 
     log("Script execution completed.")
     log(f"Script executed in {time.time() - start_time:.2f} seconds.")

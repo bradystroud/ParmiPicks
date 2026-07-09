@@ -28,7 +28,10 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta property="twitter:description" content={ogDescription} />
         <meta property="twitter:image" content={ogImageUrl} />
         <meta property="og:image" content={ogImageUrl} />
-        <link rel="icon" href="/parmi-picks-logo.svg" />
+        <link rel="icon" href="/favicon.ico" sizes="48x48" />
+        <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+        <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />
+        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <meta name="robots" content="index, follow" />{" "}
       </Head>
       <div className="flex min-h-screen flex-col">

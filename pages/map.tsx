@@ -1,52 +1,68 @@
 import Head from "next/head";
 import dynamic from "next/dynamic";
-import fetch from "node-fetch";
 import { Layout } from "../components/layout";
 import { Section } from "../components/util/section";
 import { Container } from "../components/util/container";
 import { client } from "../tina/__generated__/client";
+import type { MapLocation } from "../components/Map";
 
 const Map = dynamic(() => import("../components/Map"), { ssr: false });
 
 const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
-export async function getServerSideProps() {
+async function geocode(address: string): Promise<{ lat: number; lng: number } | null> {
+  if (!address) return null;
+  try {
+    const response = await fetch(
+      `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
+        address
+      )}&key=${GOOGLE_MAPS_API_KEY}`
+    );
+    const data = await response.json();
+    const location = data.results?.[0]?.geometry?.location;
+    return location ? { lat: location.lat, lng: location.lng } : null;
+  } catch (err) {
+    console.error(`Failed to geocode "${address}":`, err);
+    return null;
+  }
+}
+
+// Geocoding runs at build time and is refreshed via ISR rather than on every
+// request, so visitors never wait on a fan-out of Google API calls.
+export async function getStaticProps() {
   const reviewsListData = await client.queries.reviewConnection();
 
-  const locations = await Promise.all(
-    reviewsListData.data.reviewConnection.edges.map(async (review) => {
-      const restaurant = review.node.restaurant;
-      const response = await fetch(
-        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
-          restaurant.location
-        )}&key=${GOOGLE_MAPS_API_KEY}`
-      );
-      const data = await response.json();
+  const locations = (
+    await Promise.all(
+      reviewsListData.data.reviewConnection.edges.map(async (review) => {
+        const restaurant = review.node.restaurant;
+        const coords = await geocode(restaurant.location || restaurant.name);
+        if (!coords) return null;
 
-      const location = data.results[0]?.geometry.location;
-
-      return {
-        name: restaurant.name,
-        lat: location?.lat || 0,
-        lng: location?.lng || 0,
-        review: {
-          url: review.node._sys.filename,
-          score: review.node.score,
-          date: review.node.date,
-          restaurant: review.node.restaurant.name,
-        },
-      };
-    })
-  );
+        return {
+          name: restaurant.name,
+          lat: coords.lat,
+          lng: coords.lng,
+          review: {
+            url: review.node._sys.filename,
+            score: review.node.score,
+            date: review.node.date,
+            restaurant: restaurant.name,
+          },
+        } satisfies MapLocation;
+      })
+    )
+  ).filter((location): location is MapLocation => location !== null);
 
   return {
     props: {
       locations,
     },
+    revalidate: 60 * 60 * 24, // refresh geocodes daily
   };
 }
 
-const MapPage = ({ locations }) => {
+const MapPage = ({ locations }: { locations: MapLocation[] }) => {
   const pageTitle = "Parmi Picks | Map";
 
   return (

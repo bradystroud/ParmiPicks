@@ -30,7 +30,7 @@ export default function BlogsPage(
         <Container width="large" className={`flex-1 pb-8`} size="large">
           <h1 className="text-4xl font-bold text-center mb-12">Blog Posts</h1>
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-            {data.blogConnection.edges
+            {[...data.blogConnection.edges]
               .sort(
                 (a, b) =>
                   new Date(b.node.date).getTime() -
@@ -39,7 +39,7 @@ export default function BlogsPage(
               .map((post) => {
                 const date = new Date(post.node.date);
                 const formattedDate = !isNaN(date.getTime())
-                  ? date.toLocaleDateString("en-US", {
+                  ? date.toLocaleDateString("en-AU", {
                       day: "numeric",
                       month: "long",
                       year: "numeric",

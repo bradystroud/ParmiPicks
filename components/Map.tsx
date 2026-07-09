@@ -1,105 +1,184 @@
-import { GoogleMap, LoadScript, Marker, InfoWindow } from "@react-google-maps/api";
+import {
+  GoogleMap,
+  InfoWindowF,
+  MarkerF,
+  useJsApiLoader,
+} from "@react-google-maps/api";
 import router from "next/router";
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useMemo, useRef, useState } from "react";
 
 const containerStyle = {
   width: "100%",
   height: "70vh",
 };
 
+// Centre roughly on Australia so the first paint isn't the middle of the
+// ocean while we wait for fitBounds to run.
 const defaultCenter = {
-  lat: 0,
-  lng: 0
+  lat: -25.27,
+  lng: 133.77,
 };
 
-const Map = ({ locations }) => {
-  const mapRef = useRef(null);
-  const [hoveredReview, setHoveredReview] = useState(null);
-  const [zoomLevel, setZoomLevel] = useState(10);
+export interface MapLocation {
+  name: string;
+  lat: number;
+  lng: number;
+  review: {
+    url: string;
+    score: number;
+    date: string;
+    restaurant: string;
+  };
+}
 
-  // Function to fit bounds to all markers
-  const fitBounds = () => {
-    if (mapRef.current && locations.length > 0) {
+// A warm amber pin that matches the site's palette, with room for the score
+// label to sit inside the head.
+const pinIcon = (): google.maps.Symbol => ({
+  path: "M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z",
+  fillColor: "#d85530",
+  fillOpacity: 1,
+  strokeColor: "#ffffff",
+  strokeWeight: 2,
+  scale: 1.4,
+  anchor: new google.maps.Point(12, 36),
+  labelOrigin: new google.maps.Point(12, 12),
+});
+
+const Map = ({ locations }: { locations: MapLocation[] }) => {
+  const mapRef = useRef<google.maps.Map | null>(null);
+  const [selected, setSelected] = useState<MapLocation | null>(null);
+
+  const { isLoaded, loadError } = useJsApiLoader({
+    id: "google-map-script",
+    googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? "",
+  });
+
+  // Ignore any locations that failed to geocode (they'd otherwise pin to
+  // 0,0 off the coast of Africa and blow out the bounds).
+  const validLocations = useMemo(
+    () => locations.filter((l) => l.lat !== 0 || l.lng !== 0),
+    [locations]
+  );
+
+  const fitBounds = useCallback(
+    (map: google.maps.Map) => {
+      if (validLocations.length === 0) return;
+
       const bounds = new google.maps.LatLngBounds();
-      
-      // Extend bounds with each location
-      locations.forEach(location => {
+      validLocations.forEach((location) => {
         bounds.extend({ lat: location.lat, lng: location.lng });
       });
+      map.fitBounds(bounds, 64);
 
-      // Fit the map to the bounds
-      mapRef.current.fitBounds(bounds);
-
-      // Optional: if you have only one marker, you might want to set a zoom level
-      if (locations.length === 1) {
-        mapRef.current.setZoom(14);
+      // A single marker fits to an extreme zoom; pull it back to something sane.
+      if (validLocations.length === 1) {
+        map.setZoom(14);
       }
-    }
-  };
+    },
+    [validLocations]
+  );
 
-  // Handle map load
-  const onLoad = (map) => {
-    mapRef.current = map;
-    fitBounds();
-  };
+  const onLoad = useCallback(
+    (map: google.maps.Map) => {
+      mapRef.current = map;
+      fitBounds(map);
+    },
+    [fitBounds]
+  );
 
-  const handleMarkerClick = useCallback((latLng, review) => {
-    if (!mapRef.current) return;
-    mapRef.current.panTo(latLng);
-    // Maybe navigate to the review page like this:
-    router.push(`/reviews/${review.url}`);
+  const handleMarkerClick = useCallback((location: MapLocation) => {
+    setSelected(location);
+    mapRef.current?.panTo({ lat: location.lat, lng: location.lng });
   }, []);
 
-  // Handle marker hover - show a preview of the review
-  const handleMarkerHover = useCallback((location) => {
-    setHoveredReview(location);
-  }, []);
+  if (loadError) {
+    return (
+      <div
+        style={containerStyle}
+        className="flex items-center justify-center bg-amber-50 text-slate-600"
+      >
+        <p>Sorry, the map couldn&apos;t load right now. 🫤</p>
+      </div>
+    );
+  }
 
-  const handleMarkerOut = useCallback(() => {
-    setHoveredReview(null);
-  }, []);
-
-  const onZoomChanged = () => {
-    if (mapRef.current) {
-      setZoomLevel(mapRef.current.getZoom());
-    }
-  };
+  if (!isLoaded) {
+    return (
+      <div
+        style={containerStyle}
+        className="flex items-center justify-center bg-amber-50 text-slate-500"
+      >
+        <p className="animate-pulse">Loading the parmi map…</p>
+      </div>
+    );
+  }
 
   return (
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
-      <GoogleMap
-        mapContainerStyle={containerStyle}
-        center={defaultCenter}
-        zoom={zoomLevel}
-        onLoad={onLoad}
-        onZoomChanged={onZoomChanged}
-        options={{ mapTypeControlOptions: { position: undefined } }}
-        aria-label="Map showing reviewed parmi locations"
-      >
-        {locations.map((location, index) => (
-          <Marker
-            key={index}
-            position={{ lat: location.lat, lng: location.lng }}
-            title={location.name}
-            onClick={() => handleMarkerClick({ lat: location.lat, lng: location.lng }, location.review)}
-            onMouseOver={() => handleMarkerHover(location)}
-            onMouseOut={handleMarkerOut}
-          />
-        ))}
-        {hoveredReview && (
-          <InfoWindow
-            position={{ lat: hoveredReview.lat + 7 / zoomLevel, lng: hoveredReview.lng }}
-            onCloseClick={handleMarkerOut}
-          >
-            <div>
-              <h3>{hoveredReview.name} - {hoveredReview.review.score}</h3>
-              <p>Date: {new Date(hoveredReview.review.date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-              <p>click to view</p>
+    <GoogleMap
+      mapContainerStyle={containerStyle}
+      center={defaultCenter}
+      zoom={4}
+      onLoad={onLoad}
+      onClick={() => setSelected(null)}
+      options={{
+        streetViewControl: false,
+        mapTypeControl: false,
+        fullscreenControl: false,
+        clickableIcons: false,
+        gestureHandling: "greedy",
+      }}
+      aria-label="Map showing reviewed parmi locations"
+    >
+      {validLocations.map((location) => (
+        <MarkerF
+          key={location.review.url}
+          position={{ lat: location.lat, lng: location.lng }}
+          title={`${location.name} — ${location.review.score}`}
+          icon={pinIcon()}
+          label={{
+            text: String(location.review.score),
+            color: "#ffffff",
+            fontSize: "11px",
+            fontWeight: "700",
+          }}
+          onClick={() => handleMarkerClick(location)}
+        />
+      ))}
+
+      {selected && (
+        <InfoWindowF
+          position={{ lat: selected.lat, lng: selected.lng }}
+          onCloseClick={() => setSelected(null)}
+          options={{ pixelOffset: new google.maps.Size(0, -38) }}
+        >
+          <div className="min-w-[180px] max-w-[240px] p-1">
+            <div className="flex items-center gap-2">
+              <span className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#d85530] text-sm font-bold text-white">
+                {selected.review.score}
+              </span>
+              <h3 className="text-base font-semibold leading-tight text-slate-900">
+                {selected.name}
+              </h3>
             </div>
-          </InfoWindow>
-        )}
-      </GoogleMap>
-    </LoadScript>
+            <p className="mt-2 text-xs text-slate-500">
+              Reviewed{" "}
+              {new Date(selected.review.date).toLocaleDateString("en-AU", {
+                month: "long",
+                day: "numeric",
+                year: "numeric",
+              })}
+            </p>
+            <button
+              type="button"
+              onClick={() => router.push(`/reviews/${selected.review.url}`)}
+              className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-[#d85530] px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-[#c04a28]"
+            >
+              Read the review →
+            </button>
+          </div>
+        </InfoWindowF>
+      )}
+    </GoogleMap>
   );
 };
 

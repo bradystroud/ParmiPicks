@@ -10,6 +10,16 @@ import Head from "next/head";
 import Image from "next/image";
 import MapEmbed from "../../components/blocks/map";
 
+// Flatten a Tina rich-text AST into plain text for meta descriptions.
+function richTextToPlainText(node: any): string {
+  if (!node) return "";
+  if (typeof node.text === "string") return node.text;
+  if (Array.isArray(node.children)) {
+    return node.children.map(richTextToPlainText).join(" ");
+  }
+  return "";
+}
+
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
 ) {
@@ -29,7 +39,7 @@ export default function ReviewPage(
 
   const date = new Date(data.review.date);
   const formattedDate = !isNaN(date.getTime())
-    ? date.toLocaleDateString("en-US", {
+    ? date.toLocaleDateString("en-AU", {
       day: "numeric",
       month: "long",
       year: "numeric",
@@ -38,6 +48,20 @@ export default function ReviewPage(
 
   const restaurant = data.review.restaurant;
   const title = `${restaurant.name} | Parmi Picks`;
+
+  const bodyText = richTextToPlainText(data.review._body)
+    .replace(/\s+/g, " ")
+    .trim();
+  const excerpt =
+    bodyText.length > 0
+      ? `${bodyText.slice(0, 155).trimEnd()}…`
+      : `Our chicken parmi review of ${restaurant.name}, scored ${data.review.score}/10.`;
+
+  const ogImage = data.review.parmiImg
+    ? data.review.parmiImg.startsWith("http")
+      ? data.review.parmiImg
+      : `https://parmipicks.com${data.review.parmiImg}`
+    : null;
 
   return (
     <Layout data={data.global as any}>
@@ -49,8 +73,9 @@ export default function ReviewPage(
           key="canonical"
         />
         <meta property="og:title" content={title} />
-        <meta property="description" content={data.review._body.raw} />
-        <meta property="og:description" content={data.review._body.raw} />
+        <meta name="description" content={excerpt} />
+        <meta property="og:description" content={excerpt} />
+        {ogImage && <meta property="og:image" content={ogImage} />}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -148,22 +173,6 @@ export default function ReviewPage(
               </div>
             </div>
           </div>
-          {/* <Giscus
-            key={title}
-            repo="bradystroud/parmipicks"
-            category="Comments"
-            categoryId="DIC_kwDOJVwLxc4CfgKc"
-            repoId="R_kgDOJVwLxQ"
-            mapping="title"
-            strict="0"
-            reactionsEnabled="1"
-            emitMetadata="0"
-            inputPosition="top"
-            theme="light"
-            lang="en"
-            loading="lazy"
-            term="Welcome to Parmi Picks! Leave a comment or ask a question."
-          /> */}
         </Container>
       </Section>
     </Layout>

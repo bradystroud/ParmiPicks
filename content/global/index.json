@@ -12,6 +12,10 @@
         "label": "Reviews"
       },
       {
+        "href": "map",
+        "label": "Map"
+      },
+      {
         "href": "blogs",
         "label": "Blog"
       }

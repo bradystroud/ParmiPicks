@@ -124,7 +124,7 @@ export const BestParmi = ({
       return null;
     }
 
-    return date.toLocaleDateString("en-US", {
+    return date.toLocaleDateString("en-AU", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -143,8 +143,6 @@ export const BestParmi = ({
 
     return formatter.format(topParmi.score);
   }, [topParmi]);
-
-  const badgeLabel = topParmi ? "Top Rated" : "In Review";
 
   const heading = topParmi?.name ?? "No parmi crowned yet";
 

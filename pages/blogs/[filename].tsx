@@ -28,7 +28,7 @@ export default function BlogPage(
 
   const date = new Date(data.blog.date);
   const formattedDate = !isNaN(date.getTime())
-    ? date.toLocaleDateString("en-US", {
+    ? date.toLocaleDateString("en-AU", {
         day: "numeric",
         month: "long",
         year: "numeric",

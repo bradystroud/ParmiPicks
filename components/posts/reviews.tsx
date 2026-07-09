@@ -11,7 +11,7 @@ export const Reviews = ({
   data: any[];
   sortOption: SortType;
 }) => {
-  const reviewList = data.sort((a, b) => {
+  const reviewList = [...data].sort((a, b) => {
     if (sortOption === "Top") {
       return b.node.score - a.node.score;
     } else if (sortOption === "Low") {

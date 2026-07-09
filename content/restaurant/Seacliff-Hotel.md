@@ -1,7 +1,7 @@
 ---
 name: Seacliff Hotel
 url: 'https://www.seacliffbeachhotel.com.au'
-location: 'Seacliff hotel, SA'
+location: 'Seacliff Hotel, Seacliff, SA'
 ---
 
  

@@ -7,6 +7,7 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
+import { localMedia } from "../../components/util/media";
 
 export default function BlogsPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -56,7 +57,7 @@ export default function BlogsPage(
                       {post.node.heroImage && (
                         <div className="relative h-48 w-full">
                           <Image
-                            src={post.node.heroImage}
+                            src={localMedia(post.node.heroImage)}
                             alt={post.node.title}
                             fill
                             className="object-cover"
@@ -71,7 +72,7 @@ export default function BlogsPage(
                           {post.node.author && (
                             <div className="flex items-center mr-4">
                               <Image
-                                src={post.node.author.avatar}
+                                src={localMedia(post.node.author.avatar)}
                                 alt={`Avatar of ${post.node.author.name}`}
                                 width={24}
                                 height={24}

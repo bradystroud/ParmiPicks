@@ -9,6 +9,7 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import MapEmbed from "../../components/blocks/map";
+import { localMedia, localMediaAbsolute } from "../../components/util/media";
 
 // Flatten a Tina rich-text AST into plain text for meta descriptions.
 function richTextToPlainText(node: any): string {
@@ -57,11 +58,7 @@ export default function ReviewPage(
       ? `${bodyText.slice(0, 155).trimEnd()}…`
       : `Our chicken parmi review of ${restaurant.name}, scored ${data.review.score}/10.`;
 
-  const ogImage = data.review.parmiImg
-    ? data.review.parmiImg.startsWith("http")
-      ? data.review.parmiImg
-      : `https://parmipicks.com${data.review.parmiImg}`
-    : null;
+  const ogImage = localMediaAbsolute(data.review.parmiImg);
 
   return (
     <Layout data={data.global as any}>
@@ -94,7 +91,7 @@ export default function ReviewPage(
               bestRating: "10",
             },
             datePublished: formattedDate,
-            image: data.review.parmiImg,
+            image: localMediaAbsolute(data.review.parmiImg),
             reviewBody: data.review._body.raw,
           })}
         </script>
@@ -110,7 +107,7 @@ export default function ReviewPage(
           <div className="relative mx-auto mb-10 aspect-[4/3] w-full max-w-3xl overflow-hidden rounded-3xl border border-amber-200/60 bg-white/80 shadow-xl shadow-amber-100/50">
             {data.review.parmiImg ? (
               <Image
-                src={data.review.parmiImg}
+                src={localMedia(data.review.parmiImg)}
                 alt={`Chicken parmi from ${restaurant.name}`}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 fill
@@ -129,7 +126,7 @@ export default function ReviewPage(
                 <div className="flex-shrink-0 mr-4">
                   <Image
                     className="h-14 w-14 object-cover rounded-full shadow-sm"
-                    src={data.review.author.avatar}
+                    src={localMedia(data.review.author.avatar)}
                     alt={`Avatar of ${data.review.author.name}`}
                     height={56}
                     width={56}

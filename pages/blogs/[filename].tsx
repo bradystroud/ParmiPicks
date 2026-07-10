@@ -8,6 +8,7 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Giscus from "@giscus/react";
+import { localMedia, localMediaAbsolute } from "../../components/util/media";
 
 export default function BlogPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -59,7 +60,7 @@ export default function BlogPage(
               name: data.blog.author?.name ?? "Anonymous",
             },
             datePublished: formattedDate,
-            image: data.blog.heroImage,
+            image: localMediaAbsolute(data.blog.heroImage),
             articleBody: data.blog._body.raw,
           })}
         </script>
@@ -74,7 +75,7 @@ export default function BlogPage(
           {data.blog.heroImage && (
             <div className="relative w-full h-[400px] mb-8">
               <Image
-                src={data.blog.heroImage}
+                src={localMedia(data.blog.heroImage)}
                 alt={data.blog.title}
                 fill
                 className="object-cover rounded-lg"
@@ -90,7 +91,7 @@ export default function BlogPage(
                 <div className="flex-shrink-0 mr-4">
                   <Image
                     className="h-14 w-14 object-cover rounded-full shadow-sm"
-                    src={data.blog.author.avatar}
+                    src={localMedia(data.blog.author.avatar)}
                     alt={data.blog.author.name}
                     height={56}
                     width={56}

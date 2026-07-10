@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
+import { localMedia } from "../util/media";
 import { Template } from "tinacms";
 import { useMemo } from "react";
 import Image from "next/image";
@@ -221,7 +222,7 @@ export const BestParmi = ({
                 <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-white">
                   {topParmi?.imageUrl ? (
                     <Image
-                      src={topParmi.imageUrl}
+                      src={localMedia(topParmi.imageUrl)}
                       alt={topParmi?.name ? `${topParmi.name} parmi` : "Parmi"}
                       fill
                       sizes="(min-width: 1024px) 40vw, 100vw"

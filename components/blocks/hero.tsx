@@ -2,6 +2,7 @@ import * as React from "react";
 import { Actions } from "../util/actions";
 import { Container } from "../util/container";
 import { Section } from "../util/section";
+import { localMedia } from "../util/media";
 import { TinaMarkdown } from "tinacms/dist/rich-text";
 import type { Template } from "tinacms";
 import Image from "next/image";
@@ -43,7 +44,7 @@ export const Hero = ({ data, parentField }) => {
             <Image
               className="h-auto w-48 sm:w-56"
               alt={typeof data.image.alt === "string" ? data.image.alt : ""}
-              src={data.image.src}
+              src={localMedia(data.image.src)}
               width={224}
               height={224}
               priority

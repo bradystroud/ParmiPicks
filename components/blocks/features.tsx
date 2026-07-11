@@ -34,7 +34,7 @@ export const Features = ({ data, parentField }) => {
     <Section>
       <Container size="large" className="max-w-6xl">
         <div className="mb-12 flex flex-col items-center text-center lg:items-start lg:text-left">
-          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-500">
+          <p className="text-xs font-semibold uppercase tracking-[0.35em] text-brand">
             Why locals love us
           </p>
           <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">

@@ -34,10 +34,10 @@ export const Header = ({ data }) => {
     const baseClasses =
       "transition-colors duration-200 ease-out text-sm font-semibold uppercase tracking-[0.2em]";
     const desktopClasses = isActive
-      ? "bg-white text-[#d85530] shadow-sm"
+      ? "bg-white text-brand shadow-sm"
       : "text-white/90 hover:text-white";
     const mobileClasses = isActive
-      ? "bg-white text-[#d85530]"
+      ? "bg-white text-brand"
       : "text-white/90 hover:bg-white/10";
 
     return (
@@ -55,7 +55,7 @@ export const Header = ({ data }) => {
   };
 
   return (
-    <header className="bg-[#d85530] text-white">
+    <header className="bg-brand text-white">
       <Container size="custom" className="max-w-6xl py-5">
         <nav className="flex items-center justify-between gap-6" aria-label="Main navigation">
           <Link href="/" className="flex items-center gap-4" aria-label="Parmi Picks home">

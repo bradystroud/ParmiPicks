@@ -36,10 +36,10 @@ export default function ReviewPage(
       <Section className="flex-1">
         <Container size="large" width="small" className="max-w-5xl">
           <div className="mb-14 text-center">
-            <h1 className="text-3xl font-semibold text-[#d85530] sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-brand sm:text-4xl">
               Parmi Reviews
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-[#d85530]/80">
+            <p className="mx-auto mt-4 max-w-2xl text-base text-brand/80">
               Browse every chicken parmigiana we&apos;ve tasted — complete with scores,
               tasting notes, and the pubs that serve them best.
             </p>
@@ -49,7 +49,7 @@ export default function ReviewPage(
               </label>
               <div className="relative">
                 <select
-                  className="appearance-none rounded-full bg-[#d85530] px-8 py-3 text-sm font-semibold text-white shadow-md shadow-[#d85530]/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d85530]/50"
+                  className="appearance-none rounded-full bg-brand px-8 py-3 text-sm font-semibold text-white shadow-md shadow-brand/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/50"
                   name="sort"
                   id="sort"
                   onChange={handleChange}

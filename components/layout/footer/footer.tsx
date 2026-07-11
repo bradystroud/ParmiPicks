@@ -25,7 +25,7 @@ export const Footer = ({ data }) => {
 
     return (
       <a
-        className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-white bg-white text-[#d85530] transition hover:-translate-y-1 hover:bg-[#fff3ee]"
+        className="inline-flex h-11 w-11 items-center justify-center rounded-full border-2 border-white bg-white text-brand transition hover:-translate-y-1 hover:bg-brand-tint"
         href={resolvedHref}
         target="_blank"
         rel="noopener noreferrer"
@@ -37,14 +37,14 @@ export const Footer = ({ data }) => {
   };
 
   return (
-    <footer className="bg-[#d85530] text-white" role="contentinfo">
+    <footer className="bg-brand text-white" role="contentinfo">
       <Container
         className="flex flex-col gap-8 py-10 md:flex-row md:items-center md:justify-between"
         size="large"
       >
         <div className="flex flex-col gap-3">
           <div className="flex items-center gap-4">
-            <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-[#d85530] p-1 overflow-hidden">
+            <span className="flex h-12 w-12 items-center justify-center rounded-full border-2 border-white bg-brand p-1 overflow-hidden">
               <Image 
                 src="/parmi-picks-logo.svg" 
                 alt="Parmi Picks Logo" 

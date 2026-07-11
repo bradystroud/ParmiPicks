@@ -165,7 +165,7 @@ export const BestParmi = ({
   return (
     <Section>
       <Container size="large" className="max-w-5xl" data-tinafield={parentField}>
-        <div className="relative overflow-hidden rounded-[2.5rem] bg-[#d85530] text-white shadow-xl">
+        <div className="relative overflow-hidden rounded-[2.5rem] bg-brand text-white shadow-xl">
           <div className="grid gap-10 p-8 sm:p-12 lg:grid-cols-[1.1fr,0.9fr]">
             <div className="flex flex-col gap-6">
               <div className="text-center lg:text-left">
@@ -179,7 +179,7 @@ export const BestParmi = ({
 
               <div className="flex flex-col gap-4 text-sm text-white/80 sm:flex-row sm:items-center sm:gap-6">
                 <div className="flex items-center gap-4">
-                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-3xl text-[#d85530]" aria-hidden="true">
+                  <span className="flex h-14 w-14 items-center justify-center rounded-full bg-white text-3xl text-brand" aria-hidden="true">
                     ★
                   </span>
                   <div>
@@ -202,7 +202,7 @@ export const BestParmi = ({
               <div className="mt-2 flex flex-wrap items-center gap-4">
                 <Link
                   href={reviewHref}
-                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#d85530] shadow-sm transition hover:bg-[#fff3ee] focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+                  className="inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-brand shadow-sm transition hover:bg-brand-tint focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
                   {...externalLinkProps}
                 >
                   {ctaLabel}

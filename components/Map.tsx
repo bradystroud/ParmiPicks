@@ -31,8 +31,9 @@ export interface MapLocation {
   };
 }
 
-// A warm amber pin that matches the site's palette, with room for the score
-// label to sit inside the head.
+// Brand-orange map pin, with room for the score label to sit inside the head.
+// Leaflet/Google symbols take a raw colour string, so this is the one place the
+// brand hex can't be a Tailwind token — keep it in sync with theme.colors.brand.
 const pinIcon = (): google.maps.Symbol => ({
   path: "M12 0C5.4 0 0 5.4 0 12c0 9 12 24 12 24s12-15 12-24C24 5.4 18.6 0 12 0z",
   fillColor: "#d85530",
@@ -153,7 +154,7 @@ const Map = ({ locations }: { locations: MapLocation[] }) => {
         >
           <div className="min-w-[180px] max-w-[240px] p-1">
             <div className="flex items-center gap-2">
-              <span className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-[#d85530] text-sm font-bold text-white">
+              <span className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
                 {selected.review.score}
               </span>
               <h3 className="text-base font-semibold leading-tight text-slate-900">
@@ -171,7 +172,7 @@ const Map = ({ locations }: { locations: MapLocation[] }) => {
             <button
               type="button"
               onClick={() => router.push(`/reviews/${selected.review.url}`)}
-              className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-[#d85530] px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-[#c04a28]"
+              className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-brand px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-brand-600"
             >
               Read the review →
             </button>

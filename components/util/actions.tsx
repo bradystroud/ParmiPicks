@@ -14,7 +14,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
                 key={index}
                 href={action.link ? action.link : "/"}
                 data-tinafield={`${parentField}.${index}`}
-                className="group inline-flex items-center gap-3 rounded-full bg-[#d85530] px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-[#d85530]/25 transition hover:-translate-y-0.5 hover:bg-[#c84e2d] focus:outline-none focus-visible:ring-2 focus-visible:ring-[#d85530]/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
+                className="group inline-flex items-center gap-3 rounded-full bg-brand px-7 py-3 text-sm font-semibold text-white shadow-lg shadow-brand/25 transition hover:-translate-y-0.5 hover:bg-brand-600 focus:outline-none focus-visible:ring-2 focus-visible:ring-brand/40 focus-visible:ring-offset-2 focus-visible:ring-offset-white"
               >
                 <span>{action.label}</span>
                 {action.icon && (
@@ -46,7 +46,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
                 data-tinafield={`${parentField}.${index}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="rounded-full border-2 border-[#d85530] bg-white px-6 py-3 text-sm font-semibold text-[#d85530] shadow-sm shadow-[#d85530]/15 transition hover:-translate-y-0.5 hover:bg-[#fff3ee]"
+                className="rounded-full border-2 border-brand bg-white px-6 py-3 text-sm font-semibold text-brand shadow-sm shadow-brand/15 transition hover:-translate-y-0.5 hover:bg-brand-tint"
               >
                 {linkContent}
               </a>
@@ -55,7 +55,7 @@ export const Actions = ({ parentField = "", className = "", actions }) => {
                 key={index}
                 href={href}
                 data-tinafield={`${parentField}.${index}`}
-                className="rounded-full border-2 border-[#d85530] bg-white px-6 py-3 text-sm font-semibold text-[#d85530] shadow-sm shadow-[#d85530]/15 transition hover:-translate-y-0.5 hover:bg-[#fff3ee]"
+                className="rounded-full border-2 border-brand bg-white px-6 py-3 text-sm font-semibold text-brand shadow-sm shadow-brand/15 transition hover:-translate-y-0.5 hover:bg-brand-tint"
               >
                 {linkContent}
               </Link>

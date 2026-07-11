@@ -62,6 +62,17 @@ module.exports = {
         700: "#D04017",
         800: "#C1360F",
       },
+      // Parmi Picks brand orange — the single source of truth for the colour that
+      // was previously hard-coded as #d85530 in ~30 places. Prefer bg-brand /
+      // text-brand / border-brand over raw hex. See /design for the full system.
+      brand: {
+        DEFAULT: "#d85530",
+        tint: "#fff3ee", // light hover / on-brand button background
+        50: "#fff3ee",
+        500: "#d85530",
+        600: "#c84e2d", // hover
+        700: "#c04a28", // darker hover
+      },
     },
     screens: {
       sm: "600px",
@@ -109,8 +120,6 @@ module.exports = {
         "-1": "-1",
       },
       fontFamily: {
-        nunito: ["Nunito", ...defaultTheme.fontFamily.sans],
-        lato: ["Lato", ...defaultTheme.fontFamily.sans],
         sans: ["Manrope", ...defaultTheme.fontFamily.sans],
         display: ["Manrope", ...defaultTheme.fontFamily.sans],
       },

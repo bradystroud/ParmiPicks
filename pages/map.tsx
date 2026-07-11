@@ -75,7 +75,7 @@ const MapPage = ({ locations }: { locations: MapLocation[] }) => {
       <Section className="flex-1">
         <Container size="large" className="max-w-6xl">
           <div className="mb-10 flex flex-col gap-4 text-center lg:text-left">
-            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-amber-500">
+            <p className="text-xs font-semibold uppercase tracking-[0.35em] text-brand">
               Plan your next visit
             </p>
             <h1 className="text-4xl font-extrabold text-slate-900 sm:text-5xl">Parmi locations</h1>

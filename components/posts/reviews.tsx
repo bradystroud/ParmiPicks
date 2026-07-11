@@ -33,10 +33,10 @@ export const Reviews = ({
             href={`/reviews/` + post._sys.filename}
             className="group block"
           >
-            <article className="mb-8 rounded-3xl border-2 border-[#6b63ff] bg-[#d85530] px-8 py-9 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
+            <article className="mb-8 rounded-3xl border-2 border-brand-600 bg-brand px-8 py-9 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-4">
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-[#fff3ee] text-lg font-bold text-[#d85530] shadow-inner" aria-label={`Score: ${post.score} out of 10`} role="img">
+                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner" aria-label={`Score: ${post.score} out of 10`} role="img">
                     {post.score}
                   </span>
                   <div>

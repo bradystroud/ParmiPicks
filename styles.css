@@ -16,13 +16,14 @@
   }
 
   ::selection {
-    background: rgba(251, 146, 60, 0.25);
+    /* brand orange (#d85530) at 25% */
+    background: rgba(216, 85, 48, 0.25);
   }
 }
 
 @layer base {
   *:focus-visible {
-    @apply outline-2 outline-offset-2 outline-[#d85530];
+    @apply outline-2 outline-offset-2 outline-brand;
   }
 }
 

@@ -9,12 +9,15 @@ module.exports = {
   generateRobotsTxt: true,
   output: "standalone",
 
+  // Keep the internal design-system reference out of the sitemap.
+  exclude: ["/design"],
+
   robotsTxtOptions: {
     policies: [
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/404", "/500"],
+        disallow: ["/404", "/500", "/design"],
       },
     ],
   },

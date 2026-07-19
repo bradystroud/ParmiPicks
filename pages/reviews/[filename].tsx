@@ -47,8 +47,12 @@ export default function ReviewPage(
     })
     : "";
 
+  // A review may reference a restaurant that isn't set yet (e.g. an
+  // auto-generated draft). Fall back gracefully so one incomplete review can't
+  // crash the whole static build.
   const restaurant = data.review.restaurant;
-  const title = `${restaurant.name} | Parmi Picks`;
+  const restaurantName = restaurant?.name ?? "This venue";
+  const title = `${restaurantName} | Parmi Picks`;
 
   const bodyText = richTextToPlainText(data.review._body)
     .replace(/\s+/g, " ")
@@ -56,7 +60,7 @@ export default function ReviewPage(
   const excerpt =
     bodyText.length > 0
       ? `${bodyText.slice(0, 155).trimEnd()}…`
-      : `Our chicken parmi review of ${restaurant.name}, scored ${data.review.score}/10.`;
+      : `Our chicken parmi review of ${restaurantName}, scored ${data.review.score}/10.`;
 
   const ogImage = localMediaAbsolute(data.review.parmiImg);
 
@@ -79,7 +83,7 @@ export default function ReviewPage(
             "@type": "Review",
             itemReviewed: {
               "@type": "Thing",
-              name: restaurant.name,
+              name: restaurantName,
             },
             author: {
               "@type": "Person",
@@ -102,13 +106,13 @@ export default function ReviewPage(
             className={`w-full relative mb-8 text-6xl tracking-normal text-center title-font`}
           >
             <span className="font-extrabold">{data.review.score}</span> -{" "}
-            {restaurant.name}
+            {restaurantName}
           </h1>
           <div className="relative mx-auto mb-10 aspect-[4/3] w-full max-w-3xl overflow-hidden rounded-3xl border border-amber-200/60 bg-white/80 shadow-xl shadow-amber-100/50">
             {data.review.parmiImg ? (
               <Image
                 src={localMedia(data.review.parmiImg)}
-                alt={`Chicken parmi from ${restaurant.name}`}
+                alt={`Chicken parmi from ${restaurantName}`}
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 fill
                 className="object-cover"
@@ -158,14 +162,14 @@ export default function ReviewPage(
               Plan your visit
             </h2>
             <p className="mt-2 text-sm text-slate-500">
-              Find {restaurant.name} on the map and plan your next parmi pilgrimage.
+              Find {restaurantName} on the map and plan your next parmi pilgrimage.
             </p>
             <div className="mt-6 overflow-hidden rounded-2xl border border-white/80 bg-white/70 shadow-inner">
               <div className="relative h-[320px] w-full">
                 <MapEmbed
-                  location={restaurant.location || restaurant.name}
+                  location={restaurant?.location || restaurantName}
                   className="h-full w-full"
-                  title={`Map showing ${restaurant.name}`}
+                  title={`Map showing ${restaurantName}`}
                 />
               </div>
             </div>

@@ -41,7 +41,7 @@ export const Reviews = ({
                   </span>
                   <div>
                     <h2 className="text-2xl font-semibold sm:text-3xl">
-                      {post.restaurant.name}
+                      {post.restaurant?.name ?? "This venue"}
                     </h2>
                     <p className="mt-1 text-sm text-white/80">
                       Tasted by {post?.author?.name}

@@ -36,6 +36,9 @@ export async function getStaticProps() {
     await Promise.all(
       reviewsListData.data.reviewConnection.edges.map(async (review) => {
         const restaurant = review.node.restaurant;
+        // Skip reviews with no linked restaurant (e.g. an auto-generated draft)
+        // so a single incomplete review can't crash the build.
+        if (!restaurant) return null;
         const coords = await geocode(restaurant.location || restaurant.name);
         if (!coords) return null;
 

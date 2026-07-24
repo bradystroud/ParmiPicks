@@ -157,8 +157,8 @@ export default function ReviewPage(
           <div className="prose dark:prose-dark w-full max-w-none">
             <TinaMarkdown content={data.review._body} />
           </div>
-          <div className="mt-12 rounded-3xl border border-amber-200/60 bg-gradient-to-br from-amber-50/80 via-white to-emerald-50/80 p-8 shadow-lg shadow-amber-100/40">
-            <h2 className="text-2xl font-semibold text-slate-900">
+          <div className="mt-12 rounded-3xl border border-amber-200/60 bg-amber-50/50 p-8 shadow-lg shadow-amber-100/40">
+            <h2 className="text-2xl font-semibold text-slate-800">
               Plan your visit
             </h2>
             <p className="mt-2 text-sm text-slate-500">

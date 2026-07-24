@@ -36,10 +36,10 @@ export default function ReviewPage(
       <Section className="flex-1">
         <Container size="large" width="small" className="max-w-5xl">
           <div className="mb-14 text-center">
-            <h1 className="text-3xl font-semibold text-brand sm:text-4xl">
+            <h1 className="text-3xl font-semibold text-slate-800 sm:text-4xl">
               Parmi Reviews
             </h1>
-            <p className="mx-auto mt-4 max-w-2xl text-base text-brand/80">
+            <p className="mx-auto mt-4 max-w-2xl text-base text-slate-500">
               Browse every chicken parmigiana we&apos;ve tasted — complete with scores,
               tasting notes, and the pubs that serve them best.
             </p>

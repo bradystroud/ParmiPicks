@@ -15,7 +15,7 @@ export const Hero = ({ data, parentField }) => {
           {data.headline && (
             <h1
               data-tinafield={`${parentField}.headline`}
-              className="text-3xl font-semibold text-brand sm:text-4xl"
+              className="text-3xl font-semibold text-slate-800 sm:text-4xl"
             >
               {data.headline}
             </h1>
@@ -23,7 +23,7 @@ export const Hero = ({ data, parentField }) => {
           {data.text && (
             <div
               data-tinafield={`${parentField}.text`}
-              className="mt-5 max-w-2xl text-base leading-relaxed text-brand/80"
+              className="mt-5 max-w-2xl text-base leading-relaxed text-slate-500"
             >
               <TinaMarkdown content={data.text} />
             </div>

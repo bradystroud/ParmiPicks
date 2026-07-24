@@ -62,9 +62,9 @@ export const Header = ({ data }) => {
             <Image
                   src="/parmi-picks-logo.svg"
                   alt="Parmi Picks Logo"
-                  width={56}
-                  height={56}
-                  className="h-14 w-14"
+                  width={64}
+                  height={64}
+                  className="h-16 w-16"
                 />
           </Link>
 

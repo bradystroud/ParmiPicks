@@ -1,6 +1,7 @@
 import React from "react";
 import Link from "next/link";
 import { BsArrowRight } from "react-icons/bs";
+import { FaCrown } from "react-icons/fa";
 import { SortType } from "../types";
 
 export const Reviews = ({
@@ -11,6 +12,21 @@ export const Reviews = ({
   data: any[];
   sortOption: SortType;
 }) => {
+  // The highest-scoring parmi wears the crown (matches the House Favourite on
+  // the home page). Tie-break on the more recent review so exactly one wins.
+  const crownedFilename = React.useMemo(() => {
+    const scored = data
+      .map((d) => d.node)
+      .filter((n) => n && !Number.isNaN(Number(n.score)));
+    if (!scored.length) return null;
+    const top = [...scored].sort((a, b) => {
+      const byScore = Number(b.score) - Number(a.score);
+      if (byScore !== 0) return byScore;
+      return new Date(b.date).getTime() - new Date(a.date).getTime();
+    })[0];
+    return top?._sys?.filename ?? null;
+  }, [data]);
+
   const reviewList = [...data].sort((a, b) => {
     if (sortOption === "Top") {
       return b.node.score - a.node.score;
@@ -27,6 +43,7 @@ export const Reviews = ({
     <>
       {reviewList.map((reviewData) => {
         const post = reviewData.node;
+        const isCrowned = post._sys.filename === crownedFilename;
         return (
           <Link
             key={post._sys.filename}
@@ -36,7 +53,13 @@ export const Reviews = ({
             <article className="mb-8 rounded-3xl border-2 border-brand-600 bg-brand px-8 py-9 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-4">
-                  <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner" aria-label={`Score: ${post.score} out of 10`} role="img">
+                  <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner" aria-label={`Score: ${post.score} out of 10${isCrowned ? " (top rated)" : ""}`} role="img">
+                    {isCrowned && (
+                      <FaCrown
+                        className="absolute -top-4 left-1/2 h-6 w-6 -translate-x-1/2 -rotate-[18deg] text-amber-300 drop-shadow-md"
+                        aria-hidden="true"
+                      />
+                    )}
                     {post.score}
                   </span>
                   <div>

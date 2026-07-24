@@ -59,12 +59,12 @@ export const Header = ({ data }) => {
       <Container size="custom" className="max-w-6xl py-5">
         <nav className="flex items-center justify-between gap-6" aria-label="Main navigation">
           <Link href="/" className="flex items-center gap-4" aria-label="Parmi Picks home">
-            <Image 
-                  src="/parmi-picks-logo.svg" 
-                  alt="Parmi Picks Logo" 
-                  width={44} 
-                  height={44}
-                  className="h-11 w-11"
+            <Image
+                  src="/parmi-picks-logo.svg"
+                  alt="Parmi Picks Logo"
+                  width={56}
+                  height={56}
+                  className="h-14 w-14"
                 />
           </Link>
 

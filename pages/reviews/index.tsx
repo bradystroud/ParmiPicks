@@ -70,7 +70,11 @@ export default function ReviewPage(
               </div>
             </div>
           </div>
-          <Reviews data={reviews.sort()} sortOption={selectedSort} />
+          <Reviews
+            data={reviews.sort()}
+            sortOption={selectedSort}
+            crownedFilename={props.crownedFilename}
+          />
         </Container>
       </Section>
     </Layout>
@@ -79,9 +83,19 @@ export default function ReviewPage(
 
 export const getStaticProps = async () => {
   const tinaProps = await client.queries.reviewPageQuery();
+
+  // The crowned review must be the same one the home page shows as its House
+  // Favourite. That block resolves `reviewConnection(sort: "score", last: 1)`,
+  // so the last edge of this page's score-sorted connection is the same
+  // document — including however Tina breaks ties.
+  const edges = tinaProps.data.reviewConnection.edges ?? [];
+  const crownedFilename =
+    edges[edges.length - 1]?.node?._sys.filename ?? null;
+
   return {
     props: {
       ...tinaProps,
+      crownedFilename,
     },
   };
 };

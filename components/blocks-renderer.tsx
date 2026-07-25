@@ -52,6 +52,9 @@ export const Blocks = ({ blocks, topParmi }: BlocksProps) => {
                       data={block}
                       parentField={`blocks.${i}`}
                       topParmi={topParmi}
+                      bleedIntoPrevious={
+                        blocks[i - 1]?.__typename === "PageBlocksHero"
+                      }
                     />
                   </div>
                 );

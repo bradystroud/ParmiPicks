@@ -11,6 +11,15 @@ export function localMedia(src?: string | null): string {
   return src.replace(TINA_CDN, "/uploads/");
 }
 
+// Not every author has an avatar. next/image drops the attribute entirely when
+// src is empty, which renders a broken <img> with no src at all, so authors
+// without a picture fall back to this.
+export const AVATAR_PLACEHOLDER = "/avatar-placeholder.svg";
+
+export function avatarSrc(src?: string | null): string {
+  return localMedia(src) || AVATAR_PLACEHOLDER;
+}
+
 // Same mapping but returns an absolute URL, for og:image / JSON-LD where an
 // absolute, publicly fetchable URL is required.
 export function localMediaAbsolute(

@@ -21,10 +21,16 @@ interface TopParmiSource {
 
 interface BestParmiProps {
   data?: {
-    isDataDriven?: boolean | null;
+    eyebrow?: string | null;
   } | null;
   parentField?: string;
   topParmi?: TopParmiSource | null;
+  /**
+   * Tucks the card up under the block above it. Only safe when the preceding
+   * block ends in whitespace the card can bleed into (the hero); blocks are
+   * editor-orderable, so the caller decides.
+   */
+  bleedIntoPrevious?: boolean;
 }
 
 interface TopParmi {
@@ -86,8 +92,10 @@ const normalizeTopParmi = (
 };
 
 export const BestParmi = ({
+  data,
   parentField,
   topParmi: topParmiProp,
+  bleedIntoPrevious = false,
 }: BestParmiProps) => {
   const topParmi = useMemo(() => normalizeTopParmi(topParmiProp), [topParmiProp]);
 
@@ -143,6 +151,8 @@ export const BestParmi = ({
     return formatter.format(topParmi.score);
   }, [topParmi]);
 
+  const eyebrow = data?.eyebrow?.trim() || "House Favourite";
+
   const heading = topParmi?.name ?? "No parmi crowned yet";
 
   const description = topParmi
@@ -156,14 +166,17 @@ export const BestParmi = ({
     : {};
 
   return (
-    <Section className="pt-0 -mt-20 sm:-mt-24">
+    <Section className={bleedIntoPrevious ? "pt-0 -mt-20 sm:-mt-24" : ""}>
       <Container size="large" className="max-w-5xl" data-tinafield={parentField}>
         <div className="relative overflow-hidden rounded-[2.5rem] border border-amber-200/60 bg-amber-50/60 shadow-lg shadow-amber-100/40">
           <div className="grid items-center gap-10 p-8 sm:p-12 lg:grid-cols-[1.1fr,0.9fr]">
             <div className="flex flex-col gap-6">
               <div className="text-center lg:text-left">
-                <p className="text-base font-bold text-slate-700">
-                  House Favourite
+                <p
+                  data-tinafield={`${parentField}.eyebrow`}
+                  className="text-base font-bold text-slate-700"
+                >
+                  {eyebrow}
                 </p>
                 <h2 className="mt-2 text-4xl font-bold text-slate-800 sm:text-5xl">
                   {heading}
@@ -249,9 +262,11 @@ export const bestParmiBlockSchema: Template = {
   },
   fields: [
     {
-      type: "boolean",
-      label: "Data Driven?",
-      name: "isDataDriven",
+      type: "string",
+      label: "Eyebrow",
+      name: "eyebrow",
+      description:
+        "Small label above the venue name. Defaults to \"House Favourite\". The venue, score, image and date always come from the top-scoring review.",
     },
   ],
 };

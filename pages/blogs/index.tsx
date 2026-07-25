@@ -7,7 +7,7 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import { localMedia } from "../../components/util/media";
+import { avatarSrc, localMedia } from "../../components/util/media";
 
 export default function BlogsPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -19,7 +19,7 @@ export default function BlogsPage(
   });
 
   return (
-    <Layout data={data.global as any}>
+    <Layout data={data.global}>
       <Head>
         <title>Blog Posts | Parmi Picks</title>
         <meta
@@ -72,7 +72,7 @@ export default function BlogsPage(
                           {post.node.author && (
                             <div className="flex items-center mr-4">
                               <Image
-                                src={localMedia(post.node.author.avatar)}
+                                src={avatarSrc(post.node.author.avatar)}
                                 alt={`Avatar of ${post.node.author.name}`}
                                 width={24}
                                 height={24}

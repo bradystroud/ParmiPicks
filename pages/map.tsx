@@ -4,11 +4,19 @@ import { Layout } from "../components/layout";
 import { Section } from "../components/util/section";
 import { Container } from "../components/util/container";
 import { client } from "../tina/__generated__/client";
-import type { MapLocation } from "../components/Map";
+import type { MapLocation, MapReview } from "../components/Map";
 
-const Map = dynamic(() => import("../components/Map"), { ssr: false });
+// Not named `Map` so it doesn't shadow the built-in Map constructor below.
+const ParmiMap = dynamic(() => import("../components/Map"), { ssr: false });
 
-const GOOGLE_MAPS_API_KEY = process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
+// Geocoding is a server-side REST call made at build time, so it can use a key
+// that is never shipped to the browser. That matters because the browser key
+// has to stay referrer-restricted, and a referrer-restricted key is rejected by
+// the REST API. Falls back to the public key so the build still works if the
+// server-only key isn't configured.
+const GEOCODING_API_KEY =
+  process.env.GOOGLE_GEOCODING_API_KEY ??
+  process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY;
 
 async function geocode(address: string): Promise<{ lat: number; lng: number } | null> {
   if (!address) return null;
@@ -16,7 +24,7 @@ async function geocode(address: string): Promise<{ lat: number; lng: number } | 
     const response = await fetch(
       `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(
         address
-      )}&key=${GOOGLE_MAPS_API_KEY}`
+      )}&key=${GEOCODING_API_KEY}`
     );
     const data = await response.json();
     const location = data.results?.[0]?.geometry?.location;
@@ -30,28 +38,55 @@ async function geocode(address: string): Promise<{ lat: number; lng: number } | 
 // Geocoding runs at build time and is refreshed via ISR rather than on every
 // request, so visitors never wait on a fan-out of Google API calls.
 export async function getStaticProps() {
+  if (!GEOCODING_API_KEY) {
+    // Without a key every lookup fails and the map renders empty, which is easy
+    // to miss in a green build (PR previews don't get the secret).
+    console.warn(
+      "No geocoding API key configured — /map will be built with no pins."
+    );
+  }
+
   const reviewsListData = await client.queries.reviewConnection();
+
+  // Group by the address we'd geocode: revisits to the same venue resolve to
+  // identical coordinates and would otherwise render as pins stacked exactly on
+  // top of one another. Grouping first also saves a geocode call per duplicate.
+  const byAddress: Record<string, { name: string; reviews: MapReview[] }> = {};
+
+  for (const review of reviewsListData.data.reviewConnection.edges) {
+    const restaurant = review.node.restaurant;
+    // Skip reviews with no linked restaurant (e.g. an auto-generated draft)
+    // so a single incomplete review can't crash the build.
+    if (!restaurant) continue;
+
+    const address = restaurant.location || restaurant.name;
+    if (!address) continue;
+
+    const group = (byAddress[address] ??= {
+      name: restaurant.name,
+      reviews: [],
+    });
+    group.reviews.push({
+      url: review.node._sys.filename,
+      score: review.node.score,
+      date: review.node.date,
+    });
+  }
 
   const locations = (
     await Promise.all(
-      reviewsListData.data.reviewConnection.edges.map(async (review) => {
-        const restaurant = review.node.restaurant;
-        // Skip reviews with no linked restaurant (e.g. an auto-generated draft)
-        // so a single incomplete review can't crash the build.
-        if (!restaurant) return null;
-        const coords = await geocode(restaurant.location || restaurant.name);
+      Object.keys(byAddress).map(async (address) => {
+        const group = byAddress[address];
+        const coords = await geocode(address);
         if (!coords) return null;
 
         return {
-          name: restaurant.name,
+          name: group.name,
           lat: coords.lat,
           lng: coords.lng,
-          review: {
-            url: review.node._sys.filename,
-            score: review.node.score,
-            date: review.node.date,
-            restaurant: restaurant.name,
-          },
+          reviews: [...group.reviews].sort(
+            (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+          ),
         } satisfies MapLocation;
       })
     )
@@ -87,7 +122,7 @@ const MapPage = ({ locations }: { locations: MapLocation[] }) => {
             </p>
           </div>
           <div className="overflow-hidden rounded-3xl border border-white/70 bg-white/70 shadow-xl shadow-amber-100/40">
-            <Map locations={locations} />
+            <ParmiMap locations={locations} />
           </div>
         </Container>
       </Section>

@@ -7,26 +7,14 @@ import { SortType } from "../types";
 export const Reviews = ({
   data,
   sortOption,
+  crownedFilename = null,
 }: {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data: any[];
   sortOption: SortType;
+  /** Filename of the top-scoring review, which wears the crown. */
+  crownedFilename?: string | null;
 }) => {
-  // The highest-scoring parmi wears the crown (matches the House Favourite on
-  // the home page). Tie-break on the more recent review so exactly one wins.
-  const crownedFilename = React.useMemo(() => {
-    const scored = data
-      .map((d) => d.node)
-      .filter((n) => n && !Number.isNaN(Number(n.score)));
-    if (!scored.length) return null;
-    const top = [...scored].sort((a, b) => {
-      const byScore = Number(b.score) - Number(a.score);
-      if (byScore !== 0) return byScore;
-      return new Date(b.date).getTime() - new Date(a.date).getTime();
-    })[0];
-    return top?._sys?.filename ?? null;
-  }, [data]);
-
   const reviewList = [...data].sort((a, b) => {
     if (sortOption === "Top") {
       return b.node.score - a.node.score;
@@ -43,7 +31,8 @@ export const Reviews = ({
     <>
       {reviewList.map((reviewData) => {
         const post = reviewData.node;
-        const isCrowned = post._sys.filename === crownedFilename;
+        const isCrowned =
+          crownedFilename !== null && post._sys.filename === crownedFilename;
         return (
           <Link
             key={post._sys.filename}

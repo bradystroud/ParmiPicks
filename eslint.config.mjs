@@ -19,8 +19,9 @@ export default [
       "**/node_modules",
       "**/dist",
       "tina/__generated__",
-      "**/```",
       ".next",
+      // Bundled TinaCMS admin app, emitted into public/ by `tinacms build`.
+      "public/admin",
     ],
   },
   ...compat.extends(

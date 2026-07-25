@@ -38,7 +38,7 @@ jobs:
         run: echo "BRANCH_NAME=new-blog-post-$(date +%Y%m%d%H%M%S)" >> $GITHUB_ENV
 
       - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
+        uses: peter-evans/create-pull-request@v7
         with:
           commit-message: "New blog post: ${{ env.BLOG_TITLE }}"
           title: "New blog post: ${{ env.BLOG_TITLE }}"

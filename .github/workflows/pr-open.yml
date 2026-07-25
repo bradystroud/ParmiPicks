@@ -6,6 +6,9 @@ env:
   NEXT_PUBLIC_TINA_CLIENT_ID: ${{ secrets.NEXT_PUBLIC_TINA_CLIENT_ID }}
   TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
   NEXT_PUBLIC_TINA_BRANCH: ${{ github.head_ref }}
+  # Without these the /map page builds green but with zero pins.
+  NEXT_PUBLIC_GOOGLE_MAPS_API_KEY: ${{ secrets.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY }}
+  GOOGLE_GEOCODING_API_KEY: ${{ secrets.GOOGLE_GEOCODING_API_KEY }}
 jobs:
   build:
     runs-on: ubuntu-latest

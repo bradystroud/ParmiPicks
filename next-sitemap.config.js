@@ -7,7 +7,6 @@ module.exports = {
   priority: 0.7,
   sitemapSize: 5000,
   generateRobotsTxt: true,
-  output: "standalone",
 
   // Keep the internal design-system reference out of the sitemap.
   exclude: ["/design"],

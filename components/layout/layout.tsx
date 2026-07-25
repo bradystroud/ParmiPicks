@@ -5,7 +5,30 @@ import { Footer } from "./footer";
 import layoutData from "../../content/global/index.json";
 import NextBreadcrumb from "./breadcrumb";
 
-export const Layout = ({ data = layoutData, children }) => {
+// Global content reaches the layout from two places: the committed JSON, and a
+// Tina query that selects only part of it. Describing just the fields actually
+// rendered here keeps both shapes assignable without casting.
+type LayoutData = {
+  header?: {
+    name?: string | null;
+    nav?: ({ href?: string | null; label?: string | null } | null)[] | null;
+  } | null;
+  footer?: {
+    social?: {
+      twitter?: string | null;
+      instagram?: string | null;
+      github?: string | null;
+    } | null;
+  } | null;
+};
+
+export const Layout = ({
+  data = layoutData,
+  children,
+}: {
+  data?: LayoutData;
+  children?: React.ReactNode;
+}) => {
   //TODO: These vales should not be hardcoded - Move to TinaCMS
   const ogImageUrl =
     "https://assets.tina.io/c68a0182-b88f-4a74-8514-0cbe71f98577/nice-parm.jpg";
@@ -24,10 +47,24 @@ export const Layout = ({ data = layoutData, children }) => {
         <meta property="og:site_name" content="Parmi Picks" />
         <meta property="og:url" content="https://parmipicks.com/" />
         <meta property="og:type" content="website" />
-        <meta property="og:description" content={ogDescription} />
-        <meta property="twitter:description" content={ogDescription} />
-        <meta property="twitter:image" content={ogImageUrl} />
-        <meta property="og:image" content={ogImageUrl} />
+        {/* Keyed so pages can replace these site-wide defaults with their own;
+            without a key next/head renders both and the page loses. */}
+        <meta
+          property="og:description"
+          content={ogDescription}
+          key="og:description"
+        />
+        <meta
+          property="twitter:description"
+          content={ogDescription}
+          key="twitter:description"
+        />
+        <meta
+          property="twitter:image"
+          content={ogImageUrl}
+          key="twitter:image"
+        />
+        <meta property="og:image" content={ogImageUrl} key="og:image" />
         <link rel="icon" href="/favicon.ico" sizes="48x48" />
         <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
         <link rel="icon" href="/favicon-96.png" type="image/png" sizes="96x96" />

@@ -21,7 +21,9 @@ const MapEmbed: React.FC<MapEmbedProps> = ({ location, className, title }) => {
       referrerPolicy="no-referrer-when-downgrade"
       title={title ?? `Map showing ${location}`}
       allowFullScreen
-      src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${location}`}
+      src={`https://www.google.com/maps/embed/v1/place?key=${GOOGLE_MAPS_API_KEY}&q=${encodeURIComponent(
+        location
+      )}`}
     ></iframe>
   );
 };

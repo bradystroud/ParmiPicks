@@ -19,17 +19,28 @@ const defaultCenter = {
   lng: 133.77,
 };
 
+export interface MapReview {
+  url: string;
+  score: number;
+  date: string;
+}
+
 export interface MapLocation {
   name: string;
   lat: number;
   lng: number;
-  review: {
-    url: string;
-    score: number;
-    date: string;
-    restaurant: string;
-  };
+  // Newest first, never empty. A venue can be reviewed more than once (a
+  // revisit), and those reviews geocode to identical coordinates — so they are
+  // grouped into one pin rather than stacked invisibly on top of each other.
+  reviews: MapReview[];
 }
+
+const formatReviewDate = (date: string) =>
+  new Date(date).toLocaleDateString("en-AU", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+  });
 
 // Brand-orange map pin, with room for the score label to sit inside the head.
 // Leaflet/Google symbols take a raw colour string, so this is the one place the
@@ -132,12 +143,12 @@ const Map = ({ locations }: { locations: MapLocation[] }) => {
     >
       {validLocations.map((location) => (
         <MarkerF
-          key={location.review.url}
+          key={location.reviews[0].url}
           position={{ lat: location.lat, lng: location.lng }}
-          title={`${location.name} — ${location.review.score}`}
+          title={`${location.name} — ${location.reviews[0].score}`}
           icon={pinIcon()}
           label={{
-            text: String(location.review.score),
+            text: String(location.reviews[0].score),
             color: "#ffffff",
             fontSize: "11px",
             fontWeight: "700",
@@ -155,27 +166,46 @@ const Map = ({ locations }: { locations: MapLocation[] }) => {
           <div className="min-w-[180px] max-w-[240px] p-1">
             <div className="flex items-center gap-2">
               <span className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-                {selected.review.score}
+                {selected.reviews[0].score}
               </span>
               <h3 className="text-base font-semibold leading-tight text-slate-900">
                 {selected.name}
               </h3>
             </div>
             <p className="mt-2 text-xs text-slate-500">
-              Reviewed{" "}
-              {new Date(selected.review.date).toLocaleDateString("en-AU", {
-                month: "long",
-                day: "numeric",
-                year: "numeric",
-              })}
+              Reviewed {formatReviewDate(selected.reviews[0].date)}
             </p>
             <button
               type="button"
-              onClick={() => router.push(`/reviews/${selected.review.url}`)}
+              onClick={() => router.push(`/reviews/${selected.reviews[0].url}`)}
               className="mt-3 inline-flex w-full items-center justify-center rounded-full bg-brand px-3 py-1.5 text-sm font-semibold text-white transition hover:bg-brand-600"
             >
               Read the review →
             </button>
+
+            {selected.reviews.length > 1 && (
+              <div className="mt-3 border-t border-slate-200 pt-2">
+                <p className="text-xs font-semibold text-slate-500">
+                  Earlier visits
+                </p>
+                <ul className="mt-1 space-y-1">
+                  {selected.reviews.slice(1).map((review) => (
+                    <li key={review.url}>
+                      <button
+                        type="button"
+                        onClick={() => router.push(`/reviews/${review.url}`)}
+                        className="flex w-full items-center gap-2 rounded px-1 py-0.5 text-left text-xs text-slate-600 transition hover:bg-amber-50 hover:text-slate-900"
+                      >
+                        <span className="font-bold text-brand">
+                          {review.score}
+                        </span>
+                        <span>{formatReviewDate(review.date)}</span>
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
           </div>
         </InfoWindowF>
       )}

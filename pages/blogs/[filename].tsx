@@ -8,7 +8,12 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import Giscus from "@giscus/react";
-import { localMedia, localMediaAbsolute } from "../../components/util/media";
+import {
+  avatarSrc,
+  localMedia,
+  localMediaAbsolute,
+} from "../../components/util/media";
+import { excerptFromRichText } from "../../components/util/excerpt";
 
 export default function BlogPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -28,18 +33,28 @@ export default function BlogPage(
   }
 
   const date = new Date(data.blog.date);
-  const formattedDate = !isNaN(date.getTime())
+  const isValidDate = !isNaN(date.getTime());
+  const formattedDate = isValidDate
     ? date.toLocaleDateString("en-AU", {
         day: "numeric",
         month: "long",
         year: "numeric",
       })
     : "";
+  // schema.org requires ISO 8601 here, not the human-readable date.
+  const isoDate = isValidDate ? date.toISOString() : undefined;
 
   const title = `${data.blog.title} | Parmi Picks`;
 
+  const excerpt = excerptFromRichText(
+    data.blog._body,
+    `${data.blog.title} — from the Parmi Picks blog.`
+  );
+
+  const ogImage = localMediaAbsolute(data.blog.heroImage);
+
   return (
-    <Layout data={data.global as any}>
+    <Layout data={data.global}>
       <Head>
         <title>{title}</title>
         <link
@@ -47,9 +62,12 @@ export default function BlogPage(
           href={data.blog.canonicalUrl}
           key="canonical"
         />
-        <meta property="og:title" content={title} />
-        <meta property="description" content={data.blog._body.raw} />
-        <meta property="og:description" content={data.blog._body.raw} />
+        <meta property="og:title" content={title} key="og:title" />
+        <meta name="description" content={excerpt} key="desc" />
+        <meta property="og:description" content={excerpt} key="og:description" />
+        {ogImage && (
+          <meta property="og:image" content={ogImage} key="og:image" />
+        )}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -59,9 +77,9 @@ export default function BlogPage(
               "@type": "Person",
               name: data.blog.author?.name ?? "Anonymous",
             },
-            datePublished: formattedDate,
-            image: localMediaAbsolute(data.blog.heroImage),
-            articleBody: data.blog._body.raw,
+            datePublished: isoDate,
+            image: ogImage || undefined,
+            description: excerpt,
           })}
         </script>
       </Head>
@@ -91,8 +109,8 @@ export default function BlogPage(
                 <div className="flex-shrink-0 mr-4">
                   <Image
                     className="h-14 w-14 object-cover rounded-full shadow-sm"
-                    src={localMedia(data.blog.author.avatar)}
-                    alt={data.blog.author.name}
+                    src={avatarSrc(data.blog.author.avatar)}
+                    alt={`Avatar of ${data.blog.author.name}`}
                     height={56}
                     width={56}
                   />

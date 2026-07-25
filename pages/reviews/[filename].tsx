@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { client } from "../../tina/__generated__/client";
 import { useTina } from "tinacms/dist/react";
 import { Layout } from "../../components/layout";
@@ -9,17 +8,12 @@ import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import MapEmbed from "../../components/blocks/map";
-import { localMedia, localMediaAbsolute } from "../../components/util/media";
-
-// Flatten a Tina rich-text AST into plain text for meta descriptions.
-function richTextToPlainText(node: any): string {
-  if (!node) return "";
-  if (typeof node.text === "string") return node.text;
-  if (Array.isArray(node.children)) {
-    return node.children.map(richTextToPlainText).join(" ");
-  }
-  return "";
-}
+import {
+  avatarSrc,
+  localMedia,
+  localMediaAbsolute,
+} from "../../components/util/media";
+import { excerptFromRichText } from "../../components/util/excerpt";
 
 export default function ReviewPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -39,13 +33,16 @@ export default function ReviewPage(
   }
 
   const date = new Date(data.review.date);
-  const formattedDate = !isNaN(date.getTime())
+  const isValidDate = !isNaN(date.getTime());
+  const formattedDate = isValidDate
     ? date.toLocaleDateString("en-AU", {
       day: "numeric",
       month: "long",
       year: "numeric",
     })
     : "";
+  // schema.org requires ISO 8601 here, not the human-readable date.
+  const isoDate = isValidDate ? date.toISOString() : undefined;
 
   // A review may reference a restaurant that isn't set yet (e.g. an
   // auto-generated draft). Fall back gracefully so one incomplete review can't
@@ -54,18 +51,15 @@ export default function ReviewPage(
   const restaurantName = restaurant?.name ?? "This venue";
   const title = `${restaurantName} | Parmi Picks`;
 
-  const bodyText = richTextToPlainText(data.review._body)
-    .replace(/\s+/g, " ")
-    .trim();
-  const excerpt =
-    bodyText.length > 0
-      ? `${bodyText.slice(0, 155).trimEnd()}…`
-      : `Our chicken parmi review of ${restaurantName}, scored ${data.review.score}/10.`;
+  const excerpt = excerptFromRichText(
+    data.review._body,
+    `Our chicken parmi review of ${restaurantName}, scored ${data.review.score}/10.`
+  );
 
   const ogImage = localMediaAbsolute(data.review.parmiImg);
 
   return (
-    <Layout data={data.global as any}>
+    <Layout data={data.global}>
       <Head>
         <title>{title}</title>
         <link
@@ -73,10 +67,12 @@ export default function ReviewPage(
           href={data.review.canonicalUrl}
           key="canonical"
         />
-        <meta property="og:title" content={title} />
-        <meta name="description" content={excerpt} />
-        <meta property="og:description" content={excerpt} />
-        {ogImage && <meta property="og:image" content={ogImage} />}
+        <meta property="og:title" content={title} key="og:title" />
+        <meta name="description" content={excerpt} key="desc" />
+        <meta property="og:description" content={excerpt} key="og:description" />
+        {ogImage && (
+          <meta property="og:image" content={ogImage} key="og:image" />
+        )}
         <script type="application/ld+json">
           {JSON.stringify({
             "@context": "https://schema.org",
@@ -94,9 +90,9 @@ export default function ReviewPage(
               ratingValue: data.review.score,
               bestRating: "10",
             },
-            datePublished: formattedDate,
+            datePublished: isoDate,
             image: localMediaAbsolute(data.review.parmiImg),
-            reviewBody: data.review._body.raw,
+            reviewBody: excerpt,
           })}
         </script>
       </Head>
@@ -130,7 +126,7 @@ export default function ReviewPage(
                 <div className="flex-shrink-0 mr-4">
                   <Image
                     className="h-14 w-14 object-cover rounded-full shadow-sm"
-                    src={localMedia(data.review.author.avatar)}
+                    src={avatarSrc(data.review.author.avatar)}
                     alt={`Avatar of ${data.review.author.name}`}
                     height={56}
                     width={56}

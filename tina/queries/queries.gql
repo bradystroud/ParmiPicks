@@ -71,12 +71,22 @@ query topReviewQuery {
   }
 }
 
+# Deliberately does NOT use ...BlogPostParts: that fragment pulls _body, which
+# would ship the full text of every post to render a grid of cards.
 query blogListQuery {
   ...LayoutQueryFragment
   blogConnection {
     edges {
       node {
-        ...BlogPostParts
+        title
+        date
+        heroImage
+        author {
+          ... on Author {
+            name
+            avatar
+          }
+        }
         _sys {
           filename
         }

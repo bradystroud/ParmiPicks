@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/router";
 import { Container } from "../util/container";
 import { FaBars, FaTimes } from "react-icons/fa";
@@ -8,15 +8,14 @@ import Image from "next/image";
 export const Header = ({ data }) => {
   const router = useRouter();
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [prefix, setPrefix] = useState("");
   const [expanded, setExpanded] = useState(false);
 
-  useEffect(() => {
-    if (typeof window !== "undefined" && window.location.pathname.startsWith("/admin")) {
-      setPrefix("/admin");
-    }
-  }, []);
+  // Strip the query/hash and any trailing slash once, so each nav item can
+  // compare whole path segments rather than substrings.
+  const currentPath = useMemo(
+    () => router.asPath.split(/[?#]/)[0].replace(/\/+$/, ""),
+    [router.asPath]
+  );
 
   useEffect(() => {
     setExpanded(false);
@@ -26,10 +25,13 @@ export const Header = ({ data }) => {
 
   const renderNavItem = (item, index: number, mobile = false) => {
     const href = `/${item.href ?? ""}`.replace(/\/+/g, "/");
+    // A nav item is active on its own page and on anything beneath it
+    // (/reviews highlights /reviews/penguin-pub), but a review slug that merely
+    // contains "map" or "about" must not light up the wrong tab.
     const isActive =
-      item.href === ""
-        ? router.asPath === "/"
-        : router.asPath.replace(/\/$/, "").includes(item.href);
+      href === "/"
+        ? currentPath === ""
+        : currentPath === href || currentPath.startsWith(`${href}/`);
 
     const baseClasses =
       "transition-colors duration-200 ease-out text-sm font-semibold uppercase tracking-[0.2em]";

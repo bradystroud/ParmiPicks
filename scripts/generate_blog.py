@@ -1,6 +1,7 @@
-# https://chat.deepseek.com/a/chat/s/a55bd8ef-a8b5-44ee-8364-cd2a15fb270d
 import base64
+import json
 import os
+import re
 import time
 import urllib.request
 import xml.etree.ElementTree as ET
@@ -18,6 +19,14 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 BLOG_FOLDER = "content/blogs"
 IMAGE_FOLDER = "public/uploads/blog-images"
 
+# Generator PRs are titled with this prefix (see .github/workflows/generate-blog-cron.yml).
+# It lets us recognise posts that are proposed but not yet merged, so they can be
+# excluded as topics even though they are not in BLOG_FOLDER on main.
+PR_TITLE_PREFIX = "New blog post: "
+
+# How many times to ask for a fresh topic before giving up and failing the run.
+MAX_ATTEMPTS = 3
+
 # Ensure folders exist
 os.makedirs(BLOG_FOLDER, exist_ok=True)
 os.makedirs(IMAGE_FOLDER, exist_ok=True)
@@ -27,18 +36,79 @@ def log(message):
     """Log function to track execution progress with timestamps."""
     print(f"[{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}] {message}")
 
+
 class Blog(BaseModel):
     filename: str
     title: str
     content: str
 
 
-def list_files_in_folder(folder):
-    """List files in a folder for context."""
-    log(f"Listing files in folder: {folder}")
-    files = [f for f in os.listdir(folder) if os.path.isfile(os.path.join(folder, f))]
-    log(f"Found {len(files)} files.")
-    return files
+class OriginalityVerdict(BaseModel):
+    is_duplicate: bool
+    overlapping_title: str
+    reason: str
+
+
+def read_frontmatter_title(path):
+    """Return the title from a post's YAML frontmatter, or None if not found."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            text = f.read(4000)
+    except OSError:
+        return None
+    match = re.search(r"^title:\s*(.+)$", text, re.MULTILINE)
+    if not match:
+        return None
+    title = match.group(1).strip()
+    if len(title) >= 2 and title[0] == title[-1] and title[0] in "'\"":
+        title = title[1:-1]
+    return title
+
+
+def list_existing_post_titles(folder):
+    """List the titles of published posts. Falls back to the filename when a post has no title."""
+    log(f"Reading post titles from folder: {folder}")
+    titles = []
+    for name in sorted(os.listdir(folder)):
+        path = os.path.join(folder, name)
+        if not os.path.isfile(path):
+            continue
+        title = read_frontmatter_title(path) or os.path.splitext(name)[0]
+        titles.append(title)
+    log(f"Found {len(titles)} published posts.")
+    return titles
+
+
+def fetch_open_pr_titles():
+    """List titles of unmerged posts proposed by earlier runs. Best-effort: returns [] on failure."""
+    token = os.getenv("GITHUB_TOKEN")
+    repo = os.getenv("GITHUB_REPOSITORY")
+    if not token or not repo:
+        log("GITHUB_TOKEN or GITHUB_REPOSITORY not set; skipping open PR lookup.")
+        return []
+    url = f"https://api.github.com/repos/{repo}/pulls?state=open&per_page=100"
+    try:
+        request = urllib.request.Request(
+            url,
+            headers={
+                "Authorization": f"Bearer {token}",
+                "Accept": "application/vnd.github+json",
+                "User-Agent": "parmipicks-blog-bot",
+            },
+        )
+        with urllib.request.urlopen(request, timeout=10) as response:
+            pulls = json.loads(response.read())
+    except Exception as e:
+        log(f"Could not fetch open PRs: {e}")
+        return []
+    titles = [
+        pr["title"][len(PR_TITLE_PREFIX):].strip()
+        for pr in pulls
+        if pr.get("title", "").startswith(PR_TITLE_PREFIX)
+    ]
+    log(f"Found {len(titles)} open blog PRs.")
+    return titles
+
 
 NEWS_FEEDS = [
     "https://www.abc.net.au/news/feed/51120/rss.xml",  # ABC News Australia - Just In
@@ -62,12 +132,12 @@ def fetch_recent_headlines(limit_per_feed=5):
     return headlines
 
 
-def generate_blog_with_openai(context_files, headlines=None):
+def generate_blog_with_openai(existing_titles, headlines=None):
     """Generate blog content using OpenAI."""
     log("Starting blog generation...")
     start_time = time.time()
 
-    context = " ".join(context_files)
+    existing_list = "\n".join(f"- {title}" for title in existing_titles)
 
     news_section = ""
     if headlines:
@@ -84,16 +154,19 @@ def generate_blog_with_openai(context_files, headlines=None):
 
     prompt = f"""
     Write a unique and engaging blog post about chicken parmigiana.
-    Avoid these topics, as they are existing blogs:
 
-    {context}
+    These posts already exist. Do NOT write about any of these topics, and do not write a
+    variation, sequel or rewording of any of them:
+
+    {existing_list}
     {news_section}
     The md blog should include:
     - An introduction to the topic
     - Sections with headings
     - A conclusion
     - A call-to-action for readers to share their thoughts
-    ENSURE THE BLOG TOPIC IS ORIGINAL
+    ENSURE THE BLOG TOPIC IS ORIGINAL. Pick an angle that none of the existing titles cover.
+    Do not open with "There are two kinds of..." - that opening has been used already.
     Don't include a title in the body of the content.
     """
 
@@ -117,6 +190,72 @@ def generate_blog_with_openai(context_files, headlines=None):
     log(f"Blog generated in {time.time() - start_time:.2f} seconds.")
 
     return structured_output
+
+
+def check_originality(blog, existing_titles):
+    """Ask the model whether the new post covers the same ground as an existing title."""
+    log("Checking topic originality...")
+    existing_list = "\n".join(f"- {title}" for title in existing_titles)
+    excerpt = blog.content[:1500]
+
+    prompt = f"""
+    A blog about chicken parmigiana already has these posts:
+
+    {existing_list}
+
+    A new post has been drafted:
+
+    Title: {blog.title}
+    Opening excerpt:
+    {excerpt}
+
+    Does the new post cover substantially the same topic as any existing post? Treat a
+    different title on the same subject (for example two posts about reheating leftovers,
+    or two posts about the perfect chip-to-parmi ratio) as a duplicate. A shared passing
+    mention is not a duplicate; the core subject must overlap.
+
+    If it is a duplicate, set overlapping_title to the existing title it overlaps.
+    If it is original, set is_duplicate to false and overlapping_title to an empty string.
+    """
+
+    client = OpenAI()
+    response = client.chat.completions.parse(
+        model="gpt-5.5",
+        messages=[
+            {"role": "system", "content": "You are a strict editor who prevents duplicate content on a blog."},
+            {"role": "user", "content": prompt},
+        ],
+        response_format=OriginalityVerdict,
+    )
+    verdict = response.choices[0].message.parsed
+    if verdict.is_duplicate:
+        log(f"Duplicate of '{verdict.overlapping_title}': {verdict.reason}")
+    else:
+        log("Topic is original.")
+    return verdict
+
+
+def generate_original_blog(existing_titles, headlines):
+    """Generate a post, rejecting drafts that duplicate an existing or pending post."""
+    avoid = list(existing_titles)
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        log(f"Generation attempt {attempt} of {MAX_ATTEMPTS}")
+        blog = generate_blog_with_openai(avoid, headlines)
+
+        target = os.path.join(BLOG_FOLDER, ensure_single_extension(blog.filename))
+        if os.path.exists(target):
+            log(f"Rejected: {target} already exists.")
+            avoid.append(blog.title)
+            continue
+
+        verdict = check_originality(blog, existing_titles)
+        if verdict.is_duplicate:
+            avoid.append(blog.title)
+            continue
+
+        return blog
+
+    raise SystemExit(f"Could not produce an original topic after {MAX_ATTEMPTS} attempts.")
 
 
 def generate_image_with_openai(prompt):
@@ -152,12 +291,13 @@ def save_blog_and_image(blog, image_bytes):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
     blog_filename = f"{BLOG_FOLDER}/{ensure_single_extension(blog.filename)}"
     image_filename = f"{IMAGE_FOLDER}/{timestamp}.jpg"
-    
+
     # Remove .mdx extension from filename for canonical URL
     canonical_filename = blog.filename.replace('.mdx', '').replace('.md', '')
 
+    # json.dumps gives a double-quoted string with any inner quotes escaped, which is valid YAML.
     formatted_blog = f"""---
-title: '{blog.title}'
+title: {json.dumps(blog.title, ensure_ascii=False)}
 date: '{datetime.now().isoformat()}'
 canonicalUrl: 'https://parmipicks.com/blogs/{canonical_filename}'
 heroImage: '/uploads/blog-images/{timestamp}.jpg'
@@ -198,14 +338,14 @@ def ensure_single_extension(filename):
 def main():
     log("Starting script...")
     start_time = time.time()
-    # Step 1: List files for context
-    context_files = list_files_in_folder(BLOG_FOLDER)
+    # Step 1: Collect every topic already taken: published posts plus posts awaiting review
+    existing_titles = list_existing_post_titles(BLOG_FOLDER) + fetch_open_pr_titles()
 
     # Step 2: Fetch recent headlines for topical flavour
     headlines = fetch_recent_headlines()
 
-    # Step 3: Generate blog content
-    blog_content = generate_blog_with_openai(context_files, headlines)
+    # Step 3: Generate blog content, retrying if the topic is a duplicate
+    blog_content = generate_original_blog(existing_titles, headlines)
 
     # Step 4: Generate image
     image_prompt = f"I am writing a blog about {blog_content.title} and I need an image to go with it. The image should be related to the topic and visually appealing."

@@ -1,4 +1,3 @@
-# https://chat.deepseek.com/a/chat/s/a55bd8ef-a8b5-44ee-8364-cd2a15fb270d
 name: Generate Blog
 
 on:
@@ -31,6 +30,8 @@ jobs:
       - name: Run Python script
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          # Lets the script see posts proposed in open PRs so it does not pick the same topic again
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/generate_blog.py
 
       - name: Set unique branch name

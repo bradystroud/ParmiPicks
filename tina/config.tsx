@@ -36,12 +36,6 @@ const config = defineConfig({
         },
         fields: [
           {
-            type: "string",
-            name: "canonicalUrl",
-            label: "canonical URL",
-            required: true,
-          },
-          {
             type: "image",
             name: "parmiImg",
             label: "Parmi Image",
@@ -235,12 +229,6 @@ const config = defineConfig({
             required: true,
           },
           {
-            type: "string",
-            name: "canonicalUrl",
-            label: "canonical URL",
-            required: true,
-          },
-          {
             type: "image",
             name: "heroImage",
             label: "Hero Image",
@@ -284,12 +272,6 @@ const config = defineConfig({
           },
         },
         fields: [
-          {
-            type: "string",
-            name: "canonicalUrl",
-            label: "canonical URL",
-            required: true,
-          },
           {
             type: "string",
             label: "Title",

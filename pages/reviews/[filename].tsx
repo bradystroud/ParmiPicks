@@ -13,6 +13,10 @@ import {
   localMedia,
   localMediaAbsolute,
 } from "../../components/util/media";
+import {
+  canonicalUrl,
+  slugFromRelativePath,
+} from "../../components/util/canonical";
 import { excerptFromRichText } from "../../components/util/excerpt";
 
 export default function ReviewPage(
@@ -57,6 +61,9 @@ export default function ReviewPage(
   );
 
   const ogImage = localMediaAbsolute(data.review.parmiImg);
+  const canonical = canonicalUrl(
+    `/reviews/${slugFromRelativePath(props.variables.relativePath)}`
+  );
 
   return (
     <Layout data={data.global}>
@@ -64,7 +71,7 @@ export default function ReviewPage(
         <title>{title}</title>
         <link
           rel="canonical"
-          href={data.review.canonicalUrl}
+          href={canonical}
           key="canonical"
         />
         <meta property="og:title" content={title} key="og:title" />

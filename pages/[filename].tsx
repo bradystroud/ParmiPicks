@@ -4,6 +4,10 @@ import { Layout } from "../components/layout";
 import { client } from "../tina/__generated__/client";
 import { InferGetStaticPropsType } from "next";
 import Head from "next/head";
+import {
+  canonicalUrl,
+  slugFromRelativePath,
+} from "../components/util/canonical";
 
 export default function HomePage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -14,11 +18,14 @@ export default function HomePage(
     data: props.data,
   });
 
+  const slug = slugFromRelativePath(props.variables.relativePath);
+  const canonical = canonicalUrl(slug === "home" ? "/" : `/${slug}`);
+
   return (
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     <Layout data={data.global as any}>
       <Head>
-        <link rel="canonical" href={data.page.canonicalUrl} key="canonical" />
+        <link rel="canonical" href={canonical} key="canonical" />
         <meta property="og:title" content="Parmi Picks" />
         <title>ParmiPicks</title>
       </Head>

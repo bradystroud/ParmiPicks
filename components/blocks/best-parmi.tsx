@@ -12,7 +12,9 @@ interface TopParmiSource {
   name?: string | null;
   date?: string | null;
   parmiImg?: string | null;
-  canonicalUrl?: string | null;
+  _sys?: {
+    filename?: string | null;
+  } | null;
   restaurant?: {
     name?: string | null;
   } | null;
@@ -76,7 +78,7 @@ const normalizeTopParmi = (
   const imageUrl =
     typeof source.parmiImg === "string" ? source.parmiImg : null;
   const reviewUrl =
-    typeof source.canonicalUrl === "string" ? source.canonicalUrl : null;
+    typeof source._sys?.filename === "string" ? source._sys.filename : null;
 
   if (!name && score === null && !imageUrl && !reviewUrl && !date) {
     return null;

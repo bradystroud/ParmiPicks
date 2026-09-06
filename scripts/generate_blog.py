@@ -292,14 +292,10 @@ def save_blog_and_image(blog, image_bytes):
     blog_filename = f"{BLOG_FOLDER}/{ensure_single_extension(blog.filename)}"
     image_filename = f"{IMAGE_FOLDER}/{timestamp}.jpg"
 
-    # Remove .mdx extension from filename for canonical URL
-    canonical_filename = blog.filename.replace('.mdx', '').replace('.md', '')
-
     # json.dumps gives a double-quoted string with any inner quotes escaped, which is valid YAML.
     formatted_blog = f"""---
 title: {json.dumps(blog.title, ensure_ascii=False)}
 date: '{datetime.now().isoformat()}'
-canonicalUrl: 'https://parmipicks.com/blogs/{canonical_filename}'
 heroImage: '/uploads/blog-images/{timestamp}.jpg'
 author: 'content/authors/brady.md'
 ---

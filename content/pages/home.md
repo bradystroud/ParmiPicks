@@ -1,5 +1,4 @@
 ---
-canonicalUrl: 'https://parmipicks.com'
 title: Parmi Picks Home
 blocks:
   - tagline: ''

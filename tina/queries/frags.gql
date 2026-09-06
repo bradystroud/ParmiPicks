@@ -8,7 +8,6 @@ fragment BlogPostParts on Blog {
   title
   date
   heroImage
-  canonicalUrl
   _body
   author {
     ... on Author {

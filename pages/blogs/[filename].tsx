@@ -14,6 +14,10 @@ import {
   localMediaAbsolute,
 } from "../../components/util/media";
 import { excerptFromRichText } from "../../components/util/excerpt";
+import {
+  canonicalUrl,
+  slugFromRelativePath,
+} from "../../components/util/canonical";
 
 export default function BlogPage(
   props: InferGetStaticPropsType<typeof getStaticProps>
@@ -52,6 +56,9 @@ export default function BlogPage(
   );
 
   const ogImage = localMediaAbsolute(data.blog.heroImage);
+  const canonical = canonicalUrl(
+    `/blogs/${slugFromRelativePath(props.variables.relativePath)}`
+  );
 
   return (
     <Layout data={data.global}>
@@ -59,7 +66,7 @@ export default function BlogPage(
         <title>{title}</title>
         <link
           rel="canonical"
-          href={data.blog.canonicalUrl}
+          href={canonical}
           key="canonical"
         />
         <meta property="og:title" content={title} key="og:title" />

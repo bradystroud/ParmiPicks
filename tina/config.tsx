@@ -4,6 +4,7 @@ import { contentBlockSchema } from "../components/blocks/content";
 import { featureBlockSchema } from "../components/blocks/features";
 import { heroBlockSchema } from "../components/blocks/hero";
 import { bestParmiBlockSchema } from "../components/blocks/best-parmi";
+import { RestaurantReference } from "./fields/restaurant-reference";
 
 const config = defineConfig({
   clientId: process.env.NEXT_PUBLIC_TINA_CLIENT_ID!,
@@ -56,6 +57,9 @@ const config = defineConfig({
             label: "Restaurant",
             name: "restaurant",
             collections: ["restaurant"],
+            ui: {
+              component: RestaurantReference,
+            },
           },
           {
             type: "datetime",

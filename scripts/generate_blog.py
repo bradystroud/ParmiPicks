@@ -4,7 +4,6 @@ import os
 import re
 import time
 import urllib.request
-import xml.etree.ElementTree as ET
 from datetime import datetime
 from dotenv import load_dotenv
 import openai
@@ -110,47 +109,66 @@ def fetch_open_pr_titles():
     return titles
 
 
-NEWS_FEEDS = [
-    "https://www.abc.net.au/news/feed/51120/rss.xml",  # ABC News Australia - Just In
-    "https://feeds.bbci.co.uk/sport/rss.xml",  # BBC Sport - big events like the World Cup
-]
+REVIEW_FOLDER = "content/reviews"
 
 
-def fetch_recent_headlines(limit_per_feed=5):
-    """Fetch recent news headlines to give the blog topical flavour. Best-effort: returns [] on failure."""
-    headlines = []
-    for feed in NEWS_FEEDS:
+def read_frontmatter(path):
+    """Return a post's YAML frontmatter as a flat dict of strings, and the body after it."""
+    with open(path, encoding="utf-8") as f:
+        text = f.read()
+    match = re.match(r"^---\n(.*?)\n---\n?(.*)$", text, re.DOTALL)
+    if not match:
+        return {}, text
+    fields = {}
+    for line in match.group(1).splitlines():
+        key, sep, value = line.partition(":")
+        if sep:
+            fields[key.strip()] = value.strip().strip("'\"")
+    return fields, match.group(2)
+
+
+def list_reviews():
+    """Summarise the site's own reviews so posts can link to them. Best-effort: returns [] on failure."""
+    reviews = []
+    try:
+        names = sorted(os.listdir(REVIEW_FOLDER))
+    except OSError as e:
+        log(f"Could not read reviews: {e}")
+        return []
+    for name in names:
         try:
-            request = urllib.request.Request(feed, headers={"User-Agent": "parmipicks-blog-bot"})
-            with urllib.request.urlopen(request, timeout=10) as response:
-                root = ET.fromstring(response.read())
-            titles = [item.findtext("title") for item in root.iter("item")]
-            headlines.extend(title for title in titles[:limit_per_feed] if title)
-        except Exception as e:
-            log(f"Could not fetch news from {feed}: {e}")
-    log(f"Fetched {len(headlines)} news headlines.")
-    return headlines
+            review, body = read_frontmatter(os.path.join(REVIEW_FOLDER, name))
+        except OSError:
+            continue
+        try:
+            restaurant, _ = read_frontmatter(review.get("restaurant", ""))
+        except OSError:
+            restaurant = {}
+        notes = [line.strip().lstrip("*-# ").strip() for line in body.splitlines()]
+        verdict = "; ".join(note for note in notes if note)[:200]
+        reviews.append(
+            {
+                "name": restaurant.get("name") or os.path.splitext(name)[0],
+                "location": restaurant.get("location", ""),
+                "score": review.get("score", "?"),
+                "url": f"/reviews/{os.path.splitext(name)[0]}",
+                "verdict": verdict,
+            }
+        )
+    log(f"Found {len(reviews)} reviews.")
+    return reviews
 
 
-def generate_blog_with_openai(existing_titles, headlines=None):
+def generate_blog_with_openai(existing_titles, reviews):
     """Generate blog content using OpenAI."""
     log("Starting blog generation...")
     start_time = time.time()
 
     existing_list = "\n".join(f"- {title}" for title in existing_titles)
-
-    news_section = ""
-    if headlines:
-        headline_list = "\n".join(f"- {headline}" for headline in headlines)
-        news_section = f"""
-    For inspiration, here are some current news headlines:
-
-    {headline_list}
-
-    If one of these (e.g. a major sporting event or cultural moment) can be tied to chicken
-    parmigiana in a fun, natural way, weave it into the blog post. If none fit, ignore them
-    entirely - never force a connection.
-    """
+    review_list = "\n".join(
+        f"- {r['name']} ({r['location']}), score {r['score']}/10, link {r['url']}: {r['verdict']}"
+        for r in reviews
+    )
 
     prompt = f"""
     Write a unique and engaging blog post about chicken parmigiana.
@@ -159,21 +177,32 @@ def generate_blog_with_openai(existing_titles, headlines=None):
     variation, sequel or rewording of any of them:
 
     {existing_list}
-    {news_section}
+
+    Parmi Picks has reviewed these real venues (name, location, score, link, verdict):
+
+    {review_list}
+
+    Mention one or two of these reviews where they fit the topic naturally, and link to them
+    with a relative markdown link such as [Club Kawana](/reviews/club-kawana). Only state facts
+    about a venue that appear above. Never invent venues, scores or details.
+
     The md blog should include:
     - An introduction to the topic
     - Sections with headings
-    - A conclusion
-    - A call-to-action for readers to share their thoughts
+    - A closing section with its own descriptive heading (never a heading called "Conclusion")
+    - A short call-to-action for readers to share their thoughts
+    Keep it under 900 words.
     ENSURE THE BLOG TOPIC IS ORIGINAL. Pick an angle that none of the existing titles cover.
-    Do not open with "There are two kinds of..." - that opening has been used already.
+    Do not open with "There are two kinds of..." and do not write "Today, we're not..." -
+    both have been used too often already.
+    Do not refer to news events, crime or politics.
     Don't include a title in the body of the content.
     """
 
     client = OpenAI()
 
     response = client.chat.completions.parse(
-        model="gpt-5.5",
+        model="gpt-6-astra",
         messages=[
             {
                 "role": "system",
@@ -220,7 +249,7 @@ def check_originality(blog, existing_titles):
 
     client = OpenAI()
     response = client.chat.completions.parse(
-        model="gpt-5.5",
+        model="gpt-6-astra",
         messages=[
             {"role": "system", "content": "You are a strict editor who prevents duplicate content on a blog."},
             {"role": "user", "content": prompt},
@@ -235,12 +264,12 @@ def check_originality(blog, existing_titles):
     return verdict
 
 
-def generate_original_blog(existing_titles, headlines):
+def generate_original_blog(existing_titles, reviews):
     """Generate a post, rejecting drafts that duplicate an existing or pending post."""
     avoid = list(existing_titles)
     for attempt in range(1, MAX_ATTEMPTS + 1):
         log(f"Generation attempt {attempt} of {MAX_ATTEMPTS}")
-        blog = generate_blog_with_openai(avoid, headlines)
+        blog = generate_blog_with_openai(avoid, reviews)
 
         target = os.path.join(BLOG_FOLDER, ensure_single_extension(blog.filename))
         if os.path.exists(target):
@@ -267,10 +296,12 @@ def generate_image_with_openai(prompt):
 
     try:
         response = client.images.generate(
-            model="gpt-image-2",
+            model="gpt-image-2.5-flare",
             prompt=prompt,
             size="1536x1024",
             quality="high",
+            output_format="jpeg",
+            output_compression=85,
             n=1,
         )
     except openai.OpenAIError as e:
@@ -337,11 +368,11 @@ def main():
     # Step 1: Collect every topic already taken: published posts plus posts awaiting review
     existing_titles = list_existing_post_titles(BLOG_FOLDER) + fetch_open_pr_titles()
 
-    # Step 2: Fetch recent headlines for topical flavour
-    headlines = fetch_recent_headlines()
+    # Step 2: Read the site's own reviews so the post can link to them
+    reviews = list_reviews()
 
     # Step 3: Generate blog content, retrying if the topic is a duplicate
-    blog_content = generate_original_blog(existing_titles, headlines)
+    blog_content = generate_original_blog(existing_titles, reviews)
 
     # Step 4: Generate image
     image_prompt = f"I am writing a blog about {blog_content.title} and I need an image to go with it. The image should be related to the topic and visually appealing."

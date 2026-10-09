@@ -186,16 +186,36 @@ def generate_blog_with_openai(existing_titles, reviews):
     with a relative markdown link such as [Club Kawana](/reviews/club-kawana). Only state facts
     about a venue that appear above. Never invent venues, scores or details.
 
-    The md blog should include:
-    - An introduction to the topic
-    - Sections with headings
-    - A closing section with its own descriptive heading (never a heading called "Conclusion")
-    - A short call-to-action for readers to share their thoughts
-    Keep it under 900 words.
-    ENSURE THE BLOG TOPIC IS ORIGINAL. Pick an angle that none of the existing titles cover.
-    Do not open with "There are two kinds of..." and do not write "Today, we're not..." -
-    both have been used too often already.
-    Do not refer to news events, crime or politics.
+    Topic:
+    - Pick a topic that helps a reader find, order, judge, cook or enjoy a better parmi.
+      Good areas: what separates a great parmi from an average one, ordering tactics,
+      sides and toppings, regional differences, parmi history, cooking one at home, and
+      how Brady's rating system works in practice.
+    - Avoid crafts, fiction, life-lesson metaphors and topics where the parmi is only a prop.
+    - ENSURE THE BLOG TOPIC IS ORIGINAL. Pick an angle that none of the existing titles cover.
+
+    Reviews:
+    - Bring in Brady's own experience from one or two of the reviews above, in the first
+      person ("When I reviewed ..."). This is what makes the post worth reading.
+
+    Structure:
+    - The first paragraph is also the page's meta description. Make its first sentence
+      say plainly what the post is about and what the reader will get, in under 160
+      characters. Do not open with a scene, a metaphor or a rhetorical question.
+    - Use 4 to 6 sections with descriptive headings. Use at most one bulleted list.
+    - End with a closing section that has its own descriptive heading (never
+      "Conclusion", "The Takeaway" or "Your Turn"), then one specific question for readers.
+      Do not use the phrase "in the comments" or "Drop your".
+    - Keep it between 600 and 900 words.
+
+    Style:
+    - Use at most two em dashes in the whole post.
+    - Do not use the "it's not just X, it's Y" construction.
+    - Use each of these words at most once: golden, crunch, legend, ritual, sacred, iconic,
+      comfort, ultimate.
+    - Do not open with "There are two kinds of...", "There's a special..." or
+      "Today, we're not...".
+    - Do not refer to news events, crime or politics.
     Don't include a title in the body of the content.
     """
 
@@ -206,7 +226,7 @@ def generate_blog_with_openai(existing_titles, reviews):
         messages=[
             {
                 "role": "system",
-                "content": "You are a professional blog writer. You write unique, creative and engaging blog posts about chicken parmis for parmipicks.com. Chicken parmigiana is a popular dish, mostly in Australia that consists of breaded chicken breast topped with marinara sauce, ham and melted cheese. Your task is to create a blog post that is informative, entertaining, and encourages readers to share their thoughts in the comments section. It also need to be unique and not cover topics that have already been written about.",
+                "content": "You write blog posts for parmipicks.com as Brady, the site's reviewer. Brady is based in Queensland and has eaten and rated chicken parmis across Australia. He rates each parmi from 0 to 10, judging the whole plate (chicken, toppings, chips and salad) and nothing off the plate. Write in the first person, in plain, warm Australian English: specific and opinionated, never corporate. Readers come to the site to find, order and enjoy a better parmi.",
             },
             {"role": "user", "content": prompt},
         ],
@@ -375,7 +395,12 @@ def main():
     blog_content = generate_original_blog(existing_titles, reviews)
 
     # Step 4: Generate image
-    image_prompt = f"I am writing a blog about {blog_content.title} and I need an image to go with it. The image should be related to the topic and visually appealing."
+    image_prompt = (
+        f"A realistic, natural-light photograph for a blog post titled \"{blog_content.title}\". "
+        "Show a chicken parmigiana as it is served in an Australian pub: crumbed chicken, "
+        "tomato sauce, melted cheese, with chips and salad, in a setting that fits the topic. "
+        "Do not include any text, words, letters, signs, labels, menus or logos."
+    )
     image_bytes = generate_image_with_openai(image_prompt)
 
     # Step 5: Save blog and image

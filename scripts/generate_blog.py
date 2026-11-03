@@ -40,6 +40,7 @@ class Blog(BaseModel):
     filename: str
     title: str
     content: str
+    image_concept: str
 
 
 class OriginalityVerdict(BaseModel):
@@ -207,6 +208,23 @@ def generate_blog_with_openai(existing_titles, reviews):
       "Conclusion", "The Takeaway" or "Your Turn"), then one specific question for readers.
       Do not use the phrase "in the comments" or "Drop your".
     - Keep it between 600 and 900 words.
+
+    Hero image (image_concept field):
+    - The hero image appears next to every other post's image on the blog index, so it
+      must show this post's central idea, not a generic parmi on a pub table. A reader
+      should be able to guess the topic from the image alone.
+    - Describe one specific photograph in 2 to 4 sentences: the subject, the composition,
+      the camera angle and the lighting. Pick the approach that best fits the topic, for
+      example a macro close-up of one detail, an overhead flat lay, a kitchen action shot,
+      hands doing something, a side-by-side comparison, a cross-section, a moody still
+      life, or a wide scene where the parmi is small in the frame.
+    - Do not use the default composition of a whole parmi with chips and salad on a
+      wooden table with a beer in the background.
+    - Tell the idea with food, objects, hands and gestures only. The scene must contain no
+      writing of any kind: no notes, notebooks, phone or screen content, receipts, menus,
+      signs or labels.
+    - Keep the main subject in the centre, because the index crops the image to a wide
+      strip.
 
     Style:
     - Use at most two em dashes in the whole post.
@@ -396,11 +414,12 @@ def main():
 
     # Step 4: Generate image
     image_prompt = (
-        f"A realistic, natural-light photograph for a blog post titled \"{blog_content.title}\". "
-        "Show a chicken parmigiana as it is served in an Australian pub: crumbed chicken, "
-        "tomato sauce, melted cheese, with chips and salad, in a setting that fits the topic. "
+        f"{blog_content.image_concept} "
+        "Style: a striking, realistic editorial food photograph with natural light and a "
+        "shallow depth of field. "
         "Do not include any text, words, letters, signs, labels, menus or logos."
     )
+    log(f"Image concept: {blog_content.image_concept}")
     image_bytes = generate_image_with_openai(image_prompt)
 
     # Step 5: Save blog and image

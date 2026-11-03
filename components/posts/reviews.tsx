@@ -42,7 +42,7 @@ export const Reviews = ({
             <article className="mb-8 rounded-3xl border-2 border-brand-600 bg-brand px-8 py-9 text-white shadow-lg transition hover:-translate-y-1 hover:shadow-xl">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="flex items-start gap-4">
-                  <span className="relative inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner" aria-label={`Score: ${post.score} out of 10${isCrowned ? " (top rated)" : ""}`} role="img">
+                  <span className="relative inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner" aria-label={`Score: ${post.score} out of 10${isCrowned ? " (top rated)" : ""}`} role="img">
                     {isCrowned && (
                       <FaCrown
                         className="absolute -top-4 left-1/2 h-6 w-6 -translate-x-1/2 -rotate-[18deg] text-amber-300 drop-shadow-md"

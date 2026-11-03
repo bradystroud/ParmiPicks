@@ -56,6 +56,25 @@ const pinIcon = (): google.maps.Symbol => ({
   labelOrigin: new google.maps.Point(12, 12),
 });
 
+// Google reserves a header row for the close button. Left empty, it shows as a
+// blank band above the popup, so the score and venue name go in it instead.
+const popupHeader = (location: MapLocation): HTMLElement => {
+  const header = document.createElement("div");
+  header.className = "flex items-center gap-2 pr-1";
+
+  const score = document.createElement("span");
+  score.className =
+    "inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white";
+  score.textContent = String(location.reviews[0].score);
+
+  const name = document.createElement("h3");
+  name.className = "text-base font-semibold leading-tight text-slate-900";
+  name.textContent = location.name;
+
+  header.append(score, name);
+  return header;
+};
+
 const Map = ({ locations }: { locations: MapLocation[] }) => {
   const mapRef = useRef<google.maps.Map | null>(null);
   const [selected, setSelected] = useState<MapLocation | null>(null);
@@ -161,18 +180,14 @@ const Map = ({ locations }: { locations: MapLocation[] }) => {
         <InfoWindowF
           position={{ lat: selected.lat, lng: selected.lng }}
           onCloseClick={() => setSelected(null)}
-          options={{ pixelOffset: new google.maps.Size(0, -38) }}
+          options={{
+            pixelOffset: new google.maps.Size(0, -38),
+            headerContent: popupHeader(selected),
+            minWidth: 240,
+          }}
         >
-          <div className="min-w-[180px] max-w-[240px] p-1">
-            <div className="flex items-center gap-2">
-              <span className="inline-flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-full bg-brand text-sm font-bold text-white">
-                {selected.reviews[0].score}
-              </span>
-              <h3 className="text-base font-semibold leading-tight text-slate-900">
-                {selected.name}
-              </h3>
-            </div>
-            <p className="mt-2 text-xs text-slate-500">
+          <div className="p-1 pt-0">
+            <p className="mt-1 text-xs text-slate-500">
               Reviewed {formatReviewDate(selected.reviews[0].date)}
             </p>
             <button

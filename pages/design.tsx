@@ -476,7 +476,7 @@ export default function DesignSystemPage() {
                 <p className="mb-3 text-sm font-semibold text-slate-500">
                   Score badge
                 </p>
-                <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner">
+                <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner">
                   8.5
                 </span>
               </div>
@@ -488,7 +488,7 @@ export default function DesignSystemPage() {
                 </p>
                 <article className="rounded-3xl border-2 border-brand-600 bg-brand px-8 py-9 text-white shadow-lg">
                   <div className="flex items-start gap-4">
-                    <span className="inline-flex h-14 w-14 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner">
+                    <span className="inline-flex h-14 w-14 shrink-0 items-center justify-center rounded-full border-4 border-white bg-brand-tint text-lg font-bold text-brand shadow-inner">
                       9
                     </span>
                     <div>

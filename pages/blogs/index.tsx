@@ -76,7 +76,7 @@ export default function BlogsPage(
                                 alt={`Avatar of ${post.node.author.name}`}
                                 width={24}
                                 height={24}
-                                className="rounded-full mr-2"
+                                className="h-6 w-6 flex-shrink-0 object-cover rounded-full mr-2"
                               />
                               <span>{post.node.author.name}</span>
                             </div>

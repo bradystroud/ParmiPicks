@@ -240,7 +240,7 @@ def generate_blog_with_openai(existing_titles, reviews):
     client = OpenAI()
 
     response = client.chat.completions.parse(
-        model="gpt-6-astra",
+        model="gpt-6.2-astra",
         messages=[
             {
                 "role": "system",
@@ -287,7 +287,7 @@ def check_originality(blog, existing_titles):
 
     client = OpenAI()
     response = client.chat.completions.parse(
-        model="gpt-6-astra",
+        model="gpt-6.2-astra",
         messages=[
             {"role": "system", "content": "You are a strict editor who prevents duplicate content on a blog."},
             {"role": "user", "content": prompt},
@@ -334,7 +334,7 @@ def generate_image_with_openai(prompt):
 
     try:
         response = client.images.generate(
-            model="gpt-image-2.5-flare",
+            model="gpt-image-2.6-flare",
             prompt=prompt,
             size="1536x1024",
             quality="high",
